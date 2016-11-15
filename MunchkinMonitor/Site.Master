@@ -18,7 +18,7 @@
     <script src="Scripts/globalScripts.js"></script>
     <script src="Scripts/datalayer.js"></script>
     <script src="Scripts/RollOutHelper.js"></script>
-    <script src="Scripts/tableHelper.js"></script>
+    <script src="Scripts/rivets.bundled.min.js"></script>
     <script type="text/javascript">
         var objPing = {};
         

@@ -5,6 +5,8 @@ using System.Web;
 
 namespace MunchkinMonitor.Classes
 {
+
+    [Serializable]
     public class Battle
     {
         public DateTime battleDT { get; set; }
@@ -15,6 +17,8 @@ namespace MunchkinMonitor.Classes
         public int playerOneTimeBonus { get; set; }
         public int allyTreasures { get; set; }
         public int allyHelpLevels { get; set; }
+        public DateTime lastUpdated { get; set; }
+        public BattleResult result { get; set; }
         public int playerPoints
         {
             get
@@ -84,6 +88,13 @@ namespace MunchkinMonitor.Classes
                 return treasures;
             }
         }
+        public double lastUpdatedJS
+        {
+            get
+            {
+                return lastUpdated.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+            }
+        }
 
         public Battle()
         { }
@@ -95,6 +106,7 @@ namespace MunchkinMonitor.Classes
             opponents = new List<Monster> { new Monster(monsterLevel, levelsToWin, treasures) };
             opponentBonus = 0;
             playerOneTimeBonus = 0;
+            lastUpdated = DateTime.Now;
         }
 
         public void AddMonster(Monster add, Player attacker)
@@ -102,6 +114,7 @@ namespace MunchkinMonitor.Classes
             if (attacker != null)
                 Logger.LogAttack(gamePlayer, attacker);
             opponents.Add(add);
+            lastUpdated = DateTime.Now;
         }
 
         public void AddAlly (CurrentGamePlayer player, int treasures, int levels)
@@ -109,6 +122,7 @@ namespace MunchkinMonitor.Classes
             ally = player;
             allyTreasures = treasures;
             allyHelpLevels = levels;
+            lastUpdated = DateTime.Now;
         }
 
         public void HelpPlayer(int points, Player helper)
@@ -116,6 +130,7 @@ namespace MunchkinMonitor.Classes
             if (helper != null)
                 Logger.LogHelp(gamePlayer, helper);
             playerOneTimeBonus += points;
+            lastUpdated = DateTime.Now;
         }
 
         public void HelpMonster(int points, Player attacker)
@@ -123,6 +138,7 @@ namespace MunchkinMonitor.Classes
             if (attacker != null)
                 Logger.LogAttack(gamePlayer, attacker);
             opponentBonus += points;
+            lastUpdated = DateTime.Now;
         }
 
         public void AttackPlayer(int points, Player attacker)
@@ -130,6 +146,7 @@ namespace MunchkinMonitor.Classes
             if (attacker != null)
                 Logger.LogAttack(gamePlayer, attacker);
             playerOneTimeBonus -= points;
+            lastUpdated = DateTime.Now;
         }
 
         public void AttackMonster(int points, Player helper)
@@ -137,35 +154,35 @@ namespace MunchkinMonitor.Classes
             if (helper != null)
                 Logger.LogHelp(gamePlayer, helper);
             opponentBonus -= points;
+            lastUpdated = DateTime.Now;
         }
 
-        public BattleResult ResolveBattle()
+        public void ResolveBattle()
         {
-            BattleResult br = new BattleResult(gamePlayer);
+            result = new BattleResult(gamePlayer);
             if(playerPoints > opponentPoints)
             {
-                br.Victory = true;
-                br.levelsWon = (LevelsAtStake - allyHelpLevels);
-                br.treasuresWon = (TotalTreasures - allyTreasures);
+                result.Victory = true;
+                result.levelsWon = (LevelsAtStake - allyHelpLevels);
+                result.treasuresWon = (TotalTreasures - allyTreasures);
                 if(ally != null)
                 {
-                    br.assistedBy = ally;
-                    br.assistLevels = AssistLevels;
-                    br.assistTreasures = allyTreasures;
+                    result.assistedBy = ally;
+                    result.assistLevels = AssistLevels;
+                    result.assistTreasures = allyTreasures;
                 }
-                gamePlayer.CurrentLevel += br.levelsWon;
+                gamePlayer.CurrentLevel += result.levelsWon;
                 ally.CurrentLevel += AssistLevels;
                 gamePlayer.NextBattleModifier = 0;
                 ally.Treasures += allyTreasures;
-                gamePlayer.Treasures += br.treasuresWon;
-                Logger.LogVictory(br);
+                gamePlayer.Treasures += result.treasuresWon;
+                Logger.LogVictory(result);
             }
             else
             {
-                br.Victory = false;
-                Logger.LogDefeat(br);
+                result.Victory = false;
+                Logger.LogDefeat(result);
             }
-            return br;
         }
     }
 

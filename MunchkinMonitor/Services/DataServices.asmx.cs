@@ -21,20 +21,102 @@ namespace MunchkinMonitor.Services
     {
 
         [WebMethod]
-        public string GetCurrentAppState()
+        public bool CheckForStateUpdate(DateTime lastUpdate)
         {
-            AppState state = AppState.CurrentState();
-            return state.gameState.ToString();
+            return (AppState.CurrentState().stateUpdated.Subtract(lastUpdate).TotalMilliseconds > 1);
         }
 
         [WebMethod]
-        public void RotateState()
+        public AppState GetCurrentAppState()
+        {
+            return AppState.CurrentState();
+        }
+
+        [WebMethod]
+        public void LoadScroreboard()
         {
             AppState state = AppState.CurrentState();
-            int cur = (int)state.gameState;
-            cur++;
-            cur = cur % Convert.ToInt32(Enum.GetValues(typeof(AppStates)).Cast<AppStates>().Max());
-            state.SetState((AppStates)cur);
+            state.LoadScoreboard();
+        }
+
+        [WebMethod]
+        public void NewGame(bool isEpic)
+        {
+            AppState state = AppState.CurrentState();
+            state.NewGame(isEpic);
+        }
+
+        [WebMethod]
+        public void AddExistingPlayer(int id)
+        {
+            AppState state = AppState.CurrentState();
+            if(state.gameState != null)
+                state.gameState.AddExistingPlayer(id);
+        }
+
+        [WebMethod]
+        public void AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
+        {
+            AppState state = AppState.CurrentState();
+            if(state.gameState != null)
+                state.gameState.AddNewPlayer(firstName, lastName, nickName, gender, "");
+        }
+
+        [WebMethod]
+        public void StartGame(int playerID)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+                state.gameState.StartGame(playerID);
+        }
+
+        [WebMethod]
+        public void NextPlayer()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+                state.gameState.NextPlayer();
+        }
+
+        [WebMethod]
+        public void StartBattle(int level, int levelsToWin, int treasures)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+                state.gameState.StartBattle(level, levelsToWin, treasures);
+        }
+
+        [WebMethod]
+        public void AddMonster(int level, int levelsToWin, int treasures, int attackerID)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.AddMonsterToBattle(level, levelsToWin, treasures, attackerID);
+            }
+        }
+
+        [WebMethod]
+        public void AddAlly(int allyID, int allyTreasures, int allyLevels)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+                state.gameState.AddAlly(allyID, allyTreasures, allyLevels);
+        }
+
+        [WebMethod]
+        public void ResolveBattle()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+                state.gameState.ResolveBattle();
+        }
+
+        [WebMethod]
+        public void EndGame()
+        {
+            AppState state = AppState.CurrentState();
+            state.EndGame();
         }
     }
 }

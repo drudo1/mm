@@ -147,9 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Controller.aspx" />
+    <Content Include="Game.aspx" />
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />
     <Content Include="Scripts\globalScripts.js" />
+    <Content Include="Scripts\rivets.bundled.min.js" />
     <Content Include="Scripts\RollOutHelper.js" />
     <Content Include="Scripts\tableHelper.js" />
     <Content Include="Services\DataServices.asmx" />
@@ -217,6 +219,13 @@
     </Compile>
     <Compile Include="Controller.aspx.designer.cs">
       <DependentUpon>Controller.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Game.aspx.cs">
+      <DependentUpon>Game.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Game.aspx.designer.cs">
+      <DependentUpon>Game.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScoreBoard.aspx.cs">
       <DependentUpon>ScoreBoard.aspx</DependentUpon>

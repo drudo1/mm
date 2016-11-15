@@ -45,6 +45,18 @@ var guid = {
     }
 }
 
+function objectCopy(source, target) {
+    for (var key in source) {
+        if (typeof source[key] === 'object' && source[key] != null) {
+            if (target[key] == null)
+                target[key] = {};
+            objectCopy(source[key], target[key]);
+        }
+        else
+            target[key] = source[key];
+    }
+}
+
 /*Function
 *Loops through the globalData.FormControls object and sets the correct field preferences
 *based on control attributes.
@@ -119,7 +131,7 @@ function isNullOrEmpty(obj) {
     if (obj.length && obj.length > 0) return false;
     if (typeof obj == 'number') return false;
     if (typeof obj == 'boolean') return false;
-    for (var prop in obj) if (obj[prop]) return false;
+    for (var prop in obj) if (obj[prop] || typeof (obj[prop]) == 'boolean' || typeof (obj[prop]) == 'string') return false;
     return true;
 }
 

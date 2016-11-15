@@ -9,16 +9,30 @@ namespace MunchkinMonitor.Classes
     public enum AppStates
     {
         TournamentScoreBoard,
-        Game,
-        Battle,
-        GameResults
+        Game
     }
 
+    [Serializable]
     public class AppState
     {
         public AppStates currentState { get; set; }
-        public List<PlayerStats> playerStats { get; set; }
-        public AppStates gameState { get; set; }
+        public Game gameState { get; set; }
+        public PlayerStats playerStats { get; set; }
+        public DateTime stateUpdated { get; set; }
+        public string currentStateDescription
+        {
+            get
+            {
+                return currentState.ToString();
+            }
+        }
+        public double stateUpdatedJS
+        {
+            get
+            {
+                return stateUpdated.Subtract(new DateTime(1970, 1, 1).AddHours(-6)).TotalMilliseconds;
+            }
+        }
 
         public static AppState CurrentState()
         {
@@ -34,42 +48,27 @@ namespace MunchkinMonitor.Classes
 
         public void SetState(AppStates newState)
         {
-            switch (newState)
-            {
-                case AppStates.TournamentScoreBoard:
-                    LoadPlayerStats();
-                    break;
-                case AppStates.Game:
-                    LoadGame();
-                    break;
-                case AppStates.Battle:
-                    LoadBattle();
-                    break;
-                case AppStates.GameResults:
-                    LoadGameResults();
-                    break;
-            }
-            gameState = newState;
+            currentState = newState;
+            stateUpdated = DateTime.Now;
         }
 
-        private void LoadGameResults()
+        public void NewGame(bool isEpic)
         {
-            //throw new NotImplementedException();
+            playerStats = null;
+            gameState = new Game(isEpic);
+            SetState(AppStates.Game);
         }
 
-        private void LoadBattle()
+        public void EndGame()
         {
-            //throw new NotImplementedException();
+            //record game stats
+            LoadScoreboard();
         }
 
-        private void LoadGame()
+        public void LoadScoreboard()
         {
-            //throw new NotImplementedException();
-        }
-
-        private void LoadPlayerStats()
-        {
-            playerStats = new List<PlayerStats>();
+            playerStats = new PlayerStats();
+            SetState(AppStates.TournamentScoreBoard);
         }
     }
 }

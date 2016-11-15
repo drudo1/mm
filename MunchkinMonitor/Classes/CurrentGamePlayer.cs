@@ -5,10 +5,11 @@ using System.Web;
 
 namespace MunchkinMonitor.Classes
 {
+
+    [Serializable]
     public class CurrentGamePlayer
     {
         public Player currentPlayer { get; set; }
-        public Game currentGame { get; set; }
         public CharacterModifier CurrentRace { get; set; }
         public CharacterModifier CurrentClass { get; set; }
         public Gender CurrentGender { get; set; }
@@ -18,10 +19,9 @@ namespace MunchkinMonitor.Classes
         public int Treasures { get; set; }
         public List<CharacterHelper> Helpers { get; set; }
 
-        public CurrentGamePlayer(Game current, Player player)
+        public CurrentGamePlayer(Player player)
         {
             currentPlayer = player;
-            currentGame = current;
             CurrentGender = player.Gender;
             Helpers = new List<CharacterHelper>();
         }

@@ -5,6 +5,8 @@ using System.Text;
 
 namespace MunchkinMonitor.Classes
 {
+
+    [Serializable]
     public class BattleResult
     {
         public CurrentGamePlayer gamePlayer { get; set; }
