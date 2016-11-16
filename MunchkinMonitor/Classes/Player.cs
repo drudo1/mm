@@ -23,6 +23,16 @@ namespace MunchkinMonitor.Classes
         public string LastName { get; set; }
         public string NickName { get; set; }
         public string customImagePath { get; set; }
+        public int Victories { get; set; }
+        public int Kills { get; set; }
+        public int Treasures { get; set; }
+        public int Score
+        {
+            get
+            {
+                return (Victories * 250) + (Kills * 5) + Treasures;
+            }
+        }
         public string DisplayName
         {
             get
@@ -46,7 +56,10 @@ namespace MunchkinMonitor.Classes
                 FirstName = firstName,
                 LastName = lastName,
                 NickName = nickName,
-                customImagePath = customPath
+                customImagePath = customPath,
+                Victories = 0,
+                Kills = 0,
+                Treasures = 0
             };
 
             List<Player> players;

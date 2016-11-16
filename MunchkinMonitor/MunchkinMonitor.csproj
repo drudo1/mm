@@ -148,6 +148,7 @@
   <ItemGroup>
     <Content Include="Controller.aspx" />
     <Content Include="Game.aspx" />
+    <Content Include="Images\scoreboardBG.jpg" />
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />
     <Content Include="Scripts\globalScripts.js" />

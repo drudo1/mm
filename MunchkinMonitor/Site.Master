@@ -31,7 +31,33 @@
         }
         $(document).ready(function () {
             Ping();
-            setInterval(Ping, 5000);
+            setInterval(Ping, 3000);
+            rivets.formatters.eq = function (value, equalVal) {
+                return (value == equalVal);
+            };
+            rivets.formatters.neq = function (value, equalVal) {
+                return (value != equalVal);
+            };
+            rivets.bind($(document), { appData: appData });
+        });
+
+        $(window).load(function () {
+
+            var theWindow = $(window),
+                $bg = $("#bg");
+            if($bg.length)
+                aspectRatio = $bg.width() / $bg.height();
+
+            function resizeBg() {
+                $(document).prepend($bg);
+
+                $bg.addClass('bgheight');
+                $(window).css('overflow-x', 'hidden');
+
+            }
+            if($bg.length)
+                theWindow.resize(resizeBg).trigger("resize");
+
         });
     </script>
 </head>
@@ -53,7 +79,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="container body-content">
+        <div class="body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>

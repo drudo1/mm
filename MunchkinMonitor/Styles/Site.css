@@ -36,3 +36,46 @@ input[type="select"] {
         padding: 0;
     }
 }
+
+#bg { position: fixed; top: 0; left: 0; z-index: -11; }
+.bgwidth { width: 100%; }
+.bgheight { height: 100%; }
+.scoreboard{
+    margin-top: 8%;
+    margin-left: 42%;
+    font-family: 'Quasimodo';
+}
+.scoreboard h1 {
+    font-family: inherit;
+    font-size: 54px;
+    color: #350400;
+}
+.scoreboard table tbody tr {
+    font-family: inherit;
+    font-size: 45px;
+    color: #350400;
+}
+.scoreboard table tbody tr th {
+    padding: 5px 50px;
+}
+.scoreboard table tbody tr td {
+    text-align:center;
+}
+.scoreboard table tbody tr td.title {
+    font-weight: bold;
+}
+.btn.mkn {
+    background-color: #F1DA9E;
+    color: #350400;
+    font-family: 'Quasimodo';
+    font-size: 20px;
+    margin: 0 auto;
+    display:block;
+}
+div.mkn {
+    text-align:center;
+    padding-top: 120px;
+}
+option.hide {
+    display:none;
+}

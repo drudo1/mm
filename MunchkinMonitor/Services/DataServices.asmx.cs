@@ -33,7 +33,7 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
-        public void LoadScroreboard()
+        public void LoadScoreboard()
         {
             AppState state = AppState.CurrentState();
             state.LoadScoreboard();

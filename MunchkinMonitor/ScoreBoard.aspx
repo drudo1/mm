@@ -3,6 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         var appData = null;
+        data.run('LoadScoreboard');
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
@@ -19,12 +20,23 @@
             if (appData.currentStateDescription == "Game")
                 window.location = "Game.aspx";
         };
-        $(document).ready(function () {
-            rivets.bind($(document), { appData: appData });
-        })
     </script>
-    <div class="jumbotron">
-        <h1 rv-text="appData.currentStateDescription"></h1>
+    <img src="Images/scoreboardBG.jpg" id="bg" alt="">
+    <div class="scoreboard">
+        <table>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Victories</th>
+                <th>Kills</th>
+                <th>Treasures</th>
+            </tr>
+            <tr rv-each-player="appData.playerStats.players">
+                <td class="title">{player.DisplayName}</td>
+                <td>{player.Victories}</td>
+                <td>{player.Kills}</td>
+                <td>{player.Treasures}</td>
+            </tr>
+        </table>
     </div>
 
 </asp:Content>

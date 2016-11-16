@@ -54,7 +54,6 @@ namespace MunchkinMonitor.Classes
 
         public void NewGame(bool isEpic)
         {
-            playerStats = null;
             gameState = new Game(isEpic);
             SetState(AppStates.Game);
         }
