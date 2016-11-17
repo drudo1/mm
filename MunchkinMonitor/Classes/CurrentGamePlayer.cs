@@ -24,6 +24,7 @@ namespace MunchkinMonitor.Classes
             currentPlayer = player;
             CurrentGender = player.Gender;
             Helpers = new List<CharacterHelper>();
+            CurrentLevel = 1;
         }
 
         public int FightingLevel

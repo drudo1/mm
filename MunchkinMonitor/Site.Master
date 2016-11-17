@@ -38,6 +38,15 @@
             rivets.formatters.neq = function (value, equalVal) {
                 return (value != equalVal);
             };
+            rivets.formatters.lt = function (value, compare) {
+                return (value == undefined || value < compare);
+            };
+            rivets.formatters.isCurrentPlayer = function (value) {
+                if (appData.gameState.currentPlayer != null && value == appData.gameState.currentPlayer.currentPlayer.PlayerID)
+                    return true;
+                else
+                    return false;
+            };
             rivets.bind($(document), { appData: appData });
         });
     </script>

@@ -47,7 +47,17 @@ var guid = {
 
 function objectCopy(source, target) {
     for (var key in source) {
-        if (typeof source[key] === 'object' && source[key] != null) {
+        if (Object.prototype.toString.call(source[key]) === '[object Array]') {
+            if (Object.prototype.toString.call(target[key]) === '[object Array]') {
+                while (target[key].length > 0)
+                    target[key].pop();
+                for (var el in source[key])
+                    target[key].push(source[key][el]);
+            }
+            else
+                target[key] = source[key];
+        }
+        else if (typeof source[key] === 'object' && source[key] != null) {
             if (target[key] == null)
                 target[key] = {};
             objectCopy(source[key], target[key]);

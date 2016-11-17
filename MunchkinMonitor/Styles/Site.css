@@ -57,6 +57,12 @@ input[type="select"] {
     .scoreboard table tbody tr th {
         padding: 5px 50px;
     }
+    div.playerRow {
+        font-family: Quasimodo;
+        font-size: 45px;
+        color: #350400;
+        border-bottom: 3px solid #350400;
+    }
 }
 @media screen and (max-device-width : 1400px)
 {
@@ -72,6 +78,12 @@ input[type="select"] {
     }
     .scoreboard table tbody tr th {
         padding: 5px 36px;
+    }
+    div.playerRow {
+        font-family: Quasimodo;
+        font-size: 32px;
+        color: #350400;
+        border-bottom: 3px solid #350400;
     }
 }
 
@@ -100,6 +112,9 @@ div.mkn {
     text-align:center;
     padding-top: 120px;
 }
-option.hide {
-    display:none;
+div.gamePlayerList {
+    margin-top: 30%;
+}
+.hide {
+    display: none;
 }

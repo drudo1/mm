@@ -19,15 +19,26 @@
             }
         };
         $(document).ready(function () {
+            appData.gameState.players = [{ currentPlayer: { PlayerID: -1, DisplayName: 'Add a Player' }, CurrentLevel: -1 }];
             rivets.bind($(document), { appData: appData });
         })
     </script>
     <img src="Images/gameBG.jpg" id="bg" alt="">
-    <table>
-        <tr>
-            <td style="width:15%">
-                <h1 rv-text="appData.gameState.players.currentPlayer.DisplayName"></h1>
-            </td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="gamePlayerList">
+                <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
+                    <div class="col-sm-7" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
+                        {player.currentPlayer.DisplayName}
+                    </div>
+                    <div class="col-sm-5" rv-class-hide="player.CurrentLevel | lt 1" >
+                        Level {player.CurrentLevel}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            &nbsp;
+        </div>
+    </div>
 </asp:Content>

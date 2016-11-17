@@ -22,4 +22,15 @@
     <Kills>0</Kills>
     <Treasures>0</Treasures>
   </Player>
+  <Player>
+    <PlayerID>3</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Ryan</FirstName>
+    <LastName>Schneider</LastName>
+    <NickName />
+    <customImagePath />
+    <Victories>0</Victories>
+    <Kills>0</Kills>
+    <Treasures>0</Treasures>
+  </Player>
 </ArrayOfPlayer>
