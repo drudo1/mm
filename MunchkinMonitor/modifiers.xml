@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<ArrayOfCharacterModifier xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CharacterModifier>
+    <ModifierID>1</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Human</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>{EPIC}You can make a pet of any monster Level 5 or below. (See rules regarding pets.)</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>2</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Dwarf</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>Carry any number of big items</string>
+      <string>{NOTEPIC}You can hold 6 cards.</string>
+      <string>{EPIC}You can hold any number of cards.</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>3</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Elf</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>true</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>{EPIC}You may discard up to 2 cards.  Each is worth -2 to a player or monster in combat.</string>
+    </turnReminders>
+    <failureReminders>
+      <string>+1 to RunAway</string>
+    </failureReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>4</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Gnome</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>In combat ALONE, you may play one monster as an illusion adding it's level to yours.</string>
+      <string>+1 for any non-one-shot item beginning with 'G' or 'N'.</string>
+      <string>Monsters treat you as a Halfiling</string>
+      <string>Monsters with 'Nose' in their name will never pursue you.</string>
+    </turnReminders>
+    <failureReminders>
+      <string>{EPIC}If you successfully run away, take two face-down treasure cards.</string>
+    </failureReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>5</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Halfling</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>{NOTEPIC}You may sell one item each turn for double.</string>
+      <string>{EPIC}You may sell TWO items for twice their value or ONE item for 3x it's value.</string>
+    </turnReminders>
+    <failureReminders>
+      <string>If you fail your first attempt to run away, you may discard a card and try again.</string>
+    </failureReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>6</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Orc</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>true</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>You may choose to lose a level to deflect a curse unless you are level 1.</string>
+      <string>Gain extral level if you defeat a monster alone by more than 10.</string>
+      <string>{EPIC}When you encounter a monster of level 1, you may simply eat it, take the level and treasures.  Foes cannot stop this.  You CAN win this way!</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>7</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Bard</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>Discard a card, choose an opponent and roll.  If your roll beats theirs, they must help you for nothing.</string>
+    </turnReminders>
+    <victoryReminders>
+      <string>{NOTEPIC}Draw an extra treasure and discard one of your choice.</string>
+      <string>{EPIC}Draw TWO extra treasures and discard two of your choice.</string>
+    </victoryReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>8</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Cleric</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>When drawing FACE-UP cards, you may instead draw from discard, but you must discard one from your hand for each drawn this way.</string>
+      <string>You may discard up to 3 cards against an udead monster, each card gives you +3.</string>
+      <string>{EPIC}At any time (including combat), you may discard 2 cards from your hand or the table and draw a face down treasure card.  It may be used immediately.</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>9</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Rangeer</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>2</combatBonusForHelp>
+    <turnReminders>
+      <string>You may tame a monster (Discard current steed, and cards equal to the monster's treasures).  It's combat bonus is the same as it's treasure count.</string>
+      <string>Your help in combat is worth an extra +2.</string>
+      <string>{EPIC}You may discard your whole hand (atleast 3 cards) to immediately claim and tame a discarded monster. YOUR TURN OR NOT!</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>10</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Thief</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>You may discard a card to give a -2 to any player in combat. (Once per player per combat)</string>
+      <string>You may discard a card to try to steal another player's small item.  You must roll 4 or more to succeed.  If you don't succeed, lose a level.</string>
+      <string>{EPIC}On your turn, you may discard one card to steal a random card from another player's hand.  No die roll is required. (NOT DURING COMBAT)</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>11</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Warrior</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>You may discard up to 3 cards in combat.  Each is worth +1</string>
+      <string>You win ties.</string>
+      <string>{EPIC}2 hand items require only 1 hand for you.</string>
+      <string>{EPIC}You may carry and use 2 big items.</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>12</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Wizard</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>You may discard up your whole hand (at least 3 cards) to charm a single monster.  Take it's treasure, but not it's levels.</string>
+      <string>{EPIC}When on the receiving end of a curse, discard a card to attempt to run from it.  (Regular run-away rules apply.)  You may do this until you succeed, give up, or run out of cards.</string>
+    </turnReminders>
+    <failureReminders>
+      <string>You may discard up to 3 cards after rolling the die to run away.  Each adds +1 to your roll.</string>
+    </failureReminders>
+  </CharacterModifier>
+</ArrayOfCharacterModifier>

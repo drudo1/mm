@@ -10,8 +10,8 @@ namespace MunchkinMonitor.Classes
     public class CurrentGamePlayer
     {
         public Player currentPlayer { get; set; }
-        public CharacterModifier CurrentRace { get; set; }
-        public CharacterModifier CurrentClass { get; set; }
+        public List<CharacterModifier> CurrentRaceList { get; set; }
+        public List<CharacterModifier> CurrentClassList { get; set; }
         public Gender CurrentGender { get; set; }
         public int NextBattleModifier { get; set; }
         public int CurrentLevel { get; set; }
@@ -19,12 +19,23 @@ namespace MunchkinMonitor.Classes
         public int Treasures { get; set; }
         public List<CharacterHelper> Helpers { get; set; }
 
+        public CurrentGamePlayer()
+        {
+            currentPlayer = new Player { PlayerID = -1 };
+            CurrentGender = currentPlayer.Gender;
+            Helpers = new List<CharacterHelper>();
+            CurrentLevel = 1;
+            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetMod(1) };
+            CurrentClassList = new List<CharacterModifier>();
+        }
         public CurrentGamePlayer(Player player)
         {
             currentPlayer = player;
             CurrentGender = player.Gender;
             Helpers = new List<CharacterHelper>();
             CurrentLevel = 1;
+            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetMod(1) };
+            CurrentClassList = new List<CharacterModifier>();
         }
 
         public int FightingLevel
@@ -43,6 +54,27 @@ namespace MunchkinMonitor.Classes
                 return fLevel;
             }
         }
+        public string currentRaces
+        {
+            get
+            {
+                return string.Join("//", CurrentRaceList.Select(r => r.Description));
+            }
+        }
+        public string currentClasses
+        {
+            get
+            {
+                return CurrentClassList.Count > 0 ? string.Join("//", CurrentClassList.Select(r => r.Description)) : "None";
+            }
+        }
+        public bool HasHelpers
+        {
+            get
+            {
+                return Helpers.Count > 0;
+            }
+        }
 
         public void ChangeGender(int penalty)
         {
@@ -59,6 +91,33 @@ namespace MunchkinMonitor.Classes
         {
             if (Helpers.Where(h => h.ID == id).Count() == 1)
                 Helpers.Remove(Helpers.Where(h => h.ID == id).First());
+        }
+
+        public void AddRace(int id)
+        {
+            if (CharacterModifier.Exists(id))
+            {
+                CurrentRaceList.Add(CharacterModifier.GetMod(id));
+                RemoveRace(1);
+            }
+        }
+        public void RemoveRace(int id)
+        {
+            if (CurrentRaceList.Where(r => r.ModifierID == id).Count() > 0)
+                CurrentRaceList.Remove(CurrentRaceList.Where(r => r.ModifierID == id).First());
+            if (CurrentRaceList.Count == 0)
+                CurrentRaceList.Add(CharacterModifier.GetMod(1));
+        }
+
+        public void AddClass(int id)
+        {
+            if(CharacterModifier.Exists(id))
+                CurrentClassList.Add(CharacterModifier.GetMod(id));
+        }
+        public void RemoveClass(int id)
+        {
+            if (CurrentClassList.Where(r => r.ModifierID == id).Count() > 0)
+                CurrentClassList.Remove(CurrentClassList.Where(r => r.ModifierID == id).First());
         }
     }
 }

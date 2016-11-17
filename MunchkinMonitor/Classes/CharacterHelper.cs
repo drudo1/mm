@@ -11,7 +11,14 @@ namespace MunchkinMonitor.Classes
         public bool isHireling { get; set; }
         public bool isSteed { get; set; }
         public int Bonus { get; set; }
-        public int Modifier { get; set; }
+        public CharacterModifier Modifier { get; set; }
         public int GearBonus { get; set; }
+        public string Race
+        {
+            get
+            {
+                return Modifier == null ? "None" : Modifier.Description;
+            }
+        }
     }
 }

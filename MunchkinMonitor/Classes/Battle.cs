@@ -49,7 +49,7 @@ namespace MunchkinMonitor.Classes
                 int levels = 0;
                 foreach (Monster m in opponents)
                     levels += m.LevelsToWin;
-                if (gamePlayer.CurrentRace.ExtraLevelForTenOrHigherWhenAlone || gamePlayer.CurrentClass.ExtraLevelForTenOrHigherWhenAlone)
+                if (gamePlayer.CurrentRaceList.Where(r => r.ExtraLevelForTenOrHigherWhenAlone).Count() > 0 || gamePlayer.CurrentClassList.Where(c => c.ExtraLevelForTenOrHigherWhenAlone).Count() > 0 || gamePlayer.Helpers.Where(h => h.Modifier != null && h.Modifier.LevelsForHelp).Count() > 0)
                 {
                     if (ally == null)
                     {
@@ -69,7 +69,7 @@ namespace MunchkinMonitor.Classes
             get
             {
                 int levels = allyHelpLevels;
-                if(ally.CurrentRace.LevelsForHelp || ally.CurrentClass.LevelsForHelp)
+                if(ally != null && (ally.CurrentRaceList.Where(r => r.LevelsForHelp).Count() > 0 || ally.CurrentClassList.Where(c => c.LevelsForHelp).Count() > 0 || ally.Helpers.Where(h => h.Modifier != null && h.Modifier.LevelsForHelp).Count() > 0))
                 {
                     foreach (Monster m in opponents)
                         levels += 1;
@@ -97,7 +97,13 @@ namespace MunchkinMonitor.Classes
         }
 
         public Battle()
-        { }
+        {
+            gamePlayer = new CurrentGamePlayer();
+            opponents = new List<Monster>();
+            opponentBonus = 0;
+            playerOneTimeBonus = 0;
+            lastUpdated = DateTime.Now;
+        }
 
         public Battle(CurrentGamePlayer challenger, int monsterLevel, int levelsToWin, int treasures)
         {

@@ -14,10 +14,59 @@
             
             if (getUpdate) {
                 objectCopy(data.run('GetCurrentAppState'), appData);
-                if (appData.currentStateDescription == "TournamentScoreBoard")
-                    window.location = "ScoreBoard.aspx";
+                pageMethods.TriggerChange();
             }
         };
+        var local = {};
+        var pageMethods = {
+            TriggerChange: function () {
+                var objUpdates = pageMethods.Updates;
+                for (var key in objUpdates) {
+                    if (typeof objUpdates[key] === 'function') {
+                        objUpdates[key]();
+                    }
+                }
+            },
+            Updates: {
+                Redirect: function () {
+                    if (appData.currentStateDescription == "TournamentScoreBoard")
+                        window.location = "ScoreBoard.aspx";
+                },
+                ChangePlayer: function () {
+                    if (pageMethods.playerChanged()) {
+                        pageMethods.UpdatePlayer();
+                    }
+                },
+                ChangeGameState: function () {
+
+                }
+            },
+            playerChanged: function () {
+                var result = false;
+                if (appData.gameState.currentPlayer.currentPlayer.PlayerID != -1) {
+                    if (pageState.currentPlayerID == -1)
+                        result = true;
+                    else if (appData.gameState.currentPlayer.currentPlayer.PlayerID != pageState.currentPlayerID)
+                        result = true;
+                }
+                return result;
+            },
+            UpdatePlayer: function () {
+                var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                var newDiv = pageMethods.PlayerDivTemplate.replace('{PlayerID}', newPID);
+                if (pageState.currentPlayerID && $('#divPlayer_' + pageState.currentPlayerID).length) {
+                    $('#divPlayer_' + pageState.currentPlayerID).hide('slide', { direction: 'left' }, 500);
+                    $('#divPlayer_' + pageState.currentPlayerID).remove();
+                    $('.ui - effects - placeholder').remove();
+                }
+                $('#divCurrentAction').prepend(newDiv);
+                rivets.bind($('#divPlayer_' + newPID), { appData: appData })
+                $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
+                pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+            },
+            PlayerDivTemplate: '<div id="divPlayer_{PlayerID}" class="battlePrep mkn" style="display:none;"><div class="row"><div class="col-lg-12 mkn"><h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1></div></div><div class="row"><div class="col-lg-6 mkn" stye="text-align:center;"><h2>Race: {appData.gameState.currentPlayer.currentRaces}</h2></div><div class="col-lg-6 mkn" style="text-align:center;"><h2>Class: {appData.gameState.currentPlayer.currentClasses}</h2></div></div><div class="row"><div class="col-lg-6 mkn"><h2>Level: {appData.gameState.currentPlayer.CurrentLevel}</h2></div><div class="col-lg-6 mkn"><h2>Gear: {appData.gameState.currentPlayer.GearBonus}</h2></div></div><div class="row">&nbsp;</row><div rv-show="appData.gameState.currentPlayer.HasHelpers" class="row"><div class="col-lg-12 playerRow mkn"><h2>Helpers</h2></div></div><div class="row" rv-each-helper="appData.gameState.currentPlayer.OrderedHelpers"><div class="col-lg-3 mkn"><h2><span rv-show="helper.isHireling">Hireling</span><span rv-show="helper.isSteed">Steed</span></h2></div><div class="col-lg-3 mkn"><h2>Bonus: {helper.Bonus}</h2></div><div class="col-lg-3 mkn"><h2><span rv-show="helper.isHireling">Race: {helper.Race}</span></h2></div><div class="col-lg-3 mkn"><h2>Gear: {helper.GearBonus}</h2></div></div><div class="row">&nbsp;</row></div>'
+        };
+        var pageState = {};
         $(document).ready(function () {
             appData.gameState.players = [{ currentPlayer: { PlayerID: -1, DisplayName: 'Add a Player' }, CurrentLevel: -1 }];
             rivets.bind($(document), { appData: appData });
@@ -37,8 +86,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            &nbsp;
+        <div class="col-lg-8">
+            <div id="divCurrentAction">
+
+            </div>
         </div>
     </div>
 </asp:Content>

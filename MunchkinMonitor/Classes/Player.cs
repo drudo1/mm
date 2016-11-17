@@ -37,7 +37,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0} {1}.", FirstName, LastName.Substring(0,1)) : NickName;
+                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0} {1}.", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : LastName.Substring(0,1)) : NickName;
             }
         }
         public string ImagePath

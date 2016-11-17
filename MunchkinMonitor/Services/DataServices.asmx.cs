@@ -76,11 +76,110 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
-        public void StartGame(int playerID)
+        public void StartGame()
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
-                state.gameState.StartGame(playerID);
+            {
+                state.gameState.StartGame();
+                state.Update();
+            }
+        }
+
+        [WebMethod]
+        public void StartGameWithPlayer(int PlayerID)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.StartGame(PlayerID);
+                state.Update();
+            }
+        }
+
+        [WebMethod]
+        public List<CharacterModifier> GetRaceList()
+        {
+            return CharacterModifier.GetRaceList();
+        }
+
+        [WebMethod]
+        public List<CharacterModifier> GetClassList()
+        {
+            return CharacterModifier.GetClassList();
+        }
+
+        [WebMethod]
+        public void AddLevel()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.CurrentLevel++;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void UpdateGear(int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.GearBonus += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void NextRace()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.NextRace();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void NextClass()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.NextClass();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void SubtractLevel()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    if (state.gameState.currentPlayer.CurrentLevel > 1)
+                    {
+                        state.gameState.currentPlayer.CurrentLevel--;
+                        state.Update();
+                    }
+                }
+            }
         }
 
         [WebMethod]
@@ -88,7 +187,21 @@ namespace MunchkinMonitor.Services
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
+            {
                 state.gameState.NextPlayer();
+                state.Update();
+            }
+        }
+
+        [WebMethod]
+        public void PrevPlayer()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.PrevPlayer();
+                state.Update();
+            }
         }
 
         [WebMethod]

@@ -154,6 +154,7 @@
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />
     <Content Include="Scripts\globalScripts.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\rivets.bundled.min.js" />
     <Content Include="Scripts\RollOutHelper.js" />
     <Content Include="Scripts\tableHelper.js" />

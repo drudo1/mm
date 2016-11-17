@@ -37,6 +37,8 @@ namespace MunchkinMonitor.Classes
             currentState = GameStates.Setup;
             isEpic = epic;
             lastUpdated = DateTime.Now;
+            currentPlayer = new CurrentGamePlayer();
+            currentBattle = new Battle();
         }
 
         public void AddExistingPlayer(int id)
@@ -57,6 +59,11 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
+        public void StartGame()
+        {
+            StartGame(players[0].currentPlayer.PlayerID);
+        }
+
         public void StartGame(int playerID)
         {
             currentPlayer = players.Where(p => p.currentPlayer.PlayerID == playerID).FirstOrDefault();
@@ -70,6 +77,18 @@ namespace MunchkinMonitor.Classes
             {
                 idx = players.IndexOf(currentPlayer);
                 idx = (idx + 1) % players.Count;
+            }
+            currentPlayer = players[idx];
+            SetState(GameStates.BattlePrep);
+        }
+
+        public void PrevPlayer()
+        {
+            int idx = 0;
+            if (currentPlayer != null)
+            {
+                idx = players.IndexOf(currentPlayer);
+                idx = ((idx + players.Count) - 1) % players.Count;
             }
             currentPlayer = players[idx];
             SetState(GameStates.BattlePrep);

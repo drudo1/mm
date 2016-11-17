@@ -63,6 +63,16 @@ input[type="select"] {
         color: #350400;
         border-bottom: 3px solid #350400;
     }
+    div.mkn h1 {
+        font-family: Quasimodo;
+        font-size: 54px;
+        color: #350400;
+    }
+    div.mkn h2 {
+        font-family: Quasimodo;
+        font-size: 50px;
+        color: #350400;
+    }
 }
 @media screen and (max-device-width : 1400px)
 {
@@ -77,13 +87,23 @@ input[type="select"] {
         color: #350400;
     }
     .scoreboard table tbody tr th {
-        padding: 5px 36px;
+        padding: 5px 34px;
     }
     div.playerRow {
         font-family: Quasimodo;
         font-size: 32px;
         color: #350400;
         border-bottom: 3px solid #350400;
+    }
+    div.mkn h1 {
+        font-family: Quasimodo;
+        font-size: 36px;
+        color: #350400;
+    }
+    div.mkn h2 {
+        font-family: Quasimodo;
+        font-size: 34px;
+        color: #350400;
     }
 }
 
@@ -108,9 +128,11 @@ input[type="select"] {
     margin-top:5px;
     margin-bottom:5px;
 }
-div.mkn {
+div.mkn {    
     text-align:center;
-    padding-top: 120px;
+}
+div.mkn2 {
+    padding-top: 60px;
 }
 div.gamePlayerList {
     margin-top: 30%;
