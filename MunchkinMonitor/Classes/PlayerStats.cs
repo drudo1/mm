@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace MunchkinMonitor.Classes
@@ -14,10 +15,11 @@ namespace MunchkinMonitor.Classes
 
         public PlayerStats()
         {
+            string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
             XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-            if (File.Exists("players.xml"))
+            if (File.Exists(path))
             {
-                using (FileStream stream = File.OpenRead("players.xml"))
+                using (FileStream stream = File.OpenRead(path))
                 {
                     players = ((List<Player>)serializer.Deserialize(stream)).OrderBy(p => p.Score).ToList();
                 }
@@ -32,25 +34,6 @@ namespace MunchkinMonitor.Classes
                     Kills = 0,
                     Treasures = 0,
                     PlayerID = -1
-                });
-                players.Add(new Player
-                {
-                    FirstName = "Dave",
-                    LastName = "Rudolph",
-                    Kills = 0,
-                    Treasures = 0,
-                    Victories = 0,
-                    PlayerID = 1
-                });
-                players.Add(new Player
-                {
-                    FirstName = "Jeff",
-                    LastName = "Beierman",
-                    NickName = "Jeffster",
-                    Kills = 0,
-                    Treasures = 0,
-                    Victories = 0,
-                    PlayerID = 2
                 });
             }
         }

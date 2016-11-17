@@ -27,6 +27,11 @@ input[type="select"] {
     max-width: 280px;
 }
 
+@font-face {
+    font-family: quasimodo;
+    src: url(quasimodo.ttf);
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .jumbotron {
@@ -37,26 +42,44 @@ input[type="select"] {
     }
 }
 
-#bg { position: fixed; top: 0; left: 0; z-index: -11; }
-.bgwidth { width: 100%; }
-.bgheight { height: 100%; }
+@media screen and (max-device-width : 2500px)
+{
+    .scoreboard h1 {
+        font-family: inherit;
+        font-size: 54px;
+        color: #350400;
+    }
+    .scoreboard table tbody tr {
+        font-family: inherit;
+        font-size: 45px;
+        color: #350400;
+    }
+    .scoreboard table tbody tr th {
+        padding: 5px 50px;
+    }
+}
+@media screen and (max-device-width : 1400px)
+{
+    .scoreboard h1 {
+        font-family: inherit;
+        font-size: 36px;
+        color: #350400;
+    }
+    .scoreboard table tbody tr {
+        font-family: inherit;
+        font-size: 32px;
+        color: #350400;
+    }
+    .scoreboard table tbody tr th {
+        padding: 5px 36px;
+    }
+}
+
+#bg { position: fixed; top: 0; left: 0; z-index: -11; height: 100%;}
 .scoreboard{
     margin-top: 8%;
     margin-left: 42%;
     font-family: 'Quasimodo';
-}
-.scoreboard h1 {
-    font-family: inherit;
-    font-size: 54px;
-    color: #350400;
-}
-.scoreboard table tbody tr {
-    font-family: inherit;
-    font-size: 45px;
-    color: #350400;
-}
-.scoreboard table tbody tr th {
-    padding: 5px 50px;
 }
 .scoreboard table tbody tr td {
     text-align:center;
@@ -70,7 +93,8 @@ input[type="select"] {
     font-family: 'Quasimodo';
     font-size: 20px;
     margin: 0 auto;
-    display:block;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 div.mkn {
     text-align:center;

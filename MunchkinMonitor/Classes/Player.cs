@@ -44,12 +44,13 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return string.IsNullOrWhiteSpace(customImagePath) ? (Gender == Gender.Male ? "images/DefaultMale.jpg" : "images/DefaultFemale.jpg") : customImagePath;
+                return string.IsNullOrWhiteSpace(customImagePath) ? (Gender == Gender.Male ? HttpContext.Current.Server.MapPath("~/") + "Images\\DefaultMale.jpg" : HttpContext.Current.Server.MapPath("~/ ") + "//Images/DefaultFemale.jpg") : customImagePath;
             }
         }
 
         public static int AddNewPlayer(string firstName, string lastName, string nickName, Gender gender, string customPath)
         {
+            string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
             Player p = new Player
             {
                 Gender = gender,
@@ -64,9 +65,9 @@ namespace MunchkinMonitor.Classes
 
             List<Player> players;
             XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-            if (File.Exists("players.xml"))
+            if (File.Exists(path))
             {
-                using (FileStream stream = File.OpenRead("players.xml"))
+                using (FileStream stream = File.OpenRead(path))
                 {
                     players = (List<Player>)serializer.Deserialize(stream);
                 }
@@ -77,7 +78,7 @@ namespace MunchkinMonitor.Classes
             p.PlayerID = players.Count > 0 ? players.Aggregate((curMax, x) => (curMax == null || (x.PlayerID) > curMax.PlayerID ? x : curMax)).PlayerID + 1 : 1;
             players.Add(p);
 
-            using (FileStream stream = File.OpenWrite("players.xml"))
+            using (FileStream stream = File.OpenWrite(path))
             {
                 serializer.Serialize(stream, players);
             }
@@ -87,11 +88,12 @@ namespace MunchkinMonitor.Classes
 
         public static Player GetPlayerByID(int id)
         {
+            string path = HttpContext.Current.Server.MapPath("~/ ") + "players.xml";
             Player p = null;
             XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-            if (File.Exists("players.xml"))
+            if (File.Exists(path))
             {
-                using (FileStream stream = File.OpenRead("players.xml"))
+                using (FileStream stream = File.OpenRead(path))
                 {
                     List<Player> players = (List<Player>)serializer.Deserialize(stream);
                     p = players.Where(x => x.PlayerID == id).FirstOrDefault();

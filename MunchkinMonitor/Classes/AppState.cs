@@ -69,5 +69,14 @@ namespace MunchkinMonitor.Classes
             playerStats = new PlayerStats();
             SetState(AppStates.TournamentScoreBoard);
         }
+
+        public void LoadPlayers()
+        {
+            playerStats = new PlayerStats();
+        }
+        public void Update()
+        {
+            stateUpdated = DateTime.Now;
+        }
     }
 }

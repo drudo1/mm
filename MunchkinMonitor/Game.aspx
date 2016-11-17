@@ -22,8 +22,12 @@
             rivets.bind($(document), { appData: appData });
         })
     </script>
-    <div class="jumbotron">
-        <h1 rv-text="appData.currentStateDescription"></h1><br />
-        <h1 rv-show="appData.gameState.isEpic">EPIC</h1>
-    </div>
+    <img src="Images/gameBG.jpg" id="bg" alt="">
+    <table>
+        <tr>
+            <td style="width:15%">
+                <h1 rv-text="appData.gameState.players.currentPlayer.DisplayName"></h1>
+            </td>
+        </tr>
+    </table>
 </asp:Content>

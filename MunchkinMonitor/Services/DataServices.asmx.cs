@@ -40,6 +40,13 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void LoadPlayers()
+        {
+            AppState state = AppState.CurrentState();
+            state.LoadPlayers();
+        }
+
+        [WebMethod]
         public void NewGame(bool isEpic)
         {
             AppState state = AppState.CurrentState();
@@ -50,16 +57,22 @@ namespace MunchkinMonitor.Services
         public void AddExistingPlayer(int id)
         {
             AppState state = AppState.CurrentState();
-            if(state.gameState != null)
+            if (state.gameState != null)
+            {
                 state.gameState.AddExistingPlayer(id);
+                state.Update();
+            }
         }
 
         [WebMethod]
         public void AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
         {
             AppState state = AppState.CurrentState();
-            if(state.gameState != null)
+            if (state.gameState != null)
+            {
                 state.gameState.AddNewPlayer(firstName, lastName, nickName, gender, "");
+                state.Update();
+            }
         }
 
         [WebMethod]

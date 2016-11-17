@@ -148,6 +148,8 @@
   <ItemGroup>
     <Content Include="Controller.aspx" />
     <Content Include="Game.aspx" />
+    <Content Include="Images\controllerBG.jpg" />
+    <Content Include="Images\gameBG.jpg" />
     <Content Include="Images\scoreboardBG.jpg" />
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />
@@ -194,6 +196,7 @@
     <Content Include="Site.Master" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Styles\quasimodo.ttf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

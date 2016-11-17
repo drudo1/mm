@@ -40,25 +40,6 @@
             };
             rivets.bind($(document), { appData: appData });
         });
-
-        $(window).load(function () {
-
-            var theWindow = $(window),
-                $bg = $("#bg");
-            if($bg.length)
-                aspectRatio = $bg.width() / $bg.height();
-
-            function resizeBg() {
-                $(document).prepend($bg);
-
-                $bg.addClass('bgheight');
-                $(window).css('overflow-x', 'hidden');
-
-            }
-            if($bg.length)
-                theWindow.resize(resizeBg).trigger("resize");
-
-        });
     </script>
 </head>
 <body>
