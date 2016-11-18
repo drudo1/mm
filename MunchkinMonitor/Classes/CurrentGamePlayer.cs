@@ -10,7 +10,9 @@ namespace MunchkinMonitor.Classes
     public class CurrentGamePlayer
     {
         public Player currentPlayer { get; set; }
+        public bool HalfBreed { get; set; }
         public List<CharacterModifier> CurrentRaceList { get; set; }
+        public bool SuperMunchkin { get; set; }
         public List<CharacterModifier> CurrentClassList { get; set; }
         public Gender CurrentGender { get; set; }
         public int NextBattleModifier { get; set; }
@@ -25,8 +27,10 @@ namespace MunchkinMonitor.Classes
             CurrentGender = currentPlayer.Gender;
             Helpers = new List<CharacterHelper>();
             CurrentLevel = 1;
-            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetMod(1) };
-            CurrentClassList = new List<CharacterModifier>();
+            HalfBreed = false;
+            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
+            SuperMunchkin = false;
+            CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
         }
         public CurrentGamePlayer(Player player)
         {
@@ -34,8 +38,10 @@ namespace MunchkinMonitor.Classes
             CurrentGender = player.Gender;
             Helpers = new List<CharacterHelper>();
             CurrentLevel = 1;
-            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetMod(1) };
-            CurrentClassList = new List<CharacterModifier>();
+            HalfBreed = false;
+            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
+            SuperMunchkin = false;
+            CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
         }
 
         public int FightingLevel
@@ -58,14 +64,14 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return string.Join("//", CurrentRaceList.Select(r => r.Description));
+                return HalfBreed ? string.Join("/", CurrentRaceList.Select(r => r.Description)) : CurrentRaceList[0].Description;
             }
         }
         public string currentClasses
         {
             get
             {
-                return CurrentClassList.Count > 0 ? string.Join("//", CurrentClassList.Select(r => r.Description)) : "None";
+                return SuperMunchkin ? string.Join("/", CurrentClassList.Select(r => r.Description)) : CurrentClassList[0].Description;
             }
         }
         public bool HasHelpers
@@ -93,31 +99,60 @@ namespace MunchkinMonitor.Classes
                 Helpers.Remove(Helpers.Where(h => h.ID == id).First());
         }
 
-        public void AddRace(int id)
+        public void ToggleHalfBreed()
         {
-            if (CharacterModifier.Exists(id))
-            {
-                CurrentRaceList.Add(CharacterModifier.GetMod(id));
-                RemoveRace(1);
-            }
-        }
-        public void RemoveRace(int id)
-        {
-            if (CurrentRaceList.Where(r => r.ModifierID == id).Count() > 0)
-                CurrentRaceList.Remove(CurrentRaceList.Where(r => r.ModifierID == id).First());
-            if (CurrentRaceList.Count == 0)
-                CurrentRaceList.Add(CharacterModifier.GetMod(1));
+            HalfBreed = !HalfBreed;
+            if (!HalfBreed)
+                CurrentRaceList[1] = CharacterModifier.GetRaceList()[0];
         }
 
-        public void AddClass(int id)
+        public void NextRace()
         {
-            if(CharacterModifier.Exists(id))
-                CurrentClassList.Add(CharacterModifier.GetMod(id));
+            List<CharacterModifier> list = CharacterModifier.GetRaceList();
+            int idx = list.IndexOf(CurrentRaceList[0]);
+            idx = (idx + 1) % list.Count;
+            CurrentRaceList[0] = list[idx];
         }
-        public void RemoveClass(int id)
+
+        public void NextHalfBreed()
         {
-            if (CurrentClassList.Where(r => r.ModifierID == id).Count() > 0)
-                CurrentClassList.Remove(CurrentClassList.Where(r => r.ModifierID == id).First());
+            List<CharacterModifier> list = CharacterModifier.GetRaceList();
+            if (HalfBreed && CurrentRaceList.Count == 1)
+                CurrentRaceList.Add(list[0]);
+            else  if(CurrentRaceList.Count == 2)
+            {
+                int idx = list.IndexOf(CurrentRaceList[1]);
+                idx = (idx + 1) % list.Count;
+                CurrentRaceList[1] = list[idx];
+            }
+        }
+
+        public void ToggleSuperMunchkin()
+        {
+            SuperMunchkin = !SuperMunchkin;
+            if (!SuperMunchkin)
+                CurrentClassList[1] = CharacterModifier.GetClassList()[0];
+        }
+
+        public void NextClass()
+        {
+            List<CharacterModifier> list = CharacterModifier.GetClassList();
+            int idx = list.IndexOf(CurrentClassList[0]);
+            idx = (idx + 1) % list.Count;
+            CurrentClassList[0] = list[idx];
+        }
+
+        public void NextSMClass()
+        {
+            List<CharacterModifier> list = CharacterModifier.GetClassList();
+            if (SuperMunchkin && CurrentClassList.Count == 1)
+                CurrentClassList.Add(list[0]);
+            else if (CurrentClassList.Count == 2)
+            {
+                int idx = list.IndexOf(CurrentClassList[1]);
+                idx = (idx + 1) % list.Count;
+                CurrentClassList[1] = list[idx];
+            }
         }
     }
 }

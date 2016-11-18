@@ -152,6 +152,62 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void ToggleHalfBreed()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.ToggleHalfBreed();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void NextHalfBreed()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.NextHalfBreed();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void ToggleSuperMunchkin()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.ToggleSuperMunchkin();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void NextSMClass()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.NextSMClass();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
         public void NextClass()
         {
             AppState state = AppState.CurrentState();

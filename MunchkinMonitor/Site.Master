@@ -42,6 +42,12 @@
             rivets.formatters.lt = function (value, compare) {
                 return (value == undefined || value < compare);
             };
+            rivets.formatters.ite = function (value, trueVal, falseVal) {
+                if (value)
+                    return trueVal;
+                else
+                    return falseVal;
+            };
             rivets.formatters.test = function (value) {
                 return value;
             }

@@ -106,6 +106,17 @@
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
+    <Description>None</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>8</ModifierID>
+    <isRace>false</isRace>
+    <isClass>true</isClass>
+    <GameTypeID>0</GameTypeID>
     <Description>Bard</Description>
     <WinsTies>false</WinsTies>
     <LevelsForHelp>false</LevelsForHelp>
@@ -120,7 +131,7 @@
     </victoryReminders>
   </CharacterModifier>
   <CharacterModifier>
-    <ModifierID>8</ModifierID>
+    <ModifierID>9</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
@@ -136,11 +147,11 @@
     </turnReminders>
   </CharacterModifier>
   <CharacterModifier>
-    <ModifierID>9</ModifierID>
+    <ModifierID>10</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
-    <Description>Rangeer</Description>
+    <Description>Ranger</Description>
     <WinsTies>false</WinsTies>
     <LevelsForHelp>false</LevelsForHelp>
     <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
@@ -152,7 +163,7 @@
     </turnReminders>
   </CharacterModifier>
   <CharacterModifier>
-    <ModifierID>10</ModifierID>
+    <ModifierID>11</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
@@ -168,7 +179,7 @@
     </turnReminders>
   </CharacterModifier>
   <CharacterModifier>
-    <ModifierID>11</ModifierID>
+    <ModifierID>12</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
@@ -185,7 +196,7 @@
     </turnReminders>
   </CharacterModifier>
   <CharacterModifier>
-    <ModifierID>12</ModifierID>
+    <ModifierID>13</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>
