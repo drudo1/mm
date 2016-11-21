@@ -178,7 +178,7 @@
                 objectCopy(appData.gameState.currentPlayer.Hirelings[idx], helperData);
             });
             $('#btnKillHelper').click(function () {
-                data.run('KillHelper', { helperID: $('hdnHelperID').val() });
+                data.run('KillHelper', { helperID: $('#hdnHelperID').val() });
                 objectCopy(data.run('GetCurrentAppState'), appData);
 
                 if ($('#hdnHelperType').val() == 'hireling')

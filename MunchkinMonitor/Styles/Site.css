@@ -90,6 +90,13 @@ input[type="select"] {
         font-size: 35px;
         color: #350400;
     }
+    div.mknFightingLevel {
+        font-family: Quasimodo;
+        font-size: 80px;
+        font-weight:bold;
+        color: #350400;
+        margin:auto;
+    }
 }
 @media screen and (max-device-width : 1400px)
 {
@@ -138,6 +145,13 @@ input[type="select"] {
         font-family: Quasimodo;
         font-size: 28px;
         color: #350400;
+    }
+    div.mknFightingLevel {
+        font-family: Quasimodo;
+        font-size: 55px;
+        font-weight:bold;
+        color: #350400;
+        margin:auto;
     }
 }
 
