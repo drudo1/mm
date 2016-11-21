@@ -44,6 +44,105 @@ namespace MunchkinMonitor.Classes
             CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
         }
 
+        public List<string> turnReminders
+        {
+            get
+            {
+                List<string> results = new List<string>();
+
+                foreach (CharacterModifier cm in CurrentRaceList)
+                {
+                    results.AddRange(cm.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterModifier cm in CurrentClassList)
+                {
+                    results.AddRange(cm.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterHelper ch in Helpers)
+                {
+                    if(ch.Modifier != null)
+                        results.AddRange(ch.Modifier.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+                return results;
+            }
+        }
+
+        public bool hasTurnReminders
+        {
+            get
+            {
+                return turnReminders.Count > 0;
+            }
+        }
+
+        public List<string> victoryReminders
+        {
+            get
+            {
+                List<string> results = new List<string>();
+
+                foreach (CharacterModifier cm in CurrentRaceList)
+                {
+                    results.AddRange(cm.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterModifier cm in CurrentClassList)
+                {
+                    results.AddRange(cm.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterHelper ch in Helpers)
+                {
+                    if (ch.Modifier != null)
+                        results.AddRange(ch.Modifier.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+                return results;
+            }
+        }
+
+        public bool hasVictoryReminders
+        {
+            get
+            {
+                return turnReminders.Count > 0;
+            }
+        }
+
+        public List<string> failureReminders
+        {
+            get
+            {
+                List<string> results = new List<string>();
+
+                foreach (CharacterModifier cm in CurrentRaceList)
+                {
+                    results.AddRange(cm.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterModifier cm in CurrentClassList)
+                {
+                    results.AddRange(cm.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+
+                foreach (CharacterHelper ch in Helpers)
+                {
+                    if (ch.Modifier != null)
+                        results.AddRange(ch.Modifier.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                }
+                return results;
+            }
+        }
+
+        public bool hasFailureReminders
+        {
+            get
+            {
+                return turnReminders.Count > 0;
+            }
+        }
+
         public int FightingLevel
         {
             get

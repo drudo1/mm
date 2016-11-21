@@ -58,9 +58,18 @@
                     $('#divPlayer_' + pageState.currentPlayerID).remove();
                     $('.ui - effects - placeholder').remove();
                 }
-                $(pageMethods.playerTemplate.replace('divPlayer_template', 'divPlayer_' + newPID)).prependTo('#divCurrentAction');
+                $(pageMethods.playerTemplate.replace('divPlayer_template', 'divPlayer_' + newPID).replace('divPlayer_template', 'divPlayer_' + newPID)).prependTo('#divCurrentAction');
                 rivets.bind($('#divPlayer_' + newPID), { appData: appData })
-                $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
+                rivets.bind($('#divPlayer_' + newPID + '_reminders'), { appData: appData })
+                if (appData.gameState.currentPlayer.hasTurnReminders) {
+                    $('#divPlayer_' + newPID + '_reminders').show('slide', { direction: 'right' }, 500);
+                    setTimeout(function () {
+                        $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
+                        $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
+                    }, 15000);
+                }
+                else
+                    $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
             },
             playerTemplate: '<div id="divPlayer_template" rv-if="appData.gameState.hasCurrentPlayer" class="battlePrep mkn" style="display:none;">'
@@ -129,8 +138,20 @@
                              +'         <h3><span rv-show="helper.isHireling">{helper.Race}</span><span rv-show="helper.isSteed">N/A</span></h3>'
                              +'     </div>'
                              +' </div>'
-                             + ' <div class="row">&nbsp;</div>'
-                            +'</div>'
+                             +' <div class="row">&nbsp;</div>'
+                             +'</div>'
+                             +'<div id="divPlayer_template_reminders" class="battlePrep mkn" style="display:none;">'
+                             +'    <div class="row">'
+                             +'        <div class="col-lg-12 mkn">'
+                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             +'        </div>'
+                             +'    </div>'
+                             +'    <ul>'
+                             +'        <li rv-each-minder="appData.gameState.currentPlayer.turnReminders">'
+                             +'            <h3 rv-text="minder"></h3>'
+                             +'        </li>'
+                             +'    </ul>'
+                             +'</div>'
         };
         var pageState = {};
         $(document).ready(function () {
