@@ -13,7 +13,6 @@ namespace MunchkinMonitor.Classes
         public CurrentGamePlayer gamePlayer { get; set; }
         public CurrentGamePlayer ally { get; set; }
         public List<Monster> opponents { get; set; }
-        public int opponentBonus { get; set; }
         public int playerOneTimeBonus { get; set; }
         public int allyTreasures { get; set; }
         public int allyHelpLevels { get; set; }
@@ -34,10 +33,11 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                int points = opponentBonus;
+                int points = 0;
                 foreach(Monster m in opponents)
                 {
                     points += m.Level;
+                    points += m.OneTimeBonus;
                 }
                 return points;
             }
@@ -100,7 +100,6 @@ namespace MunchkinMonitor.Classes
         {
             gamePlayer = new CurrentGamePlayer();
             opponents = new List<Monster>();
-            opponentBonus = 0;
             playerOneTimeBonus = 0;
             lastUpdated = DateTime.Now;
         }
@@ -110,7 +109,6 @@ namespace MunchkinMonitor.Classes
             battleDT = DateTime.Now;
             gamePlayer = challenger;
             opponents = new List<Monster> { new Monster(monsterLevel, levelsToWin, treasures) };
-            opponentBonus = 0;
             playerOneTimeBonus = 0;
             lastUpdated = DateTime.Now;
         }
@@ -123,6 +121,15 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
+        public void HelpMonster(int idx, int points)
+        {
+            if (opponents.Count >= idx + 1)
+            {
+                opponents[idx].OneTimeBonus += points;
+                lastUpdated = DateTime.Now;
+            }
+        }
+
         public void AddAlly (CurrentGamePlayer player, int treasures, int levels)
         {
             ally = player;
@@ -131,36 +138,25 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
-        public void HelpPlayer(int points, Player helper)
+        public void HelpGoodGuys(int points)
         {
-            if (helper != null)
-                Logger.LogHelp(gamePlayer, helper);
             playerOneTimeBonus += points;
             lastUpdated = DateTime.Now;
         }
 
-        public void HelpMonster(int points, Player attacker)
+        public void AttackPlayer(int points)
         {
-            if (attacker != null)
-                Logger.LogAttack(gamePlayer, attacker);
-            opponentBonus += points;
-            lastUpdated = DateTime.Now;
-        }
-
-        public void AttackPlayer(int points, Player attacker)
-        {
-            if (attacker != null)
-                Logger.LogAttack(gamePlayer, attacker);
             playerOneTimeBonus -= points;
             lastUpdated = DateTime.Now;
         }
 
-        public void AttackMonster(int points, Player helper)
+        public void AttackMonster(int idx, int points)
         {
-            if (helper != null)
-                Logger.LogHelp(gamePlayer, helper);
-            opponentBonus -= points;
-            lastUpdated = DateTime.Now;
+            if (opponents.Count >= idx + 1)
+            {
+                opponents[idx].OneTimeBonus -= points;
+                lastUpdated = DateTime.Now;
+            }
         }
 
         public void ResolveBattle()

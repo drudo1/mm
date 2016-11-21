@@ -345,7 +345,6 @@ namespace MunchkinMonitor.Services
         public void StartBattle(int level, int levelsToWin, int treasures)
         {
             AppState state = AppState.CurrentState();
-            if (state.gameState != null)
                 state.gameState.StartBattle(level, levelsToWin, treasures);
         }
 
@@ -356,6 +355,7 @@ namespace MunchkinMonitor.Services
             if (state.gameState != null)
             {
                 state.gameState.AddMonsterToBattle(level, levelsToWin, treasures, attackerID);
+                state.Update();
             }
         }
 
@@ -364,7 +364,10 @@ namespace MunchkinMonitor.Services
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
+            {
                 state.gameState.AddAlly(allyID, allyTreasures, allyLevels);
+                state.Update();
+            }
         }
 
         [WebMethod]

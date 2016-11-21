@@ -125,6 +125,42 @@ namespace MunchkinMonitor.Classes
             }
         }
 
+        public void HelpMonster(int idx, int points)
+        {
+            if(currentBattle != null)
+            {
+                currentBattle.HelpMonster(idx, points);
+                lastUpdated = DateTime.Now;
+            }
+        }
+
+        public void HurtMonster(int idx, int points)
+        {
+            if (currentBattle != null)
+            {
+                currentBattle.AttackMonster(idx, points);
+                lastUpdated = DateTime.Now;
+            }
+        }
+
+        public void HelpGoodGuys(int points)
+        {
+            if (currentBattle != null)
+            {
+                currentBattle.HelpGoodGuys(points);
+                lastUpdated = DateTime.Now;
+            }
+        }
+
+        public void AttackPlayer(int points)
+        {
+            if (currentBattle != null)
+            {
+                currentBattle.AttackPlayer(points);
+                lastUpdated = DateTime.Now;
+            }
+        }
+
         public void ResolveBattle()
         {
             if (currentBattle != null)
