@@ -105,6 +105,79 @@
                 data.run('NextSMClass');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
+            $('#btnGender').click(function () {
+                $('#divPlayerSettings').slideUp();
+                $('#divGender').slideDown();
+            });
+            $('#btnChgGender').click(function () {
+                data.run('ChangeGender', { penalty: $('#txtGenderPenalty').val() });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                $('#divPlayerSettings').slideDown();
+                $('#divGender').slideUp();
+            });
+            $('#btnHirelings').click(function () {
+                $('#divPlayerSettings').slideUp();
+                $('#divHirelings').slideDown();
+            });
+            $('#btnSteeds').click(function () {
+                $('#divPlayerSettings').slideUp();
+                $('#divSteeds').slideDown();
+            });
+            $('.btnAddHelper').click(function () {
+                $('#hdnHelperType').val($(this).attr('helperType'));
+                $('#txtHelperBonus').val('');
+                $('#divHirelings').slideUp();
+                $('#divSteeds').slideUp();
+                $('#divAddHelper').slideDown();
+            });
+            $('#btnSaveHelper').click(function () {
+                var steed = ($('#hdnHelperType').val() == 'steed');
+                data.run('AddHelper', { steed: steed, bonus: $('#txtHelperBonus').val() });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                if ($('#hdnHelperType').val() == 'hireling')
+                    $('#divHirelings').slideDown();
+                else
+                    $('#divSteeds').slideDown();
+                $('#divAddHelper').slideUp();
+            });
+            $('.helperHome').click(function () {
+                if ($('#hdnHelperType').val() == 'hireling')
+                    $('#divHirelings').slideDown();
+                else
+                    $('#divSteeds').slideDown();
+                $('#divAddHelper').slideUp();
+                $('#divEditHelper').slideUp();
+            });
+            $('.hirelingButton .steedButton').click(function () {
+                var idx = $(this).attr('hireIDX');
+                if ($(this).hasClass('hirelingButton')) {
+                    $('#hdnHelperType').val('hireling');
+                    rivets.bind($('#divEditHelper'), { appData: appData.gameState.currentPlayer.Hirelings[idx] });
+                }
+                else {
+                    $('#hdnHelperType').val('steed');
+                    rivets.bind($('#divEditHelper'), { appData: appData.gameState.currentPlayer.Steeds[idx] });
+                }
+                $('divHirelings').slideUp();
+                $('#divSteeds').slideUp();
+                $('#divEditHelper').slideDown();
+            });
+            $('.hlpGearUpdate').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('UpdateHelperGear', { helperID: $('hdnHelperID').val(), amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $('#btnKillHelper').click(function () {
+                data.run('KillHelper', { helperID: $('hdnHelperID').val() });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+
+                if ($('#hdnHelperType').val() == 'hireling')
+                    $('#divHirelings').slideDown();
+                else
+                    $('#divSteeds').slideDown();
+                $('#divAddHelper').slideUp();
+                $('#divEditHelper').slideUp();
+            })
             $('#btnPrevPlayer').click(function () {
                 data.run('PrevPlayer');
                 objectCopy(data.run('GetCurrentAppState'), appData);
@@ -246,7 +319,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <input type="button" id="bthHirelings" class="btn mkn btn-xs" value="Hirelings" />
+                                <input type="button" id="btnHirelings" class="btn mkn btn-xs" value="Hirelings" />
                             </div>
                             <div class="col-xs-6">
                                 <input type="button" id="btnSteeds" class="btn mkn btn-xs" value="Steeds" />
@@ -289,13 +362,133 @@
                     <div class="col-xs-6">
                         <input type="button" id="btnChgGender" class="btn mkn" value="Change" />
                     </div>
-                </div>
-                <div class="row" id="divHirelings" style="display:none;">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" >
+                        <input type="button" class="btn mkn playerSetupHome" value="Go Back" />
                     </div>
                 </div>
-                <div class="row" id="divSteeds" style="display:none;">
-                    <div class="col-xs-12">
+                <div class="row" id="divHirelings" style="display:none;">
+                    <div class="col-xs-12 mkn">
+                        <h2>Hirelings</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-xs-2">
+                            &nbsp;
+                        </div>
+                        <div class="col-xs-2">
+                            <h3>Gear</h3>
+                        </div>
+                        <div class="col-xs-5">
+                            <h3>Race</h3>
+                        </div>
+                    </div>
+                    <div class="row" rv-show="appData.gameState.currentPlayer.HasHirelings | neq true">
+                        <div class="col-xs-6">
+                            <h3>No Hirelings</h3>
+                        </div>
+                    </div>
+                    <div class="row playerRow" rv-each-hireling="appData.gameState.currentPlayer.Hirelings">
+                        <div class="col-xs-3 mkn">
+                            <input type="button" class="btn btn-xs mkn hirelingButton" rv-hireIDX=" %hireling% " rv-value="hireling.Name" />
+                        </div>
+                        <div class="col-xs-2 mkn">
+                            <h3>+{hireling.Bonus}</h3>
+                        </div>
+                        <div class="col-xs-2 mkn">
+                            <h3>{hireling.GearBonus}</h3>
+                        </div>
+                        <div class="col-xs-5 mkn">
+                            <h3>{hireling.Race}</h3>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="button" class="btn mkn btnAddHelper" helperType="hireling" value="Add Hireling" />
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="button" class="btn mkn playerSetupHome" value="Go Back" />
+                    </div>
+                </div>
+                <div class="row" id="divSteeds" style="display:none;">                    
+                    <div class="col-xs-12 mkn">
+                        <h2>Steeds</h2>
+                    </div>
+                    <div class="row">&nbsp;
+                    </div>
+                    <div class="row" rv-show="appData.gameState.currentPlayer.HasSteeds | neq true">
+                        <div class="col-xs-6">
+                            <h3>No Steeds</h3>
+                        </div>
+                    </div>
+                    <div class="row" rv-each-steed="appData.gameState.currentPlayer.Steeds">
+                        <div class="col-xs-3">
+                            &nbsp;
+                        </div>
+                        <div class="col-xs-3 mkn">
+                            <input type="button" class="btn btn-xs mkn steedButton" rv-hireIDX=" %steed% " rv-value="steed.Name" />
+                        </div>
+                        <div class="col-xs-3 mkn">
+                            <h3>+{steed.Bonus}</h3>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="button" class="btn mkn btnAddHelper" helperType="steed" value="Add Steed" />
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="button" class="btn mkn playerSetupHome" value="Go Back" />
+                    </div>
+                </div>
+                <div class="row" id="divAddHelper" style="display:none;">
+                    <input type="hidden" id="hdnHelperType" />
+                    <div class="row">
+                        <div class="col-xs-6 mkn" style="vertical-align:bottom;">
+                            <h3>Bonus:</h3>
+                        </div>
+                        <div class="col-xs-6 mkn" style="vertical-align:bottom;">
+                            <input type="number" class="form-control" id="txtHelperBonus" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 mkn">
+                            <input type="button" class ="btn mkn helperHome" value="Go Back" />
+                        </div>
+                        <div class="col-xs-6 mkn">
+                            <input type="button" class ="btn mkn" id="btnSaveHelper" value="Go" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="divEditHelper" style="display:none;">
+                    <input type="hidden" id="hdnHelperID" rv-value="helper.ID" />
+                    <div class="row">
+                        <div class="col-xs-12 mkn">
+                            <h2>{helper.Name}</h2>
+                        </div>
+                    </div>
+                    <div class="row" rv-show="helper.isHireling">
+                        <div class="col-xs-4 mkn">
+                            <h2 style="padding:0;">-</h2>
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="5" amount="-5" />
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="2" amount="-2" />
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="1" amount="-1" />
+                        </div>
+                        <div class="col-xs-4 mkn">
+                            <h1>{helper.GearBonus}</h1><span style="font-size:20px;">Gear</span>
+                        </div>
+                        <div class="col-xs-4 mkn">
+                            <h2 style="padding:0;">+</h2>
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="1" amount="1" />
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="2" amount="2" />
+                            <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="5" amount="5" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 mkn">
+                            <input type="button" class ="btn mkn helperHome" value="Go Back" />
+                        </div>
+                        <div class="col-xs-6 mkn">
+                            <input type="button" class ="btn mkn" id="btnKillHelper" value="Kill" />
+                        </div>
                     </div>
                 </div>
             </div>

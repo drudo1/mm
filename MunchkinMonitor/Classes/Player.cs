@@ -37,7 +37,8 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0} {1}.", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : LastName.Substring(0,1)) : NickName;
+                AppState state = AppState.CurrentState();
+                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0}{1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : state.playerStats.players.Where(p => p.FirstName == FirstName).Count() > 1 ? string.Format(" {0}.", LastName.Substring(0,1)) : "") : NickName;
             }
         }
         public string ImagePath

@@ -73,6 +73,18 @@ input[type="select"] {
         font-size: 50px;
         color: #350400;
     }
+    div.mkn h3 {
+        font-family: Quasimodo;
+        font-size: 24px;
+        color: #350400;
+        margin-top: 10px;
+        margin-bottom: 3px;
+    }
+    div.mkn h4 {
+        font-family: Quasimodo;
+        font-size: 16px;
+        color: #350400;
+    }
 }
 @media screen and (max-device-width : 1400px)
 {
@@ -93,7 +105,7 @@ input[type="select"] {
         font-family: Quasimodo;
         font-size: 32px;
         color: #350400;
-        border-bottom: 3px solid #350400;
+        border-bottom: 2px solid #350400;
     }
     div.mkn h1 {
         font-family: Quasimodo;
@@ -103,6 +115,18 @@ input[type="select"] {
     div.mkn h2 {
         font-family: Quasimodo;
         font-size: 34px;
+        color: #350400;
+    }
+    div.mkn h3 {
+        font-family: Quasimodo;
+        font-size: 20px;
+        color: #350400;
+        margin-top: 10px;
+        margin-bottom: 3px;
+    }
+    div.mkn h4 {
+        font-family: Quasimodo;
+        font-size: 12px;
         color: #350400;
     }
 }

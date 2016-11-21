@@ -29,6 +29,13 @@ namespace MunchkinMonitor.Classes
                 return lastUpdated.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
             }
         }
+        public bool hasCurrentPlayer
+        {
+            get
+            {
+                return !(currentPlayer == null);
+            }
+        }
 
         public Game(bool epic)
         {

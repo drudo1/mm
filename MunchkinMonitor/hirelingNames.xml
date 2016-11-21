@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <string>Barney</string>
+  <string>Fred</string>
+  <string>Bob</string>
+  <string>Rufus</string>
+  <string>Ted</string>
+  <string>John</string>
+  <string>Bill</string>
+  <string>Joe</string>
+  <string>Frank</string>
+  <string>Jim</string>
+  <string>Conan</string>
+  <string>Thor</string>
+  <string>Mike</string>
+  <string>Matt</string>
+</ArrayOfString>

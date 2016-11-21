@@ -222,6 +222,69 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void ChangeGender(int penalty)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.ChangeGender(penalty);
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void AddHelper(bool steed, int bonus)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.AddHelper(steed, bonus);
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void UpdateHelperGear(Guid helperID, int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    CharacterHelper hlp = state.gameState.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                    if (hlp != null)
+                    {
+                        hlp.GearBonus += amount;
+                        state.Update();
+                    }
+                }
+            }
+        }
+
+        [WebMethod]
+        public void KillHelper(Guid helperID)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    if(state.gameState.currentPlayer.Helpers.Where(h => h.ID == helperID).Count() > 0)
+                    {
+                        state.gameState.currentPlayer.Helpers.Remove(state.gameState.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault());
+                        state.Update();
+                    }
+                }
+            }
+        }
+
+        [WebMethod]
         public void SubtractLevel()
         {
             AppState state = AppState.CurrentState();

@@ -25,7 +25,7 @@ namespace MunchkinMonitor.Classes
         {
             currentPlayer = new Player { PlayerID = -1 };
             CurrentGender = currentPlayer.Gender;
-            Helpers = new List<CharacterHelper>();
+            Helpers = new List<CharacterHelper> { new CharacterHelper("No Helpers", true, 0) };
             CurrentLevel = 1;
             HalfBreed = false;
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
@@ -36,7 +36,7 @@ namespace MunchkinMonitor.Classes
         {
             currentPlayer = player;
             CurrentGender = player.Gender;
-            Helpers = new List<CharacterHelper>();
+            Helpers = new List<CharacterHelper> { new CharacterHelper("No Helpers", true, 0) };
             CurrentLevel = 1;
             HalfBreed = false;
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
@@ -78,7 +78,42 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return Helpers.Count > 0;
+                return Helpers.Where(h => h.Name != "No Helpers").Count() > 0;
+            }
+        }
+        public bool HasHirelings
+        {
+            get
+            {
+                return Hirelings.Count > 0;
+            }
+        }
+        public bool HasSteeds
+        {
+            get
+            {
+                return Steeds.Count > 0;
+            }
+        }
+        public List<CharacterHelper> Hirelings
+        {
+            get
+            {
+                return Helpers.Where(h => h.isHireling).ToList();
+            }
+        }
+        public List<CharacterHelper> Steeds
+        {
+            get
+            {
+                return Helpers.Where(h => h.isSteed && h.Name != "No Helpers").ToList();
+            }
+        }
+        public List<CharacterHelper> OrderedHelpers
+        {
+            get
+            {
+                return Helpers.Where(h => h.Name != "No Helpers").OrderBy(h => h.isHireling ? 1 : 2).ThenBy(h => h.Name).ToList();
             }
         }
 
@@ -88,15 +123,23 @@ namespace MunchkinMonitor.Classes
             NextBattleModifier -= penalty;
         }
 
-        public void AddHelper (CharacterHelper ch)
+        public void AddHelper (bool steed, int bonus)
         {
-            Helpers.Add(ch);
+            if(Helpers.Where(h => h.Name == "No Helpers").Count() > 0)
+                Helpers.Remove(Helpers.Where(h => h.Name == "No Helpers").FirstOrDefault());
+            List<string> names = CharacterHelper.GetNameList(steed).Where(n => (steed && !Steeds.Select(s => s.Name).Contains(n)) || (!steed && !Hirelings.Select(h => h.Name).Contains(n))).ToList();
+            Random r = new Random();
+            int index = r.Next(names.Count);
+            string name = names[index];
+            Helpers.Add(new CharacterHelper(name, steed, bonus));
         }
 
-        public void RemoveHelper (int id)
+        public void RemoveHelper (Guid id)
         {
             if (Helpers.Where(h => h.ID == id).Count() == 1)
                 Helpers.Remove(Helpers.Where(h => h.ID == id).First());
+            if (Helpers.Count == 0)
+                Helpers.Add(new CharacterHelper("No Helpers", true, 0));
         }
 
         public void ToggleHalfBreed()
