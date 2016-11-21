@@ -268,6 +268,24 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void ChangeHelperRace(Guid helperID)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    CharacterHelper hlp = state.gameState.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                    if (hlp != null)
+                    {
+                        hlp.ChangeRace();
+                        state.Update();
+                    }
+                }
+            }
+        }
+
+        [WebMethod]
         public void KillHelper(Guid helperID)
         {
             AppState state = AppState.CurrentState();

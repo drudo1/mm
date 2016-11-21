@@ -25,7 +25,7 @@ namespace MunchkinMonitor.Classes
         {
             currentPlayer = new Player { PlayerID = -1 };
             CurrentGender = currentPlayer.Gender;
-            Helpers = new List<CharacterHelper> { new CharacterHelper("No Helpers", true, 0) };
+            Helpers = new List<CharacterHelper> { new CharacterHelper { Name = "No Helpers", isHireling = false, isSteed = false, Bonus =  0, GearBonus = 0 } };
             CurrentLevel = 1;
             HalfBreed = false;
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
@@ -36,7 +36,7 @@ namespace MunchkinMonitor.Classes
         {
             currentPlayer = player;
             CurrentGender = player.Gender;
-            Helpers = new List<CharacterHelper> { new CharacterHelper("No Helpers", true, 0) };
+            Helpers = new List<CharacterHelper> { new CharacterHelper { Name = "No Helpers", isHireling = false, isSteed = false, Bonus = 0, GearBonus = 0 } };
             CurrentLevel = 1;
             HalfBreed = false;
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
@@ -113,7 +113,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return Helpers.Where(h => h.Name != "No Helpers").OrderBy(h => h.isHireling ? 1 : 2).ThenBy(h => h.Name).ToList();
+                return Helpers.OrderBy(h => h.isHireling ? 1 : 2).ThenBy(h => h.Name).ToList();
             }
         }
 

@@ -2,6 +2,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         var appData = null;
+        var helperData = null;
+        var idx = -1;
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
@@ -148,24 +150,32 @@
                 $('#divAddHelper').slideUp();
                 $('#divEditHelper').slideUp();
             });
-            $('.hirelingButton .steedButton').click(function () {
-                var idx = $(this).attr('hireIDX');
+            $(document).on('click', '.hirelingButton,.steedButton', function () {
+                idx = $(this).attr('hireIDX');
                 if ($(this).hasClass('hirelingButton')) {
                     $('#hdnHelperType').val('hireling');
-                    rivets.bind($('#divEditHelper'), { appData: appData.gameState.currentPlayer.Hirelings[idx] });
+                    helperData = appData.gameState.currentPlayer.Hirelings[idx];
+                    rivets.bind($('#divEditHelper'), { helper: helperData });
                 }
                 else {
                     $('#hdnHelperType').val('steed');
-                    rivets.bind($('#divEditHelper'), { appData: appData.gameState.currentPlayer.Steeds[idx] });
+                    helperData = appData.gameState.currentPlayer.Steeds[idx];
+                    rivets.bind($('#divEditHelper'), { helper: helperData });
                 }
-                $('divHirelings').slideUp();
+                $('#divHirelings').slideUp();
                 $('#divSteeds').slideUp();
                 $('#divEditHelper').slideDown();
             });
             $('.hlpGearUpdate').click(function () {
                 var amount = $(this).attr('amount');
-                data.run('UpdateHelperGear', { helperID: $('hdnHelperID').val(), amount: amount });
+                data.run('UpdateHelperGear', { helperID: $('#hdnHelperID').val(), amount: amount });
                 objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentPlayer.Hirelings[idx], helperData);
+            });
+            $('#btnChangeHelperRace').click(function () {
+                data.run('ChangeHelperRace', { helperID: $('#hdnHelperID').val() });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentPlayer.Hirelings[idx], helperData);
             });
             $('#btnKillHelper').click(function () {
                 data.run('KillHelper', { helperID: $('hdnHelperID').val() });
@@ -197,6 +207,7 @@
         });
     </script>
     <img src="Images/controllerBG.jpg" id="bg" alt="">
+    <div id="bound">
     <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | eq 0">
         <input id="btnNewGame" type="button" class="btn mkn" value="Start New Game" /><br />
         <input id="btnNewEpic" type="button" class="btn mkn" value="Start New Epic Game" />
@@ -462,7 +473,12 @@
                     <input type="hidden" id="hdnHelperID" rv-value="helper.ID" />
                     <div class="row">
                         <div class="col-xs-12 mkn">
-                            <h2>{helper.Name}</h2>
+                            <h2 rv-text='helper.Name'></h2>
+                        </div>
+                    </div>
+                    <div class="row" rv-show="helper.isHireling">
+                        <div class="col-xs-12 mkn" style="text-align:center;">
+                            <input type="button" class="btn btn-xs mkn" id="btnChangeHelperRace" rv-value="helper.Race" />
                         </div>
                     </div>
                     <div class="row" rv-show="helper.isHireling">
@@ -473,7 +489,7 @@
                             <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="1" amount="-1" />
                         </div>
                         <div class="col-xs-4 mkn">
-                            <h1>{helper.GearBonus}</h1><span style="font-size:20px;">Gear</span>
+                            <h1 rv-text="helper.GearBonus"></h1><span style="font-size:20px;">Gear</span>
                         </div>
                         <div class="col-xs-4 mkn">
                             <h2 style="padding:0;">+</h2>
@@ -497,5 +513,6 @@
         </div>
         <div id="divPostBattle" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 3">
         </div>
+    </div>
     </div>
 </asp:Content>

@@ -24,6 +24,9 @@ namespace MunchkinMonitor.Classes
             }
         }
 
+        public CharacterHelper()
+        { }
+
         public CharacterHelper(string name, bool steed, int bonus)
         {
             ID = Guid.NewGuid();
@@ -87,6 +90,13 @@ namespace MunchkinMonitor.Classes
                 }
             }
             return names;
+        }
+        public void ChangeRace()
+        {
+            List<CharacterModifier> list = CharacterModifier.GetRaceList();
+            int idx = list.IndexOf(Modifier);
+            idx = (idx + 1) % list.Count;
+            Modifier = list[idx];
         }
     }
 }
