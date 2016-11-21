@@ -55,8 +55,10 @@
                 var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
                 if (pageState.currentPlayerID && $('#divPlayer_' + pageState.currentPlayerID).length) {
                     $('#divPlayer_' + pageState.currentPlayerID).hide('slide', { direction: 'left' }, 500);
+                    $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
                     $('#divPlayer_' + pageState.currentPlayerID).remove();
-                    $('.ui - effects - placeholder').remove();
+                    $('#divPlayer_' + pageState.currentPlayerID + '_reminders').remove();
+                    $('.ui-effects-placeholder').remove();
                 }
                 $(pageMethods.playerTemplate.replace('divPlayer_template', 'divPlayer_' + newPID).replace('divPlayer_template', 'divPlayer_' + newPID)).prependTo('#divCurrentAction');
                 rivets.bind($('#divPlayer_' + newPID), { appData: appData })
@@ -64,8 +66,10 @@
                 if (appData.gameState.currentPlayer.hasTurnReminders) {
                     $('#divPlayer_' + newPID + '_reminders').show('slide', { direction: 'right' }, 500);
                     setTimeout(function () {
-                        $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
                         $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
+                        $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
+                        $('#divPlayer_' + newPID + '_reminders').remove();
+                        $('.ui-effects-placeholder').remove();
                     }, 15000);
                 }
                 else
@@ -147,8 +151,7 @@
                              +'        </div>'
                              +'    </div>'
                              +'    <ul>'
-                             +'        <li rv-each-minder="appData.gameState.currentPlayer.turnReminders">'
-                             +'            <h3 rv-text="minder"></h3>'
+                             + '        <li class="mknReminder" rv-each-minder="appData.gameState.currentPlayer.turnReminders" rv-text="minder">'
                              +'        </li>'
                              +'    </ul>'
                              +'</div>'

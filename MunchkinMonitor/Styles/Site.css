@@ -85,6 +85,11 @@ input[type="select"] {
         font-size: 16px;
         color: #350400;
     }
+    li.mknReminder {
+        font-family: Quasimodo;
+        font-size: 35px;
+        color: #350400;
+    }
 }
 @media screen and (max-device-width : 1400px)
 {
@@ -127,6 +132,11 @@ input[type="select"] {
     div.mkn h4 {
         font-family: Quasimodo;
         font-size: 12px;
+        color: #350400;
+    }
+    li.mknReminder {
+        font-family: Quasimodo;
+        font-size: 28px;
         color: #350400;
     }
 }
