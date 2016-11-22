@@ -150,6 +150,10 @@
     <Content Include="Game.aspx" />
     <Content Include="Images\controllerBG.jpg" />
     <Content Include="Images\gameBG.jpg" />
+    <Content Include="Images\monsterLoses.jpg" />
+    <Content Include="Images\monsterWins.png" />
+    <Content Include="Images\playerLoses.jpg" />
+    <Content Include="Images\playerWins.jpg" />
     <Content Include="Images\scoreboardBG.jpg" />
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />

@@ -38,7 +38,9 @@
                     }
                 },
                 ChangeGameState: function () {
-
+                    if (pageMethods.gameStateChanged()) {
+                        pageMethods.UpdateGameState();
+                    }
                 }
             },
             playerChanged: function () {
@@ -76,7 +78,35 @@
                     $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
             },
-            playerTemplate: '<div id="divPlayer_template" rv-if="appData.gameState.hasCurrentPlayer" class="battlePrep mkn" style="display:none;">'
+            gameStateChanged: function () {
+                var result = false;
+                if (appData.gameState.currentState != -1) {
+                    if (pageState.currentGameState == -1)
+                        result = true;
+                    else if (appData.gameState.currentstate != pageState.currentGameState)
+                        result = true;
+                }
+                return result;
+            },
+            UpdateGameState: function() {
+                if (appData.gameState.currentState == 0 || appData.gameState.currentState == 1) {
+                    $('.playerPanel').slideDown();
+                    $('#divBattle').slideUp();
+                    $('#divBattleResults').slideUp();
+                }
+                else if (appData.gameState.currentState == 2) {
+                    $('#divBattle').slideDown();
+                    $('.playerPanel').slideUp();
+                    $('#divBattleResults').slideUp();
+                }
+                else if (appData.gameState.currentState == 3) {
+                    $('#divBattleResults').slideDown();
+                    $('#divBattle').slideUp();
+                    $('.playerPanel').slideUp();
+                }
+
+            },
+            playerTemplate: '<div id="divPlayer_template" rv-if="appData.gameState.hasCurrentPlayer" class="battlePrep mkn playerPanel" style="display:none;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
                              +'         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
@@ -149,7 +179,7 @@
                              +'    </div>'
                              +'</div>'
                              +'</div>'
-                             +'<div id="divPlayer_template_reminders" class="battlePrep mkn" style="display:none;">'
+                             +'<div id="divPlayer_template_reminders" class="mkn" style="display:none;">'
                              +'    <div class="row">'
                              +'        <div class="col-lg-12 mkn">'
                              +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
@@ -161,7 +191,10 @@
                              +'    </ul>'
                              +'</div>'
         };
-        var pageState = {};
+        var pageState = {
+            currentPlayerID: -1,
+            currentGameState: -1
+        };
         $(document).ready(function () {
             appData.gameState.players = [{ currentPlayer: { PlayerID: -1, DisplayName: 'Add a Player' }, CurrentLevel: -1 }];
             rivets.bind($(document), { appData: appData });
@@ -183,7 +216,83 @@
         </div>
         <div class="col-lg-8">
             <div id="divCurrentAction">
-
+                <div id="divBattle" class="statePanels" style="display:none;">
+                    <div class="row" style="text-align:center; font-size:60px;">VS</div>
+                    <div class="row" style="height:8px; background-color: #350400;">&nbsp;</div>
+                    <div class="row" style="min-height:500px;">
+                        <div class="col-lg-6 mkn battleLeft" >
+                            <div class="row">
+                                <div class="col-md-12 mkn">
+                                    <h1 rv-text="appData.gameState.currentBattle.gamePlayer.currentPlayer.DisplayName"></h1>
+                                </div>
+                                <div class="col-md-12 mkn">
+                                    <h2>Fighting Level: {appData.gameState.currentBattle.gamePlayer.FightingLevel}</h2>
+                                </div>
+                            </div>
+                            <div class="row" style="height:4px; background-color: #350400;">&nbsp;</div>
+                            <div class="row" rv-show="appData.gameState.currentBattle.HasAlly">
+                                <div class="col-md-12 mkn">
+                                    <h1>Ally: {appData.gameState.currentBattle.ally.currentPlayer.DisplayName}</h1>
+                                </div>
+                                <div class="col-md-12 mkn">
+                                    <h2>Fighting Level: {appData.gameState.currentBattle.ally.FightingLevel}</h2>
+                                </div>
+                            </div>
+                            <div class="row" rv-show="appData.gameState.currentBattle.HasAlly" style="height:4px; background-color: #350400;">&nbsp;</div>
+                            <div class="row">
+                                <div class="col-md-12 mkn">
+                                    <h1>Battle Bonus: {appData.gameState.currentBattle.playerOneTimeBonus}</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mkn">
+                                    <h1>Total: {appData.gameState.currentBattle.playerPoints}</h1>
+                                </div>
+                            </div>
+                            <div class="row" style="position:absolute; bottom:0">
+                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
+                                    <img src="Images/playerWins.jpg" style="height:100px" />
+                                </div>
+                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
+                                    <img src="Images/playerLoses.jpg" style="height:100px" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mkn battleRight">                            
+                            <div class="row playerRow" rv-each-monster="appData.gameState.currentBattle.opponents">
+                                <div class="col-md-6 mkn playerRow">
+                                    Level: {monster.Level}
+                                </div>
+                                <div class="col-md-6 mkn playerRow">
+                                    Bonus: {monster.OneTimeBonus}
+                                </div>
+                                <div class="col-md-6 mkn playerRow">
+                                    Worth: {monster.LevelsToWin}
+                                </div>
+                                <div class="col-md-6 mkn playerRow">
+                                    Treasure: {monster.Treasures}
+                                </div>
+                                <div class="col-md-12 playerRow" style="height:8px; background-color:#350400;">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mkn">
+                                    <h1>Total: {appData.gameState.currentBattle.opponentPoints}</h1>
+                                </div>
+                            </div>
+                            <div class="row" style="position:absolute; bottom:0">
+                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
+                                    <img src="Images/monsterLoses.jpg" style="height:100px" />
+                                </div>
+                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
+                                    <img src="Images/monsterWins.png" style="height:100px" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divBattleResults" class="statePanels" style="display:none;"></div>
             </div>
         </div>
     </div>

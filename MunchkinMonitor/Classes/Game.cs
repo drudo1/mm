@@ -107,21 +107,36 @@ namespace MunchkinMonitor.Classes
             SetState(GameStates.Battle);
         }
 
-        public void AddMonsterToBattle(int level, int levelsToWin, int treasures, int attackerID)
+        public int AddMonsterToBattle(int level, int levelsToWin, int treasures)
         {
+            int idx = -1;
             if(currentBattle != null)
             {
-                CurrentGamePlayer attacker = players.Where(gp => gp.currentPlayer.PlayerID == attackerID).FirstOrDefault();
-                currentBattle.AddMonster(new Monster(level, levelsToWin, treasures), attacker.currentPlayer);
+                currentBattle.AddMonster(new Monster(level, levelsToWin, treasures));
+                idx = currentBattle.opponents.Count - 1;
             }
+            return idx;
         }
 
-        public void AddAlly(int allyID, int allyTreasures, int allyLevels)
+        public void RemoveMonster(int idx)
+        {
+            currentBattle.opponents.Remove(currentBattle.opponents[idx]);
+        }
+
+        public void AddAlly(int allyID, int allyTreasures)
         {
             if (currentBattle != null)
             {
                 CurrentGamePlayer ally = players.Where(gp => gp.currentPlayer.PlayerID == allyID).FirstOrDefault();
-                currentBattle.AddAlly(ally, allyTreasures, allyLevels);
+                currentBattle.AddAlly(ally, allyTreasures);
+            }
+        }
+
+        public void RemoveAlly()
+        {
+            if (currentBattle != null)
+            {
+                currentBattle.RemoveAlly();
             }
         }
 
@@ -161,6 +176,12 @@ namespace MunchkinMonitor.Classes
             }
         }
 
+        public void CancelBattle()
+        {
+            currentBattle = null;
+            SetState(GameStates.BattlePrep);
+        }
+
         public void ResolveBattle()
         {
             if (currentBattle != null)
@@ -168,6 +189,10 @@ namespace MunchkinMonitor.Classes
                 currentBattle.ResolveBattle();
                 SetState(GameStates.BattleResults);
             }
+        }
+        public void LogWinner()
+        {
+            Logger.LogVictory(players.OrderByDescending(p => p.CurrentLevel).ToList()[0].currentPlayer.PlayerID);
         }
     }
 }

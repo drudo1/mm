@@ -33,6 +33,16 @@ namespace MunchkinMonitor.Classes
                 return stateUpdated.Subtract(new DateTime(1970, 1, 1).AddHours(-6)).TotalMilliseconds;
             }
         }
+        public List<Player> AvailablePlayers
+        {
+            get
+            {
+                if (gameState != null && gameState.players != null)
+                    return playerStats.players.Where(p => !gameState.players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).ToList();
+                else
+                    return playerStats.players;
+            }
+        }
 
         public static AppState CurrentState()
         {
@@ -60,7 +70,7 @@ namespace MunchkinMonitor.Classes
 
         public void EndGame()
         {
-            //record game stats
+            gameState.LogWinner();
             LoadScoreboard();
         }
 

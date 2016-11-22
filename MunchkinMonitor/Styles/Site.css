@@ -186,6 +186,14 @@ div.mkn2 {
 div.gamePlayerList {
     margin-top: 30%;
 }
+div.battleLeft {
+    border-right: 2px solid #350400;
+    height: 800px;
+}
+div.battleRight {
+    border-left: 2px solid #350400;
+    height: 800px;
+}
 .hide {
     display: none;
 }

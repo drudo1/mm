@@ -236,6 +236,20 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void KillCurrentPlayer()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.Die();
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
         public void AddHelper(bool steed, int bonus)
         {
             AppState state = AppState.CurrentState();
@@ -345,27 +359,133 @@ namespace MunchkinMonitor.Services
         public void StartBattle(int level, int levelsToWin, int treasures)
         {
             AppState state = AppState.CurrentState();
-                state.gameState.StartBattle(level, levelsToWin, treasures);
+            state.gameState.StartBattle(level, levelsToWin, treasures);
+            state.Update();
         }
 
         [WebMethod]
-        public void AddMonster(int level, int levelsToWin, int treasures, int attackerID)
+        public void BattleBonus(int amount)
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
             {
-                state.gameState.AddMonsterToBattle(level, levelsToWin, treasures, attackerID);
+                if(state.gameState.currentBattle != null)
+                {
+                    state.gameState.currentBattle.playerOneTimeBonus += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public int AddMonster(int level, int levelsToWin, int treasures)
+        {
+            int idx = -1;
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                idx = state.gameState.AddMonsterToBattle(level, levelsToWin, treasures);
+                state.Update();
+            }
+            return idx;
+        }
+
+        [WebMethod]
+        public void RemoveMonster(int monsterIDX)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.RemoveMonster(monsterIDX);
                 state.Update();
             }
         }
 
         [WebMethod]
-        public void AddAlly(int allyID, int allyTreasures, int allyLevels)
+        public void UpdateMonsterLevel(int monsterIDX, int amount)
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
             {
-                state.gameState.AddAlly(allyID, allyTreasures, allyLevels);
+                if (state.gameState.currentBattle != null)
+                {
+                    state.gameState.currentBattle.opponents[monsterIDX].Level += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void UpdateMonsterBonus(int monsterIDX, int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentBattle != null)
+                {
+                    state.gameState.currentBattle.opponents[monsterIDX].OneTimeBonus += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void UpdateMonsterLTW(int monsterIDX, int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentBattle != null)
+                {
+                    state.gameState.currentBattle.opponents[monsterIDX].LevelsToWin += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void UpdateMonsterTreasures(int monsterIDX, int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentBattle != null)
+                {
+                    state.gameState.currentBattle.opponents[monsterIDX].Treasures += amount;
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
+        public void AddAlly(int allyID, int allyTreasures)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.AddAlly(allyID, allyTreasures);
+                state.Update();
+            }
+        }
+
+        [WebMethod]
+        public void RemoveAlly()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.RemoveAlly();
+                state.Update();
+            }
+        }
+
+        [WebMethod]
+        public void CancelBattle()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.CancelBattle();
                 state.Update();
             }
         }
@@ -376,6 +496,17 @@ namespace MunchkinMonitor.Services
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
                 state.gameState.ResolveBattle();
+        }
+
+        [WebMethod]
+        public void CompleteBattle()
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                state.gameState.currentBattle = null;
+                state.gameState.SetState(GameStates.BattlePrep);
+            }
         }
 
         [WebMethod]

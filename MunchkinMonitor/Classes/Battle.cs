@@ -15,9 +15,65 @@ namespace MunchkinMonitor.Classes
         public List<Monster> opponents { get; set; }
         public int playerOneTimeBonus { get; set; }
         public int allyTreasures { get; set; }
-        public int allyHelpLevels { get; set; }
         public DateTime lastUpdated { get; set; }
         public BattleResult result { get; set; }
+        public bool HasAlly
+        {
+            get
+            {
+                return ally != null;
+            }
+        }
+        public string AllyName
+        {
+            get
+            {
+                return HasAlly ? ally.currentPlayer.DisplayName : "none";
+            }
+        }
+        public List<CurrentGamePlayer> PossibleAllies
+        {
+            get
+            {
+                AppState state = AppState.CurrentState();
+                List<CurrentGamePlayer> results = state.gameState.players.Where(p => p != gamePlayer).ToList();
+                return results;
+            }
+        }
+        public bool WinsTies
+        {
+            get
+            {
+                bool result = false;
+                List<CharacterModifier> lcm =
+                    HasAlly ?
+                    gamePlayer.CurrentClassList.Union(gamePlayer.CurrentRaceList.Union(ally.CurrentClassList.Union(ally.CurrentRaceList))).ToList() :
+                    gamePlayer.CurrentClassList.Union(gamePlayer.CurrentRaceList).ToList();
+                foreach (CharacterModifier cm in lcm)
+                {
+                    if (cm.WinsTies)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+                return result;
+            }
+        }
+        public bool GoodGuysWin
+        {
+            get
+            {
+                return playerPoints > opponentPoints || (WinsTies && (playerPoints == opponentPoints));
+            }
+        }
+        public int allyFightingLevel
+        {
+            get
+            {
+                return HasAlly ? ally.FightingLevel : 0;
+            }
+        }
         public int playerPoints
         {
             get
@@ -68,7 +124,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                int levels = allyHelpLevels;
+                int levels = 0;
                 if(ally != null && (ally.CurrentRaceList.Where(r => r.LevelsForHelp).Count() > 0 || ally.CurrentClassList.Where(c => c.LevelsForHelp).Count() > 0 || ally.Helpers.Where(h => h.Modifier != null && h.Modifier.LevelsForHelp).Count() > 0))
                 {
                     foreach (Monster m in opponents)
@@ -113,10 +169,8 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
-        public void AddMonster(Monster add, Player attacker)
+        public void AddMonster(Monster add)
         {
-            if (attacker != null)
-                Logger.LogAttack(gamePlayer, attacker);
             opponents.Add(add);
             lastUpdated = DateTime.Now;
         }
@@ -130,11 +184,17 @@ namespace MunchkinMonitor.Classes
             }
         }
 
-        public void AddAlly (CurrentGamePlayer player, int treasures, int levels)
+        public void AddAlly (CurrentGamePlayer player, int treasures)
         {
             ally = player;
             allyTreasures = treasures;
-            allyHelpLevels = levels;
+            lastUpdated = DateTime.Now;
+        }
+
+        public void RemoveAlly()
+        {
+            ally = null;
+            allyTreasures = 0;
             lastUpdated = DateTime.Now;
         }
 
@@ -162,10 +222,11 @@ namespace MunchkinMonitor.Classes
         public void ResolveBattle()
         {
             result = new BattleResult(gamePlayer);
-            if(playerPoints > opponentPoints)
+            if(playerPoints > opponentPoints || (WinsTies && (playerPoints == opponentPoints)))
             {
                 result.Victory = true;
-                result.levelsWon = (LevelsAtStake - allyHelpLevels);
+                result.NumDefeated = opponents.Count;
+                result.levelsWon = LevelsAtStake;
                 result.treasuresWon = (TotalTreasures - allyTreasures);
                 if(ally != null)
                 {
@@ -178,12 +239,11 @@ namespace MunchkinMonitor.Classes
                 gamePlayer.NextBattleModifier = 0;
                 ally.Treasures += allyTreasures;
                 gamePlayer.Treasures += result.treasuresWon;
-                Logger.LogVictory(result);
+                Logger.LogBattleVictory(result);
             }
             else
             {
                 result.Victory = false;
-                Logger.LogDefeat(result);
             }
         }
     }

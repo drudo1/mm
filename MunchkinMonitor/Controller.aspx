@@ -3,7 +3,9 @@
     <script type="text/javascript">
         var appData = null;
         var helperData = null;
+        var monsterData = null;
         var idx = -1;
+        var mIdx = -1;
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
@@ -37,6 +39,7 @@
                 if ($('#ddlPlayers').val() != -1) {
                     data.run('AddExistingPlayer', { id: $('#ddlPlayers').val() });
                     $('#ddlPlayers').val('-1');
+                    objectCopy(data.run('GetCurrentAppState'), appData);
                 }
                 else {
                     $('#divAddExistingPlayer').slideUp();
@@ -117,6 +120,10 @@
                 $('#divPlayerSettings').slideDown();
                 $('#divGender').slideUp();
             });
+            $('#btnDie').click(function () {
+                data.run('KillCurrentPlayer');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            })
             $('#btnHirelings').click(function () {
                 $('#divPlayerSettings').slideUp();
                 $('#divHirelings').slideDown();
@@ -208,6 +215,84 @@
                 data.run('StartBattle', { level: 1, levelsToWin: 1, treasures: 1 });
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
+            $('.BattleBonus').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('BattleBonus', { amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $('#btnAddAlly').click(function () {
+                data.run('AddAlly', { allyID: $('#ddlAvailableAllys').val(), allyTreasures: $('#ddlAllyTreasures').val() });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $('#btnRemoveAlly').click(function () {
+                data.run('RemoveAlly');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $(document).on('click', '.monsterButton', function () {
+                mIdx = $(this).attr('monsterIDX');
+                monsterData = appData.gameState.currentBattle.opponents[mIdx];
+                rivets.bind($('#divMonsterEdit'), { curMonster: monsterData });
+                $('#divBattle').slideUp();
+                $('#divMonsterEdit').slideDown();
+            });
+            $('.updMonsterLevel').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('UpdateMonsterLevel', { monsterIDX: mIdx, amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
+            });
+            $('.monsterBonus').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('UpdateMonsterBonus', { monsterIDX: mIdx, amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
+            });
+            $('.updMonsterLTW').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('UpdateMonsterLTW', { monsterIDX: mIdx, amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
+            });
+            $('.updMonsterTreasure').click(function () {
+                var amount = $(this).attr('amount');
+                data.run('UpdateMonsterTreasures', { monsterIDX: mIdx, amount: amount });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
+            });
+            $('#btnRemoveMonster').click(function () {
+                data.run('RemoveMonster', { monsterIDX: mIdx });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                mIdx = -1;
+                monsterData = null;
+                $('#divBattle').slideDown();
+                $('#divMonsterEdit').slideUp();
+            });
+            $('#btnCloseMonster').click(function () {
+                mIdx = -1;
+                monsterData = null;
+                $('#divBattle').slideDown();
+                $('#divMonsterEdit').slideUp();
+            });
+            $('#btnAddMonster').click(function () {
+                mIdx = data.run('AddMonster', { level: 1, levelsToWin: 1, treasures: 1 });
+                objectCopy(data.run('GetCurrentAppState'), appData);
+                monsterData = appData.gameState.currentBattle.opponents[mIdx];
+                rivets.bind($('#divMonsterEdit'), { curMonster: monsterData });
+                $('#divBattle').slideUp();
+                $('#divMonsterEdit').slideDown();
+            });
+            $('#btnCancelBattle').click(function () {
+                mIdx = data.run('CancelBattle');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $('#btnResolveBattle').click(function () {
+                mIdx = data.run('ResolveBattle');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
+            $('#btnCompleteBattle').click(function () {
+                mIdx = data.run('CompleteBattle');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
         });
     </script>
     <img src="Images/controllerBG.jpg" id="bg" alt="">
@@ -221,7 +306,7 @@
             <div id="divAddExistingPlayer">
                 <select id="ddlPlayers" class="form-control">
                     <option value="-1">New Player</option>
-                    <option rv-each-player="appData.playerStats.players" rv-value="player.PlayerID" rv-class-hide="player.PlayerID | eq -1">{player.DisplayName}</option>
+                    <option rv-each-player="appData.AvailablePlayers" rv-value="player.PlayerID" rv-class-hide="player.PlayerID | eq -1">{player.DisplayName}</option>
                 </select>
                 <input id="btnAddPlayer" type="button" class="btn mkn" value="Add Player" /><br />
                 <div class="row">
@@ -333,10 +418,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-4">
                                 <input type="button" id="btnHirelings" class="btn mkn btn-xs" value="Hirelings" />
                             </div>
-                            <div class="col-xs-6">
+                            <div class="col-xs-4">
+                                <input type="button" id="btnDie" class="btn mkn btn-xs" value="Die" />
+                            </div>
+                            <div class="col-xs-4">
                                 <input type="button" id="btnSteeds" class="btn mkn btn-xs" value="Steeds" />
                             </div>
                         </div>
@@ -514,77 +602,179 @@
             </div>
         </div>
         <div id="divBattle" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 2">
-            <div class="col-xs-12 mkn">
-                <h2>Combatants</h2>
+            <div class="col-xs-12 mkn playerRow">
+                <h3>Combatants</h3>
+            </div>
+            <div class="row playerRow">
+                <div class="col-xs-6 mkn">
+                    <h3>{appData.gameState.currentBattle.gamePlayer.currentPlayer.DisplayName}</h3>
+                </div>
+                <div class="col-xs-6 mkn">
+                    <h3>+{appData.gameState.currentBattle.gamePlayer.FightingLevel}</h3>
+                </div>
+            </div>
+            <div class="row playerRow" rv-show="appData.gameState.currentBattle.HasAlly">
+                <div class="col-xs-6 mkn">
+                    <input type="button" id="btnRemoveAlly" class="btn btn-xs mkn" rv-value="appData.gameState.currentBattle.AllyName" />
+                </div>
+                <div class="col-xs-6 mkn">
+                    <h3>+{appData.gameState.currentBattle.allyFightingLevel}</h3>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6">
-                    <h3>Name</h3>
+                <div class="col-xs-4 mkn">
+                    <h2 style="padding:0;">-</h2>
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="-5" />
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="-2" />
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="-1" />
                 </div>
+                <div class="col-xs-4 mkn">
+                    <h2>{appData.gameState.currentBattle.playerOneTimeBonus}</h2><span style="font-size:20px;">Bonus</span>
+                </div>
+                <div class="col-xs-4 mkn">
+                    <h2 style="padding:0;">+</h2>
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="1" />
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="2" />
+                    <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="5" />
+                </div>
+            </div>
+            <div class="row" id="divAddAlly" rv-hide="appData.gameState.currentBattle.HasAlly">
+                <div class="col-xs-6 mkn">
+                    <select id="ddlAvailableAllys" class="form-control">
+                        <option rv-each-player="appData.gameState.currentBattle.PossibleAllies" rv-value="player.currentPlayer.PlayerID">{player.currentPlayer.DisplayName}</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 mkn">
+                    <select id="ddlAllyTreasures" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 mkn">
+                    <input type="button" class="btn btn-xs mkn" id="btnAddAlly" value="Ally" />
+                </div>
+            </div>
+            <div class="row" style="height:4px; background-color: #350400;">&nbsp;</div>
+            <div class="col-xs-12 mkn playerRow">
+                <h3>Monsters</h3>
+            </div>
+            <div class="row">
                 <div class="col-xs-3">
-                    <h3>F-Level</h3>
+                    <h3>Level</h3>
                 </div>
                 <div class="col-xs-3">
                     <h3>Bonus</h3>
                 </div>
-            </div>
-            <div class="row playerRow" rv-each-combatant="appData.gameState.currentBattle.Combatants">
-                <div class="col-xs-6 mkn">
-                    <input type="button" class="btn btn-xs mkn combatantButton" rv-hireIDX=" %combatant% " rv-value="combatant.currentPlayer.DisplayName" />
-                </div>
-                <div class="col-xs-3 mkn">
-                    <h3>+{combatant.FightingLevel}</h3>
-                </div>
-                <div class="col-xs-3 mkn">
-                    <h3>{combatant.Bonus}</h3>
-                </div>
-            </div>
-            <div class="col-xs-12 mkn">
-                <input type="button" class="btn btn-xs mkn" id="btnAddAlly" value="Add Ally" />
-            </div>
-            <div class="col-xs-12 mkn">
-                <h2>Monsters</h2>
-            </div>
-            <div class="row">
                 <div class="col-xs-3">
-                    <h3>Number</h3>
-                </div>
-                <div class="col-xs-2">
-                    <h3>Level</h3>
-                </div>
-                <div class="col-xs-2">
                     <h3>Value</h3>
                 </div>
-                <div class="col-xs-5">
-                    <h3>Treasures</h3>
+                <div class="col-xs-3">
+                    <h3>Loot</h3>
                 </div>
             </div>
-            <div class="row playerRow" rv-each-monster="appData.gameState.currentBattle.Monsters">
+            <div class="row playerRow" rv-each-monster="appData.gameState.currentBattle.opponents">
                 <div class="col-xs-3 mkn">
-                    <input type="button" class="btn btn-xs mkn monsterButton" rv-monsterIDX=" %monster% " rv-value="%monster%" />
+                    <input type="button" class="btn btn-xs mkn monsterButton" rv-monsterIDX=" %monster% " rv-value="monster.Level" />
                 </div>
-                <div class="col-xs-2 mkn">
-                    <h3>{monster.Level}</h3>
+                <div class="col-xs-3 mkn">
+                    <h3>{monster.OneTimeBonus}</h3>
                 </div>
-                <div class="col-xs-2 mkn">
+                <div class="col-xs-3 mkn">
                     <h3>{monster.LevelsToWin}</h3>
                 </div>
-                <div class="col-xs-5 mkn">
+                <div class="col-xs-3 mkn">
                     <h3>{monster.Treasures}</h3>
                 </div>
             </div>
-            <div class="col-xs-12 mkn">
-                <input type="button" class="btn btn-xs mkn" id="btnAddMonster" value="Add Monster" />
+            <div class="row">
+                <div class="col-xs-12 mkn">
+                    <input type="button" class="btn btn-xs mkn" id="btnAddMonster" value="Add Monster" />
+                </div>
             </div>
-            <div class="col-xs-12">
-                <input type="button" class="btn mkn battleHome" value="Go Back" />
+            <div class="row">
+                <div class="col-xs-6">
+                    <input type="button" id="btnCancelBattle" class="btn mkn" value="Cancel Battle" />
+                </div>
+                <div class="col-xs-6">
+                    <input type="button" id="btnResolveBattle" class="btn mkn" value="GO" />
+                </div>
             </div>
-        </div>
-        <div id="divCombatantEdit" class="mobile mkn2 mkn" style="display:none;" >
         </div>
         <div id="divMonsterEdit" class="mobile mkn2 mkn" style="display:none;" >
+            <input type="hidden" id="hdnMonsterID" rv-value="curMonster.MonsterID" />
+            <div class="row">
+                <div class="col-xs-4" style="vertical-align:middle;">
+                    <input type="button" id="btnSubtractMonsterLevel" class="btn mkn btn-xs updMonsterLevel" amount="-1" value="<" />
+                </div>
+                <div class="col-xs-4 mkn" style="vertical-align:middle;">
+                    <h1>{curMonster.Level}</h1><span style="font-size:20px;">Level</span>
+                </div>
+                <div class="col-xs-4" style="vertical-align:middle;">
+                    <input type="button" id="btnAddMonsterLevel" class="btn mkn btn-xs updMonsterLevel" amount="1" value=">" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 mkn">
+                    <h2 style="padding:0;">-</h2>
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="5" amount="-5" />
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="2" amount="-2" />
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="1" amount="-1" />
+                </div>
+                <div class="col-xs-4 mkn">
+                    <h1>{curMonster.Bonus}</h1><span style="font-size:20px;">Bonus</span>
+                </div>
+                <div class="col-xs-4 mkn">
+                    <h2 style="padding:0;">+</h2>
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="1" amount="1" />
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="2" amount="2" />
+                    <input type="button" class="btn btn-xs mkn monsterBonus" value="5" amount="5" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4" style="vertical-align:middle;">
+                    <input type="button" id="btnSubtractMonsterLevelsToWin" class="btn mkn btn-xs updMonsterLTW" amount="-1" value="<" />
+                </div>
+                <div class="col-xs-4 mkn" style="vertical-align:middle;">
+                    <h1>{curMonster.LevelsToWin}</h1><span style="font-size:20px;">Prize Levels</span>
+                </div>
+                <div class="col-xs-4" style="vertical-align:middle;">
+                    <input type="button" id="btnAddMonsterLevelsToWin" class="btn mkn btn-xs updMonsterLTW" amount="1" value=">" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 mkn" style="vertical-align:middle;">
+                    <input type="button" id="btnSubtractMonsterTreasures" class="btn mkn btn-xs updMonsterTreasure" amount="-1" value="<" />
+                </div>
+                <div class="col-xs-4 mkn" style="vertical-align:middle;">
+                    <h1>{curMonster.Treasures}</h1><span style="font-size:20px;">Treasures</span>
+                </div>
+                <div class="col-xs-4 mkn" style="vertical-align:middle;">
+                    <input type="button" id="btnAddMonsterTreasures" class="btn mkn btn-xs updMonsterTreasure" amount="1" value=">" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 mkn">
+                    <input type="button" id="btnRemoveMonster" class="btn mkn btn-xs" value="Remove" />
+                </div>
+                <div class="col-xs-6 mkn">
+                    <input type="button" id="btnCloseMonster" class="btn mkn btn-xs" value="Go Back" />
+                </div>
+            </div>
         </div>
         <div id="divPostBattle" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 3">
+            <div class="row">
+                <div class="col-xs-12 mkn">
+                    <input type="button" class="btn btn-xs mkn" id="btnCompleteBattle" value="OK" />
+                </div>
+            </div>
         </div>
     </div>
     </div>

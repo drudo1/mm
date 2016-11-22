@@ -11,6 +11,7 @@ namespace MunchkinMonitor.Classes
     {
         public CurrentGamePlayer gamePlayer { get; set; }
         public bool Victory { get; set; }
+        public int NumDefeated { get; set; }
         public int levelsWon { get; set; }
         public int treasuresWon { get; set; }
         public CurrentGamePlayer assistedBy { get; set; }

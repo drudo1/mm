@@ -159,6 +159,27 @@ namespace MunchkinMonitor.Classes
                 return fLevel;
             }
         }
+
+        public int AllyLevel
+        {
+            get
+            {
+                int fLevel = CurrentLevel;
+                fLevel += GearBonus;
+                fLevel += NextBattleModifier;
+                foreach (CharacterHelper ch in Helpers)
+                {
+                    fLevel += ch.Bonus;
+                    fLevel += ch.GearBonus;
+                }
+                foreach(CharacterModifier cm in CurrentClassList)
+                    fLevel += cm.combatBonusForHelp;
+                foreach (CharacterModifier cm in CurrentRaceList)
+                    fLevel += cm.combatBonusForHelp;
+
+                return fLevel;
+            }
+        }
         public string currentRaces
         {
             get
@@ -220,6 +241,16 @@ namespace MunchkinMonitor.Classes
         {
             CurrentGender = CurrentGender == Gender.Male ? Gender.Female : Gender.Male;
             NextBattleModifier -= penalty;
+        }
+
+        public void Die()
+        {
+            GearBonus = 0;
+            Helpers = new List<CharacterHelper> { new CharacterHelper { Name = "No Helpers", isHireling = false, isSteed = false, Bonus = 0, GearBonus = 0 } };
+            HalfBreed = false;
+            CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
+            SuperMunchkin = false;
+            CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
         }
 
         public void AddHelper (bool steed, int bonus)

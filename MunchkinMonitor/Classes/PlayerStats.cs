@@ -33,10 +33,55 @@ namespace MunchkinMonitor.Classes
                     Victories = 0,
                     Kills = 0,
                     Treasures = 0,
-                    PlayerID = -1
+                    PlayerID = -1,
+                    Assists = 0
                 });
             }
         }
+        public void LogBattleVictory(int playerID, int defeated, int treasures, int assistedBy)
+        {
+            foreach (Player p in players)
+            {
+                if (p.PlayerID == playerID)
+                {
+                    p.Kills += defeated;
+                    p.Treasures += treasures;
+                }
+                if (p.PlayerID == assistedBy)
+                    p.Assists++;
+            }
 
+            string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenWrite(path))
+                {
+                    serializer.Serialize(stream, players);
+                }
+            }
+        }
+
+        public void LogVictory(int playerID)
+        {
+            foreach (Player p in players)
+            {
+                if (p.PlayerID == playerID)
+                {
+                    p.Victories++;
+                    break;
+                }
+            }
+
+            string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenWrite(path))
+                {
+                    serializer.Serialize(stream, players);
+                }
+            }
+        }
     }
 }

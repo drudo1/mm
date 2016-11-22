@@ -7,24 +7,15 @@ namespace MunchkinMonitor.Classes
 {
     public class Logger
     {
-        internal static void LogVictory(BattleResult br)
+        internal static void LogBattleVictory(BattleResult br)
         {
-            throw new NotImplementedException();
+            AppState state = AppState.CurrentState();
+            state.playerStats.LogBattleVictory(br.gamePlayer.currentPlayer.PlayerID, br.NumDefeated, br.treasuresWon, br.assistedBy.currentPlayer.PlayerID);
         }
-
-        internal static void LogDefeat(BattleResult br)
+        internal static void LogVictory(int playerID)
         {
-            throw new NotImplementedException();
-        }
-
-        internal static void LogHelp(CurrentGamePlayer gamePlayer, Player helper)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void LogAttack(CurrentGamePlayer gamePlayer, Player attacker)
-        {
-            throw new NotImplementedException();
+            AppState state = AppState.CurrentState();
+            state.playerStats.LogVictory(playerID);
         }
     }
 }
