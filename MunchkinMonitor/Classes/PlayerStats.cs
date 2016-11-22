@@ -38,17 +38,20 @@ namespace MunchkinMonitor.Classes
                 });
             }
         }
-        public void LogBattleVictory(int playerID, int defeated, int treasures, int assistedBy)
+        public void LogBattleVictory(BattleResult br)
         {
             foreach (Player p in players)
             {
-                if (p.PlayerID == playerID)
+                if (p.PlayerID == br.gamePlayer.currentPlayer.PlayerID)
                 {
-                    p.Kills += defeated;
-                    p.Treasures += treasures;
+                    p.Kills += br.NumDefeated;
+                    p.Treasures += br.treasuresWon;
                 }
-                if (p.PlayerID == assistedBy)
+                if (br.assistedBy != null && p.PlayerID == br.assistedBy.currentPlayer.PlayerID)
+                {
                     p.Assists++;
+                    p.Treasures += br.assistTreasures;
+                }
             }
 
             string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";

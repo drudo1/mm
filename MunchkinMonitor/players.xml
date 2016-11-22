@@ -1,16 +1,5 @@
 <?xml version="1.0"?>
-<ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Player>
-    <PlayerID>1</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Dave</FirstName>
-    <LastName>Rudolph</LastName>
-    <NickName />
-    <customImagePath />
-    <Victories>0</Victories>
-    <Kills>0</Kills>
-    <Treasures>0</Treasures>
-  </Player>
+<ArrayOfPlayer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Player>
     <PlayerID>2</PlayerID>
     <Gender>Male</Gender>
@@ -21,6 +10,7 @@
     <Victories>0</Victories>
     <Kills>0</Kills>
     <Treasures>0</Treasures>
+    <Assists>1</Assists>
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
@@ -32,6 +22,7 @@
     <Victories>0</Victories>
     <Kills>0</Kills>
     <Treasures>0</Treasures>
+    <Assists>0</Assists>
   </Player>
   <Player>
     <PlayerID>4</PlayerID>
@@ -43,5 +34,18 @@
     <Victories>0</Victories>
     <Kills>0</Kills>
     <Treasures>0</Treasures>
+    <Assists>0</Assists>
+  </Player>
+  <Player>
+    <PlayerID>1</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Dave</FirstName>
+    <LastName>Rudolph</LastName>
+    <NickName />
+    <customImagePath />
+    <Victories>0</Victories>
+    <Kills>3</Kills>
+    <Treasures>4</Treasures>
+    <Assists>0</Assists>
   </Player>
 </ArrayOfPlayer>

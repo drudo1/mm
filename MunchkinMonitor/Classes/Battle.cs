@@ -233,11 +233,11 @@ namespace MunchkinMonitor.Classes
                     result.assistedBy = ally;
                     result.assistLevels = AssistLevels;
                     result.assistTreasures = allyTreasures;
+                    ally.CurrentLevel += AssistLevels;
+                    ally.Treasures += allyTreasures;
                 }
                 gamePlayer.CurrentLevel += result.levelsWon;
-                ally.CurrentLevel += AssistLevels;
                 gamePlayer.NextBattleModifier = 0;
-                ally.Treasures += allyTreasures;
                 gamePlayer.Treasures += result.treasuresWon;
                 Logger.LogBattleVictory(result);
             }

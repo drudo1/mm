@@ -9,7 +9,8 @@ namespace MunchkinMonitor.Classes
     public enum AppStates
     {
         TournamentScoreBoard,
-        Game
+        Game,
+        GameResults
     }
 
     [Serializable]
@@ -37,10 +38,12 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
+                if (playerStats == null)
+                    LoadPlayers();
                 if (gameState != null && gameState.players != null)
-                    return playerStats.players.Where(p => !gameState.players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).ToList();
+                    return playerStats.players.Where(p => !gameState.players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).OrderBy(p => p.DisplayName).ToList();
                 else
-                    return playerStats.players;
+                    return playerStats.players.OrderBy(p => p.DisplayName).ToList();
             }
         }
 

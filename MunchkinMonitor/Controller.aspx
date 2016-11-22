@@ -19,6 +19,8 @@
             if (getUpdate) {
                 objectCopy(data.run('GetCurrentAppState'), appData);
             }
+            if (appData.currentStateDescription == "TournamentScoreBoard")
+                window.location = "GameResults.aspx";
         };
         $(document).ready(function () {
             $('#btnNewGame').click(function () {
@@ -293,6 +295,10 @@
                 mIdx = data.run('CompleteBattle');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
+            $('#btnEndGame').click(function () {
+                data.run('EndGame');
+                objectCopy(data.run('GetCurrentAppState'), appData);
+            });
         });
     </script>
     <img src="Images/controllerBG.jpg" id="bg" alt="">
@@ -426,6 +432,11 @@
                             </div>
                             <div class="col-xs-4">
                                 <input type="button" id="btnSteeds" class="btn mkn btn-xs" value="Steeds" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="button" id="btnEndGame" class="btn mkn btn-xs" value="End Game" />
                             </div>
                         </div>
                     </div>

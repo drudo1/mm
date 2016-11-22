@@ -495,7 +495,10 @@ namespace MunchkinMonitor.Services
         {
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
+            {
                 state.gameState.ResolveBattle();
+                state.Update();
+            }
         }
 
         [WebMethod]
@@ -506,6 +509,7 @@ namespace MunchkinMonitor.Services
             {
                 state.gameState.currentBattle = null;
                 state.gameState.SetState(GameStates.BattlePrep);
+                state.Update();
             }
         }
 
