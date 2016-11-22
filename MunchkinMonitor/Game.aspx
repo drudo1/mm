@@ -217,7 +217,7 @@
         <div class="col-lg-8">
             <div id="divCurrentAction">
                 <div id="divBattle" class="statePanels" style="display:none;">
-                    <div class="row" style="text-align:center; font-size:60px;">VS</div>
+                    <div class="row mkn" style="text-align:center; font-size:60px;">VS</div>
                     <div class="row" style="height:8px; background-color: #350400;">&nbsp;</div>
                     <div class="row" style="min-height:500px;">
                         <div class="col-lg-6 mkn battleLeft" >

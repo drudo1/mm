@@ -188,11 +188,11 @@ div.gamePlayerList {
 }
 div.battleLeft {
     border-right: 2px solid #350400;
-    height: 800px;
+    height: 750px;
 }
 div.battleRight {
     border-left: 2px solid #350400;
-    height: 800px;
+    height: 750px;
 }
 .hide {
     display: none;
