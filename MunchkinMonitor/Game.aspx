@@ -251,10 +251,10 @@
                             </div>
                             <div class="row" style="position:absolute; bottom:0">
                                 <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerWins.jpg" style="height:100px" />
+                                    <img src="Images/playerWins.png" style="height:250px" />
                                 </div>
                                 <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerLoses.jpg" style="height:100px" />
+                                    <img src="Images/playerLoses.png" style="height:250px" />
                                 </div>
                             </div>
                         </div>
@@ -283,10 +283,10 @@
                             </div>
                             <div class="row" style="position:absolute; bottom:0">
                                 <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/monsterLoses.jpg" style="height:100px" />
+                                    <img src="Images/monsterLoses.png" style="height:250px" />
                                 </div>
                                 <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/monsterWins.png" style="height:100px" />
+                                    <img src="Images/monsterWins.png" style="height:250px" />
                                 </div>
                             </div>
                         </div>
