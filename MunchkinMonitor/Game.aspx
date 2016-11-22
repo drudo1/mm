@@ -250,11 +250,11 @@
                                 </div>
                             </div>
                             <div class="row" style="position:absolute; bottom:0">
-                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerWins.png" style="height:250px" />
+                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                    <img src="Images/playerWins.png" style="height:250px;" />
                                 </div>
-                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerLoses.png" style="height:250px" />
+                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                    <img src="Images/playerLoses.png" style="height:250px;" />
                                 </div>
                             </div>
                         </div>
@@ -281,12 +281,12 @@
                                     <h1>Total: {appData.gameState.currentBattle.opponentPoints}</h1>
                                 </div>
                             </div>
-                            <div class="row" style="position:absolute; bottom:0">
-                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/monsterLoses.png" style="height:250px" />
+                            <div class="row" style="position:absolute; bottom:0;">
+                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                    <img src="Images/monsterLoses.png" style="height:250px;" />
                                 </div>
-                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin">
-                                    <img src="Images/monsterWins.png" style="height:250px" />
+                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                    <img src="Images/monsterWins.png" style="height:250px;" />
                                 </div>
                             </div>
                         </div>
