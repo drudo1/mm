@@ -132,6 +132,7 @@ namespace MunchkinMonitor.Services
                 if (state.gameState.currentPlayer != null)
                 {
                     state.gameState.currentPlayer.GearBonus += amount;
+                    GameStats.LogMaxGear(state.gameState.currentPlayer.currentPlayer.PlayerID, state.gameState.currentPlayer.GearBonus);
                     state.Update();
                 }
             }
@@ -327,6 +328,7 @@ namespace MunchkinMonitor.Services
                     if (state.gameState.currentPlayer.CurrentLevel > 1)
                     {
                         state.gameState.currentPlayer.CurrentLevel--;
+                        GameStats.LogLevelLost(state.gameState.currentPlayer.currentPlayer.PlayerID);
                         state.Update();
                     }
                 }
@@ -518,6 +520,12 @@ namespace MunchkinMonitor.Services
         {
             AppState state = AppState.CurrentState();
             state.EndGame();
+        }
+
+        [WebMethod]
+        public void Reset()
+        {
+            HttpContext.Current.Application["CurrentState"] = null;
         }
     }
 }

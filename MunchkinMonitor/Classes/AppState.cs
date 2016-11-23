@@ -19,6 +19,7 @@ namespace MunchkinMonitor.Classes
         public AppStates currentState { get; set; }
         public Game gameState { get; set; }
         public PlayerStats playerStats { get; set; }
+        public GameResults gameResults { get; set; }
         public DateTime stateUpdated { get; set; }
         public string currentStateDescription
         {
@@ -74,13 +75,19 @@ namespace MunchkinMonitor.Classes
         public void EndGame()
         {
             gameState.LogWinner();
-            LoadScoreboard();
+            LoadGameResults();
         }
 
         public void LoadScoreboard()
         {
             playerStats = new PlayerStats();
             SetState(AppStates.TournamentScoreBoard);
+        }
+
+        public void LoadGameResults()
+        {
+            gameResults = new GameResults();
+            SetState(AppStates.GameResults);
         }
 
         public void LoadPlayers()

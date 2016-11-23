@@ -19,8 +19,6 @@
             if (getUpdate) {
                 objectCopy(data.run('GetCurrentAppState'), appData);
             }
-            if (appData.currentStateDescription == "TournamentScoreBoard")
-                window.location = "GameResults.aspx";
         };
         $(document).ready(function () {
             $('#btnNewGame').click(function () {

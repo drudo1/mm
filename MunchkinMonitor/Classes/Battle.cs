@@ -239,12 +239,12 @@ namespace MunchkinMonitor.Classes
                 gamePlayer.CurrentLevel += result.levelsWon;
                 gamePlayer.NextBattleModifier = 0;
                 gamePlayer.Treasures += result.treasuresWon;
-                Logger.LogBattleVictory(result);
             }
             else
             {
                 result.Victory = false;
             }
+            Logger.LogBattle(result);
         }
     }
 

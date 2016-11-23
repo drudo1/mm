@@ -7,15 +7,18 @@ namespace MunchkinMonitor.Classes
 {
     public class Logger
     {
-        internal static void LogBattleVictory(BattleResult br)
+        internal static void LogBattle(BattleResult br)
         {
             AppState state = AppState.CurrentState();
-            state.playerStats.LogBattleVictory(br);
+            GameStats.LogBattle(br);
+            if(br.Victory)
+                state.playerStats.LogBattleVictory(br);
         }
         internal static void LogVictory(int playerID)
         {
             AppState state = AppState.CurrentState();
             state.playerStats.LogVictory(playerID);
+            GameStats.LogVictory(playerID);
         }
     }
 }

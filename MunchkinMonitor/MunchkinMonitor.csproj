@@ -148,6 +148,7 @@
   <ItemGroup>
     <Content Include="Controller.aspx" />
     <Content Include="Game.aspx" />
+    <Content Include="GameResults.aspx" />
     <Content Include="Images\controllerBG.jpg" />
     <Content Include="Images\gameBG.jpg" />
     <Content Include="Images\monsterLoses.jpg" />
@@ -216,6 +217,8 @@
     <Compile Include="Classes\CharacterHelper.cs" />
     <Compile Include="Classes\CurrentGamePlayer.cs" />
     <Compile Include="Classes\Game.cs" />
+    <Compile Include="Classes\GameResults.cs" />
+    <Compile Include="Classes\GameStats.cs" />
     <Compile Include="Classes\GameTypes.cs" />
     <Compile Include="Classes\Logger.cs" />
     <Compile Include="Classes\Monster.cs" />
@@ -235,6 +238,13 @@
     </Compile>
     <Compile Include="Game.aspx.designer.cs">
       <DependentUpon>Game.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GameResults.aspx.cs">
+      <DependentUpon>GameResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GameResults.aspx.designer.cs">
+      <DependentUpon>GameResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScoreBoard.aspx.cs">
       <DependentUpon>ScoreBoard.aspx</DependentUpon>

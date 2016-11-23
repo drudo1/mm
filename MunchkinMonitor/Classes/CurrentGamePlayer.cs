@@ -241,6 +241,7 @@ namespace MunchkinMonitor.Classes
         {
             CurrentGender = CurrentGender == Gender.Male ? Gender.Female : Gender.Male;
             NextBattleModifier -= penalty;
+            GameStats.LogGenderChange(currentPlayer.PlayerID);
         }
 
         public void Die()
@@ -251,6 +252,7 @@ namespace MunchkinMonitor.Classes
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
             SuperMunchkin = false;
             CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
+            GameStats.LogDeath(currentPlayer.PlayerID);
         }
 
         public void AddHelper (bool steed, int bonus)

@@ -29,8 +29,8 @@
             },
             Updates: {
                 Redirect: function () {
-                    if (appData.currentStateDescription == "TournamentScoreBoard")
-                        window.location = "ScoreBoard.aspx";
+                    if (appData.currentStateDescription == "GameResults")
+                        window.location = "GameResults.aspx";
                 },
                 ChangePlayer: function () {
                     if (pageMethods.playerChanged()) {
@@ -292,7 +292,18 @@
                         </div>
                     </div>
                 </div>
-                <div id="divBattleResults" class="statePanels" style="display:none;"></div>
+                <div id="divBattleResults" class="statePanels" style="display:none;">
+                    <div class="row">
+                        <div class="col-lg-12 mkn playerRow" style="text-align:center;">
+                            <h1 rv-text="appData.gameState.currentBattle.result.Message"></h1>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-lg-12 mkn" rv-each-result="appData.gameState.currentBattle.result.battleResults" style="text-align:center;">
+                            <h2 rv-text="result"></h2>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
