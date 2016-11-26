@@ -228,6 +228,7 @@ namespace MunchkinMonitor.Classes
                 result.NumDefeated = opponents.Count;
                 result.levelsWon = LevelsAtStake;
                 result.treasuresWon = (TotalTreasures - allyTreasures);
+                result.opponentPoints = opponentPoints;
                 if(ally != null)
                 {
                     result.assistedBy = ally;

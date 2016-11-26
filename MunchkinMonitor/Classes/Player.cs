@@ -27,6 +27,7 @@ namespace MunchkinMonitor.Classes
         public int Kills { get; set; }
         public int Treasures { get; set; }
         public int Assists { get; set; }
+        public int GamesPlayed { get; set; }
         public int Score
         {
             get

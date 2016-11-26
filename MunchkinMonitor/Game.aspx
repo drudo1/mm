@@ -17,6 +17,13 @@
                 pageMethods.TriggerChange();
             }
         };
+        function S4() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
+        function newGuid() {
+            guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+            return guid;
+        }
         var local = {};
         var pageMethods = {
             TriggerChange: function () {
@@ -31,6 +38,8 @@
                 Redirect: function () {
                     if (appData.currentStateDescription == "GameResults")
                         window.location = "GameResults.aspx";
+                    if (appData.currentStateDescription == "TournamentScoreBoard")
+                        window.location = "ScoreBoard.aspx";
                 },
                 ChangePlayer: function () {
                     if (pageMethods.playerChanged()) {
@@ -55,28 +64,35 @@
             },
             UpdatePlayer: function () {
                 var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
-                if (pageState.currentPlayerID && $('#divPlayer_' + pageState.currentPlayerID).length) {
-                    $('#divPlayer_' + pageState.currentPlayerID).hide('slide', { direction: 'left' }, 500);
-                    $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
-                    $('#divPlayer_' + pageState.currentPlayerID).remove();
-                    $('#divPlayer_' + pageState.currentPlayerID + '_reminders').remove();
-                    $('.ui-effects-placeholder').remove();
+                var guid = newGuid();
+                if (pageState.currentPlayerID && $('#divPlayer_' + pageState.currentPlayerID + '_' + pageState.currentGuid).length) {
+                    $('.playerPanel').hide('slide', { direction: 'left' });
+                    $('.reminderPanel').hide('slide', { direction: 'left' });
+                    $('.playerPanel').remove();
+                    $('.reminderPanel').remove();
                 }
-                $(pageMethods.playerTemplate.replace('divPlayer_template', 'divPlayer_' + newPID).replace('divPlayer_template', 'divPlayer_' + newPID)).prependTo('#divCurrentAction');
-                rivets.bind($('#divPlayer_' + newPID), { appData: appData })
-                rivets.bind($('#divPlayer_' + newPID + '_reminders'), { appData: appData })
                 if (appData.gameState.currentPlayer.hasTurnReminders) {
-                    $('#divPlayer_' + newPID + '_reminders').show('slide', { direction: 'right' }, 500);
+                    $(pageMethods.playerRemindersTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
+                    rivets.bind($('#divPlayer_' + newPID + '_' + guid + '_reminders'), { appData: appData })
+                    $('#divPlayer_' + newPID + '_' + guid + '_reminders').show('slide', { direction: 'right' });
+                    $('.ui-effects-placeholder').remove();
                     setTimeout(function () {
-                        $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
-                        $('#divPlayer_' + newPID + '_reminders').hide('slide', { direction: 'left' }, 500);
-                        $('#divPlayer_' + newPID + '_reminders').remove();
+                        $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
+                        rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
+                        $('#divPlayer_' + newPID + '_' + guid + '_reminders').hide('slide', { direction: 'left' });
+                        $('#divPlayer_' + newPID + '_' + guid + '_reminders').remove();
                         $('.ui-effects-placeholder').remove();
+                        $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
                     }, 15000);
                 }
-                else
-                    $('#divPlayer_' + newPID).show('slide', { direction: 'right' }, 500);
+                else {
+                    $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
+                    rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
+                    $('.ui-effects-placeholder').remove();
+                    $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
+                }
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                pageState.currentGuid = guid;
             },
             gameStateChanged: function () {
                 var result = false;
@@ -106,7 +122,7 @@
                 }
 
             },
-            playerTemplate: '<div id="divPlayer_template" rv-if="appData.gameState.hasCurrentPlayer" class="battlePrep mkn playerPanel" style="display:none;">'
+            playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
                              +'         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
@@ -177,9 +193,9 @@
                              +'        <h1>Fighting Level</h1>'
                              + '        <div class="mknFightingLevel" style="border:2px solid #350400; padding:12px; width:150px;">{appData.gameState.currentPlayer.FightingLevel}</div>'
                              +'    </div>'
-                             +'</div>'
-                             +'</div>'
-                             +'<div id="divPlayer_template_reminders" class="mkn" style="display:none;">'
+                             +' </div>'
+                             +'</div>',
+            playerRemindersTemplate: '<div id="divPlayer_template_reminders" class="mkn reminderPanel" style="display:none;">'
                              +'    <div class="row">'
                              +'        <div class="col-lg-12 mkn">'
                              +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
@@ -193,6 +209,7 @@
         };
         var pageState = {
             currentPlayerID: -1,
+            currentGuid: '',
             currentGameState: -1
         };
         $(document).ready(function () {
@@ -260,10 +277,10 @@
                         </div>
                         <div class="col-lg-6 mkn battleRight">                            
                             <div class="row playerRow" rv-each-monster="appData.gameState.currentBattle.opponents">
-                                <div class="col-md-6 mkn playerRow">
+                                <div class="col-md-6 mkn playerRow" style="padding-top:8px;">
                                     Level: {monster.Level}
                                 </div>
-                                <div class="col-md-6 mkn playerRow">
+                                <div class="col-md-6 mkn playerRow" style="padding-top:8px;">
                                     Bonus: {monster.OneTimeBonus}
                                 </div>
                                 <div class="col-md-6 mkn playerRow">

@@ -151,10 +151,10 @@
     <Content Include="GameResults.aspx" />
     <Content Include="Images\controllerBG.jpg" />
     <Content Include="Images\gameBG.jpg" />
-    <Content Include="Images\monsterLoses.jpg" />
+    <Content Include="Images\monsterLoses.png" />
     <Content Include="Images\monsterWins.png" />
-    <Content Include="Images\playerLoses.jpg" />
-    <Content Include="Images\playerWins.jpg" />
+    <Content Include="Images\playerLoses.png" />
+    <Content Include="Images\playerWins.png" />
     <Content Include="Images\scoreboardBG.jpg" />
     <Content Include="Scripts\datalayer.js" />
     <Content Include="Scripts\globalFunctions.js" />
@@ -200,6 +200,7 @@
     <Content Include="ScoreBoard.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
+    <Content Include="Test.aspx" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Styles\quasimodo.ttf" />
@@ -217,7 +218,6 @@
     <Compile Include="Classes\CharacterHelper.cs" />
     <Compile Include="Classes\CurrentGamePlayer.cs" />
     <Compile Include="Classes\Game.cs" />
-    <Compile Include="Classes\GameResults.cs" />
     <Compile Include="Classes\GameStats.cs" />
     <Compile Include="Classes\GameTypes.cs" />
     <Compile Include="Classes\Logger.cs" />
@@ -267,6 +267,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Test.aspx.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test.aspx.designer.cs">
+      <DependentUpon>Test.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

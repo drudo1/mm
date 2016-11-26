@@ -21,7 +21,7 @@ namespace MunchkinMonitor.Classes
             {
                 using (FileStream stream = File.OpenRead(path))
                 {
-                    players = ((List<Player>)serializer.Deserialize(stream)).OrderBy(p => p.Score).ToList();
+                    players = ((List<Player>)serializer.Deserialize(stream)).OrderByDescending(p => p.Score).ThenBy(p => p.DisplayName).ToList();
                 }
             }
             else
@@ -69,10 +69,10 @@ namespace MunchkinMonitor.Classes
         {
             foreach (Player p in players)
             {
+                p.GamesPlayed++;
                 if (p.PlayerID == playerID)
                 {
                     p.Victories++;
-                    break;
                 }
             }
 

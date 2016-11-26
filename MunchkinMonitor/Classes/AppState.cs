@@ -19,7 +19,6 @@ namespace MunchkinMonitor.Classes
         public AppStates currentState { get; set; }
         public Game gameState { get; set; }
         public PlayerStats playerStats { get; set; }
-        public GameResults gameResults { get; set; }
         public DateTime stateUpdated { get; set; }
         public string currentStateDescription
         {
@@ -42,9 +41,9 @@ namespace MunchkinMonitor.Classes
                 if (playerStats == null)
                     LoadPlayers();
                 if (gameState != null && gameState.players != null)
-                    return playerStats.players.Where(p => !gameState.players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).OrderBy(p => p.DisplayName).ToList();
+                    return playerStats.players.Where(p => !gameState.players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).OrderByDescending(p => p.GamesPlayed).ThenBy(p => p.DisplayName).ToList();
                 else
-                    return playerStats.players.OrderBy(p => p.DisplayName).ToList();
+                    return playerStats.players.OrderByDescending(p => p.GamesPlayed).ThenBy(p => p.DisplayName).ToList();
             }
         }
 
@@ -72,10 +71,15 @@ namespace MunchkinMonitor.Classes
             SetState(AppStates.Game);
         }
 
+        public void CancelGame()
+        {
+            SetState(AppStates.TournamentScoreBoard);
+        }
+
         public void EndGame()
         {
             gameState.LogWinner();
-            LoadGameResults();
+            SetState(AppStates.GameResults);
         }
 
         public void LoadScoreboard()
@@ -84,10 +88,9 @@ namespace MunchkinMonitor.Classes
             SetState(AppStates.TournamentScoreBoard);
         }
 
-        public void LoadGameResults()
+        public List<Trophy> GetGameResults()
         {
-            gameResults = new GameResults();
-            SetState(AppStates.GameResults);
+            return GameStats.GetTrophies();
         }
 
         public void LoadPlayers()

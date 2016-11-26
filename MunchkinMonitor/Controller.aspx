@@ -31,9 +31,9 @@
                 appData.currentState = 1;
                 data.run('NewGame', { isEpic: 'true' });
             });
-            $('#btnEndGame').click(function () {
+            $('#btnCancelGame').click(function () {
                 appData.currentState = 0;
-                data.run('EndGame');
+                data.run('CancelGame');
             });
             $('#btnAddPlayer').click(function () {
                 if ($('#ddlPlayers').val() != -1) {
@@ -315,7 +315,7 @@
                 <input id="btnAddPlayer" type="button" class="btn mkn" value="Add Player" /><br />
                 <div class="row">
                     <div class="col-xs-6" style="text-align:center">
-                        <input id="btnEndGame" type="button" class="btn mkn" value="Cancel" style="font-size:30px;" />
+                        <input id="btnCancelGame" type="button" class="btn mkn" value="Cancel" style="font-size:30px;" />
                     </div>
                     <div class="col-xs-6" style="text-align:center">
                         <input id="btnStartGame" type="button" class="btn mkn" value="GO!" style="font-size:30px;" />

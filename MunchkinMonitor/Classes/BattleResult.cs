@@ -29,23 +29,23 @@ namespace MunchkinMonitor.Classes
             {
                 List<string> victoryMessages = new List<string>
                 {
-                    "WTF!<br/>I WON?",
+                    "WTF!\r\nI WON?",
                     "I LOVE THE SMELL OF VICTORY IN THE MORNING.",
-                    "THANK GOD!<BR/>I SURVIVED!!!",
+                    "THANK GOD!\r\nI SURVIVED!!!",
                     "FI-YAH POW-AH!!!",
                     "IS IT OKAY TO GLOAT NOW?",
-                    "I WAS TOLD THER WOULD BE CAKE...",
-                    "MMMM...<BR/>YOUR TEARS ARE SO YUMMY AND SWEET.",
+                    "I WAS TOLD THERE WOULD BE CAKE...",
+                    "MMMM...\r\nYOUR TEARS ARE SO YUMMY AND SWEET.",
                     "AND THE PEASANTS REJOICED...",
                     "TRY TO KEEP UP.",
                     "WINNERS NEVER FLY HIGHER THAN WHEN THEY'RE BOUNCING UP AND DOWN ON THE EGOS OF THOSE THEY'VE DEFEATED.",
                     "BOO-YAH!",
-                    "I LOVE WINNING!<BR />WINNING'S MY FAVORITE!",
+                    "I LOVE WINNING!\r\nWINNING'S MY FAVORITE!",
                     "UMMMM... WINNING!",
-                    "ONE DAY I WILL STOP WINNING...<BR />BUT TODAY IS NOT THAT DAY!",
+                    "ONE DAY I WILL STOP WINNING...\r\nBUT TODAY IS NOT THAT DAY!",
                     "SO MUCH WIN!",
-                    "IT'S NOT ABOUT WINNING...<BR />IT'S ABOUT SENDING A MESSAGE.",
-                    "WHO'S AWESOME?<BR />YOU'RE AWESOME!"
+                    "IT'S NOT ABOUT WINNING...\r\nIT'S ABOUT SENDING A MESSAGE.",
+                    "WHO'S AWESOME?\r\nYOU'RE AWESOME!"
                 };
                 List<string> loserMessages = new List<string>
                 {
@@ -59,25 +59,25 @@ namespace MunchkinMonitor.Classes
                     "ALL WE ASK IS THAT YOU GIVE US YOUR HEART.",
                     "I EXPECTED TIMES LIKE THIS, BUT I NEVER THOUGHT THEY'D BE SO BAD, SO LONG, AND SO FREQUENT.",
                     "THAT WHICH DOES NOT KILL ME ONLY POSTPONES THE INEVITABLE.",
-                    "AGONY<BR/>NOT ALL PAIN IS GAIN",
+                    "AGONY\r\nNOT ALL PAIN IS GAIN",
                     "THE SECRET TO SUCCESS IS KNOWING WHO TO BLAME FOR YOUR FAILURES.",
                     "EVERY MAN DIES, BUT NOT EVERY MAN TRULY LIVES ONLY TO DIE OF SHEER STUPIDITY.",
                     "FOR EVERY WINNER THERE ARE DOZENS OF LOSERS... ODDS ARE GOOD YOU'RE ONE OF THEM.",
                     "IT'S ALWAYS DARKEST JUST BEFORE IT GOES PITCH BLACK.",
-                    "FAILURE<BR />WHEN YOUR BEST JUST ISN'T GOOD ENOUGH.",
-                    "GIVE UP<BR />AT SOME POINT HANGING IN THERE JUST MAKES YOU LOOK LIKE AN EVEN BIGGER LOSER.",
-                    "THE HARDER YOU TRY<BR />THE DUMBER YOU LOOK.",
+                    "FAILURE\r\nWHEN YOUR BEST JUST ISN'T GOOD ENOUGH.",
+                    "GIVE UP\r\nAT SOME POINT HANGING IN THERE JUST MAKES YOU LOOK LIKE AN EVEN BIGGER LOSER.",
+                    "THE HARDER YOU TRY\r\nTHE DUMBER YOU LOOK.",
                     "WHEN YOU EARNESTLY BELIEVE YOU CAN COMPENSATE FOR A LACK OF SKILL BY DOUBLING YOUR EFFORTS, THERE'S NO END TO WHAT YOU CAN'T DO.",
                     "IF YOU CAN'T LEARN TO DO SOMETHING WELL, LEARN TO ENJOY DOING IT POORLY.",
-                    "WHEN THE GOING GETS TOUGH, THE TOUGH GET GOING...<BR/>THE SMART LEFT A LONG TIME AGO.",
-                    "NO ONE CAN MAKE YOU FEEL INFERIOR WITHOUT YOUR CONSENT.<BR />BUT YOU'D BE A FOOL TO WITHHOLD THAT FROM YOUR SUPERIORS.",
-                    "IF AT FIRST YOU DON'T SUCEEED...<BR />LOSING MAY JUST BE YOUR STYLE.",
+                    "WHEN THE GOING GETS TOUGH, THE TOUGH GET GOING...\r\nTHE SMART LEFT A LONG TIME AGO.",
+                    "NO ONE CAN MAKE YOU FEEL INFERIOR WITHOUT YOUR CONSENT.\r\nBUT YOU'D BE A FOOL TO WITHHOLD THAT FROM YOUR SUPERIORS.",
+                    "IF AT FIRST YOU DON'T SUCEEED...\r\nLOSING MAY JUST BE YOUR STYLE.",
                     "SOME THINGS CANNOT BE OVERCOME WITH DETERMINATION AND A POSITIVE ATTITUDE.",
                     "BEFORE YOU ATTEMPT TO BEAT THE ODDS, BE SURE YOU CAN SURVIVE THE ODDS BEATING YOU.",
                     "PAIN IS JUST WEEKNESS LEAVING THE BODY... LOTS OF WEEKNESS.",
                     "QUITTERS NEVER WIN, WINNERS NEVER QUIT, BUT THOSE WHO NEVER WIN AND NEVER QUIT ARE IDIOTS."
                 };
-                Random r = new Random(Convert.ToInt32(DateTime.Now));
+                Random r = new Random(Environment.TickCount);
                 if (Victory)
                 {
                     int idx = r.Next(0, victoryMessages.Count - 1);
@@ -108,5 +108,7 @@ namespace MunchkinMonitor.Classes
                 return results;
             }
         }
+
+        public int opponentPoints { get; internal set; }
     }
 }
