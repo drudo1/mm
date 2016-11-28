@@ -1,7 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Game.aspx.cs" Inherits="MunchkinMonitor.Game" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
      <script type="text/javascript">
-        var appData = null;
+         var appData = null;
+         var timeout = null;
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
@@ -65,25 +66,29 @@
             UpdatePlayer: function () {
                 var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
                 var guid = newGuid();
-                if (pageState.currentPlayerID && $('#divPlayer_' + pageState.currentPlayerID + '_' + pageState.currentGuid).length) {
-                    $('.playerPanel').hide('slide', { direction: 'left' });
-                    $('.reminderPanel').hide('slide', { direction: 'left' });
-                    $('.playerPanel').remove();
-                    $('.reminderPanel').remove();
-                }
+                $('.playerPanel').hide('slide', { direction: 'left' });
+                $('.reminderPanel').hide('slide', { direction: 'left' });
+                $('.playerPanel').remove();
+                $('.reminderPanel').remove();
                 if (appData.gameState.currentPlayer.hasTurnReminders) {
                     $(pageMethods.playerRemindersTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
                     rivets.bind($('#divPlayer_' + newPID + '_' + guid + '_reminders'), { appData: appData })
-                    $('#divPlayer_' + newPID + '_' + guid + '_reminders').show('slide', { direction: 'right' });
+                    $($('#divPlayer_' + newPID + '_' + guid + '_reminders').get(0)).show('slide', { direction: 'right' });
                     $('.ui-effects-placeholder').remove();
-                    setTimeout(function () {
-                        $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
-                        rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
-                        $('#divPlayer_' + newPID + '_' + guid + '_reminders').hide('slide', { direction: 'left' });
-                        $('#divPlayer_' + newPID + '_' + guid + '_reminders').remove();
-                        $('.ui-effects-placeholder').remove();
-                        $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
-                    }, 15000);
+
+                    if(timeout != null)
+                        clearTimeout(timeout);
+                    timeout =
+                        setTimeout(function () {
+                            $('.playerPanel').hide('slide', { direction: 'left' });
+                            $('.reminderPanel').hide('slide', { direction: 'left' });
+                            $('.playerPanel').remove();
+                            $('.reminderPanel').remove();
+                            $('.ui-effects-placeholder').remove();
+                            $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
+                            rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
+                            $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
+                        }, 15000);
                 }
                 else {
                     $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');

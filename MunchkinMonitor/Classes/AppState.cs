@@ -52,6 +52,7 @@ namespace MunchkinMonitor.Classes
             if (HttpContext.Current.Application["CurrentState"] == null)
             {
                 AppState state = new AppState();
+                //state.LoadScoreboard();
                 state.SetState(AppStates.TournamentScoreBoard);
                 HttpContext.Current.Application["CurrentState"] = state;
             }

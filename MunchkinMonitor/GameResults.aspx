@@ -19,13 +19,13 @@
         });
         function DisplayTrophy (trophyIdx) {
             if ($('#divTrophy_' + curTrophy).length) {
-                $('#divTrophy_' + curTrophy).hide('slide', { direction: 'left' }, 500);
+                $('#divTrophy_' + curTrophy).hide('slide', { direction: 'left' });
                 $('#divTrophy_' + curTrophy).remove();
                 $('.ui-effects-placeholder').remove();
             }
             $(trophyTemplate.replace('divTrophy_template', 'divTrophy_' + trophyIdx)).prependTo('#divCurrentTrophy');
             rivets.bind($('#divTrophy_' + trophyIdx), { trophy: trophies[trophyIdx] });
-            $('#divTrophy_' + trophyIdx).show('slide', { direction: 'right' }, 500);
+            $('#divTrophy_' + trophyIdx).show('slide', { direction: 'right' });
             curTrophy = trophyIdx;
         }
     </script>

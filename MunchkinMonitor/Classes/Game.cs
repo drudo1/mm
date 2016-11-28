@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
+using System.Xml.Serialization;
 
 namespace MunchkinMonitor.Classes
 {
@@ -50,7 +53,18 @@ namespace MunchkinMonitor.Classes
 
         public void AddExistingPlayer(int id)
         {
-            players.Add(new CurrentGamePlayer(Player.GetPlayerByID(id)));
+            string path = HttpContext.Current.Server.MapPath("~/ ") + "players.xml";
+            Player p = null;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    List<Player> players = (List<Player>)serializer.Deserialize(stream);
+                    p = players.Where(x => x.PlayerID == id).FirstOrDefault();
+                }
+            }
+            players.Add(new CurrentGamePlayer(p));
             lastUpdated = DateTime.Now;
         }
 

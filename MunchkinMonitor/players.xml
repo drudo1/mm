@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<ArrayOfPlayer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Player>
     <PlayerID>1</PlayerID>
     <Gender>Male</Gender>
@@ -18,32 +18,6 @@
     <Gender>Male</Gender>
     <FirstName>Jeff</FirstName>
     <LastName>Beiermann</LastName>
-    <NickName />
-    <customImagePath />
-    <Victories>0</Victories>
-    <Kills>0</Kills>
-    <Treasures>0</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>0</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>3</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Ryan</FirstName>
-    <LastName>Schneider</LastName>
-    <NickName />
-    <customImagePath />
-    <Victories>0</Victories>
-    <Kills>0</Kills>
-    <Treasures>0</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>0</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>4</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Jeremy</FirstName>
-    <LastName>Curtis</LastName>
     <NickName />
     <customImagePath />
     <Victories>0</Victories>

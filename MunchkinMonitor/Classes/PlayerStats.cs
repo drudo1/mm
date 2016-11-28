@@ -34,7 +34,8 @@ namespace MunchkinMonitor.Classes
                     Kills = 0,
                     Treasures = 0,
                     PlayerID = -1,
-                    Assists = 0
+                    Assists = 0,
+                    GamesPlayed = 0
                 });
             }
         }
