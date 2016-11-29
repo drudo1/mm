@@ -87,6 +87,7 @@
                             $('.ui-effects-placeholder').remove();
                             $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
                             rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
+                            $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                             $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
                         }, 15000);
                 }
@@ -94,6 +95,7 @@
                     $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
                     rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
                     $('.ui-effects-placeholder').remove();
+                    $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                     $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
                 }
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;

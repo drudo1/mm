@@ -17,12 +17,15 @@ namespace MunchkinMonitor.Classes
     [Serializable]
     public class Player
     {
+        const string defaultMaleImage = "defaultMale.png";
+        const string defaultFemaleImage = "defaultFemale.png";
         public int PlayerID { get; set; }
         public Gender Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NickName { get; set; }
-        public string customImagePath { get; set; }
+        public string customImagePathMale { get; set; }
+        public string customImagePathFemale { get; set; }
         public int Victories { get; set; }
         public int Kills { get; set; }
         public int Treasures { get; set; }
@@ -44,7 +47,15 @@ namespace MunchkinMonitor.Classes
             }
         }
 
-        public static int AddNewPlayer(string firstName, string lastName, string nickName, Gender gender, string customPath)
+        public string ImagePath
+        {
+            get
+            {
+                return HttpContext.Current.Server.MapPath("~/Images/") + (Gender == Gender.Male ? (string.IsNullOrWhiteSpace(customImagePathMale) ? defaultMaleImage : ("Custom/" + customImagePathMale)) : (string.IsNullOrWhiteSpace(customImagePathFemale) ? defaultFemaleImage : ("Custom/" + customImagePathFemale)));
+            }
+        }
+
+        public static int AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
         {
             string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
             Player p = new Player
@@ -53,7 +64,6 @@ namespace MunchkinMonitor.Classes
                 FirstName = firstName,
                 LastName = lastName,
                 NickName = nickName,
-                customImagePath = customPath,
                 Victories = 0,
                 Kills = 0,
                 Treasures = 0

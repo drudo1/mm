@@ -71,7 +71,7 @@ namespace MunchkinMonitor.Services
             AppState state = AppState.CurrentState();
             if (state.gameState != null)
             {
-                state.gameState.AddNewPlayer(firstName, lastName, nickName, gender, "");
+                state.gameState.AddNewPlayer(firstName, lastName, nickName, gender);
                 state.Update();
             }
         }

@@ -150,6 +150,16 @@
     <Content Include="Game.aspx" />
     <Content Include="GameResults.aspx" />
     <Content Include="Images\controllerBG.jpg" />
+    <Content Include="Images\Custom\brianFemale.png" />
+    <Content Include="Images\Custom\brianMale.png" />
+    <Content Include="Images\Custom\daveFemale.png" />
+    <Content Include="Images\Custom\daveMale.png" />
+    <Content Include="Images\Custom\jeffFemale.png" />
+    <Content Include="Images\Custom\jeffMale.png" />
+    <Content Include="Images\Custom\jeremyFemale.png" />
+    <Content Include="Images\Custom\jeremyMale.png" />
+    <Content Include="Images\Custom\ryanFemale.png" />
+    <Content Include="Images\Custom\ryanMale.png" />
     <Content Include="Images\gameBG.jpg" />
     <Content Include="Images\monsterLoses.png" />
     <Content Include="Images\monsterWins.png" />
@@ -167,6 +177,8 @@
     <Content Include="Styles\bootstrap.css" />
     <Content Include="Styles\bootstrap.min.css" />
     <Content Include="Styles\Site.css" />
+    <Content Include="Images\Custom\femaleTemplate.pdn" />
+    <Content Include="Images\Custom\maleTemplate.pdn" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

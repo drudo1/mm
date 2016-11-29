@@ -68,9 +68,9 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
-        public void AddNewPlayer(string firstName, string lastName, string nickName, Gender gender, string customPath)
+        public void AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
         {
-            int id = Player.AddNewPlayer(firstName, lastName, nickName, gender, customPath);
+            int id = Player.AddNewPlayer(firstName, lastName, nickName, gender);
             AddExistingPlayer(id);
         }
 
