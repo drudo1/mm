@@ -6,7 +6,8 @@
     <FirstName>Dave</FirstName>
     <LastName>Rudolph</LastName>
     <NickName />
-    <customImagePath />
+    <customImagePathMale>daveMale.png</customImagePathMale>
+    <customImagePathFemale>daveFemale.png</customImagePathFemale>
     <Victories>0</Victories>
     <Kills>0</Kills>
     <Treasures>0</Treasures>
@@ -19,7 +20,50 @@
     <FirstName>Jeff</FirstName>
     <LastName>Beiermann</LastName>
     <NickName />
-    <customImagePath />
+    <customImagePathMale>jeffMale.png</customImagePathMale>
+    <customImagePathFemale>jeffFemale.png</customImagePathFemale>
+    <Victories>0</Victories>
+    <Kills>0</Kills>
+    <Treasures>0</Treasures>
+    <Assists>0</Assists>
+    <GamesPlayed>0</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>3</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Ryan</FirstName>
+    <LastName>Schneider</LastName>
+    <NickName />
+    <customImagePathMale>ryanMale.png</customImagePathMale>
+    <customImagePathFemale>ryanFemale.png</customImagePathFemale>
+    <Victories>0</Victories>
+    <Kills>0</Kills>
+    <Treasures>0</Treasures>
+    <Assists>0</Assists>
+    <GamesPlayed>0</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>4</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Jeremy</FirstName>
+    <LastName>Curtis</LastName>
+    <NickName />
+    <customImagePathMale>jeremyMale.png</customImagePathMale>
+    <customImagePathFemale>jeremyFemale.png</customImagePathFemale>
+    <Victories>0</Victories>
+    <Kills>0</Kills>
+    <Treasures>0</Treasures>
+    <Assists>0</Assists>
+    <GamesPlayed>0</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>5</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Brian</FirstName>
+    <LastName>Tanner</LastName>
+    <NickName />
+    <customImagePathMale>brianMale.png</customImagePathMale>
+    <customImagePathFemale>brianFemale.png</customImagePathFemale>
     <Victories>0</Victories>
     <Kills>0</Kills>
     <Treasures>0</Treasures>

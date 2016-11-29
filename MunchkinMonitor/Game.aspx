@@ -47,6 +47,11 @@
                         pageMethods.UpdatePlayer();
                     }
                 },
+                ChangeGender: function () {
+                    if (!pageMethods.playerChanged()) {
+                        $('.playerPanel').css('background-image', 'url(' + appData.gameState.currentPlayer.ImagePath + ')');
+                    }
+                },
                 ChangeGameState: function () {
                     if (pageMethods.gameStateChanged()) {
                         pageMethods.UpdateGameState();
@@ -87,7 +92,7 @@
                             $('.ui-effects-placeholder').remove();
                             $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
                             rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
-                            $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                            $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                             $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
                         }, 15000);
                 }
@@ -95,7 +100,7 @@
                     $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
                     rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
                     $('.ui-effects-placeholder').remove();
-                    $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                    $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                     $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
                 }
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
@@ -129,10 +134,10 @@
                 }
 
             },
-            playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none;">'
+            playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none; min-height:700px;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
-                             +'         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             +'         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">'
@@ -205,7 +210,7 @@
             playerRemindersTemplate: '<div id="divPlayer_template_reminders" class="mkn reminderPanel" style="display:none;">'
                              +'    <div class="row">'
                              +'        <div class="col-lg-12 mkn">'
-                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
                              +'        </div>'
                              +'    </div>'
                              +'    <ul>'

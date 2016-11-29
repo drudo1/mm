@@ -9,6 +9,8 @@ namespace MunchkinMonitor.Classes
     [Serializable]
     public class CurrentGamePlayer
     {
+        const string defaultMaleImage = "defaultMale.png";
+        const string defaultFemaleImage = "defaultFemale.png";
         public Player currentPlayer { get; set; }
         public bool HalfBreed { get; set; }
         public List<CharacterModifier> CurrentRaceList { get; set; }
@@ -234,6 +236,14 @@ namespace MunchkinMonitor.Classes
             get
             {
                 return Helpers.OrderBy(h => h.isHireling ? 1 : 2).ThenBy(h => h.Name).ToList();
+            }
+        }
+
+        public string ImagePath
+        {
+            get
+            {
+                return "Images/" + (CurrentGender == Gender.Male ? (string.IsNullOrWhiteSpace(currentPlayer.customImagePathMale) ? defaultMaleImage : ("Custom/" + currentPlayer.customImagePathMale)) : (string.IsNullOrWhiteSpace(currentPlayer.customImagePathFemale) ? defaultFemaleImage : ("Custom/" + currentPlayer.customImagePathFemale)));
             }
         }
 

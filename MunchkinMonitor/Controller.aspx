@@ -468,14 +468,19 @@
                     </div>
                 </div>
                 <div class="row" id="divGender" style="display:none;">
-                    <div class="col-xs-6">
-                        <input type="text" id="txtGenderPenalty" class="form-control" />
+                    <div class="row">
+                    <div class="col-xs-6 mkn">
+                        <h4>Penalty:</h4>
+                        <input type="text" id="txtGenderPenalty" class="form-control" value="0" />
                     </div>
                     <div class="col-xs-6">
                         <input type="button" id="btnChgGender" class="btn mkn" value="Change" />
                     </div>
+                    </div>
+                    <div class="row">
                     <div class="col-xs-12" >
                         <input type="button" class="btn mkn playerSetupHome" value="Go Back" />
+                    </div>
                     </div>
                 </div>
                 <div class="row" id="divHirelings" style="display:none;">

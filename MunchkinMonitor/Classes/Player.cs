@@ -17,8 +17,6 @@ namespace MunchkinMonitor.Classes
     [Serializable]
     public class Player
     {
-        const string defaultMaleImage = "defaultMale.png";
-        const string defaultFemaleImage = "defaultFemale.png";
         public int PlayerID { get; set; }
         public Gender Gender { get; set; }
         public string FirstName { get; set; }
@@ -44,14 +42,6 @@ namespace MunchkinMonitor.Classes
             {
                 AppState state = AppState.CurrentState();
                 return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0}{1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : (state.playerStats != null && state.playerStats.players.Where(p => p.FirstName == FirstName).Count() > 1) ? string.Format(" {0}.", LastName.Substring(0,1)) : "") : NickName;
-            }
-        }
-
-        public string ImagePath
-        {
-            get
-            {
-                return HttpContext.Current.Server.MapPath("~/Images/") + (Gender == Gender.Male ? (string.IsNullOrWhiteSpace(customImagePathMale) ? defaultMaleImage : ("Custom/" + customImagePathMale)) : (string.IsNullOrWhiteSpace(customImagePathFemale) ? defaultFemaleImage : ("Custom/" + customImagePathFemale)));
             }
         }
 
