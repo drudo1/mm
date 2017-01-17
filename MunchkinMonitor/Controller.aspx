@@ -517,7 +517,7 @@
                             <h3>{hireling.GearBonus}</h3>
                         </div>
                         <div class="col-xs-5 mkn">
-                            <h3>{hireling.Race}</h3>
+                            <h3>{hireling.RaceClass}</h3>
                         </div>
                     </div>
                     <div class="col-xs-6">
@@ -583,8 +583,11 @@
                         </div>
                     </div>
                     <div class="row" rv-show="helper.isHireling">
-                        <div class="col-xs-12 mkn" style="text-align:center;">
+                        <div class="col-xs-6 mkn" style="text-align:center;">
                             <input type="button" class="btn btn-xs mkn" id="btnChangeHelperRace" rv-value="helper.Race" />
+                        </div>
+                        <div class="col-xs-6 mkn" style="text-align:center;">
+                            <input type="button" class="btn btn-xs mkn" id="btnChangeHelperClass" rv-value="helper.Class" />
                         </div>
                     </div>
                     <div class="row" rv-show="helper.isHireling">

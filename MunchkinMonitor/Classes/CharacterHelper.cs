@@ -14,13 +14,35 @@ namespace MunchkinMonitor.Classes
         public bool isHireling { get; set; }
         public bool isSteed { get; set; }
         public int Bonus { get; set; }
-        public CharacterModifier Modifier { get; set; }
+        public CharacterModifier RaceModifier { get; set; }
+        public CharacterModifier ClassModifier { get; set; }
         public int GearBonus { get; set; }
+        public string RaceClass
+        {
+            get
+            {
+                if (RaceModifier == null && ClassModifier == null)
+                    return "None";
+                else if (RaceModifier == null)
+                    return ClassModifier.Description;
+                else if (ClassModifier == null)
+                    return RaceModifier.Description;
+                else
+                    return RaceModifier.Description + "/" + ClassModifier.Description;
+            }
+        }
         public string Race
         {
             get
             {
-                return Modifier == null ? "None" : Modifier.Description;
+                return RaceModifier == null ? "None" : RaceModifier.Description;
+            }
+        }
+        public string Class
+        {
+            get
+            {
+                return ClassModifier == null ? "None" : ClassModifier.Description;
             }
         }
 
@@ -34,7 +56,8 @@ namespace MunchkinMonitor.Classes
             isHireling = !steed;
             isSteed = steed;
             Bonus = bonus;
-            Modifier = steed ? null : CharacterModifier.GetRaceList()[0];
+            RaceModifier = steed ? null : CharacterModifier.GetRaceList()[0];
+            ClassModifier = steed ? null : CharacterModifier.GetClassList()[0];
         }
 
         public static List<string> GetNameList(bool steed)
@@ -94,9 +117,16 @@ namespace MunchkinMonitor.Classes
         public void ChangeRace()
         {
             List<CharacterModifier> list = CharacterModifier.GetRaceList();
-            int idx = list.IndexOf(Modifier);
+            int idx = list.IndexOf(RaceModifier);
             idx = (idx + 1) % list.Count;
-            Modifier = list[idx];
+            RaceModifier = list[idx];
+        }
+        public void ChangeClass()
+        {
+            List<CharacterModifier> list = CharacterModifier.GetClassList();
+            int idx = list.IndexOf(ClassModifier);
+            idx = (idx + 1) % list.Count;
+            ClassModifier = list[idx];
         }
     }
 }

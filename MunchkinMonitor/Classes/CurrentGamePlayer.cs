@@ -64,8 +64,10 @@ namespace MunchkinMonitor.Classes
 
                 foreach (CharacterHelper ch in Helpers)
                 {
-                    if(ch.Modifier != null)
-                        results.AddRange(ch.Modifier.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if(ch.RaceModifier != null)
+                        results.AddRange(ch.RaceModifier.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if (ch.ClassModifier != null)
+                        results.AddRange(ch.ClassModifier.turnReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
                 }
                 return results;
             }
@@ -97,8 +99,10 @@ namespace MunchkinMonitor.Classes
 
                 foreach (CharacterHelper ch in Helpers)
                 {
-                    if (ch.Modifier != null)
-                        results.AddRange(ch.Modifier.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if (ch.RaceModifier != null)
+                        results.AddRange(ch.RaceModifier.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if (ch.ClassModifier != null)
+                        results.AddRange(ch.ClassModifier.victoryReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
                 }
                 return results;
             }
@@ -108,7 +112,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return turnReminders.Count > 0;
+                return victoryReminders.Count > 0;
             }
         }
 
@@ -130,8 +134,10 @@ namespace MunchkinMonitor.Classes
 
                 foreach (CharacterHelper ch in Helpers)
                 {
-                    if (ch.Modifier != null)
-                        results.AddRange(ch.Modifier.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if (ch.RaceModifier != null)
+                        results.AddRange(ch.RaceModifier.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
+                    if (ch.ClassModifier != null)
+                        results.AddRange(ch.ClassModifier.failureReminders.Where(tr => CurrentLevel < 10 && !tr.Contains("{EPIC}")).Select(tr => tr.Replace("{NOTEPIC}", "")).Where(r => !results.Contains(r)).ToList());
                 }
                 return results;
             }
@@ -141,7 +147,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return turnReminders.Count > 0;
+                return failureReminders.Count > 0;
             }
         }
 

@@ -46,8 +46,6 @@ namespace MunchkinMonitor.Classes
             {
                 bool result = false;
                 List<CharacterModifier> lcm =
-                    HasAlly ?
-                    gamePlayer.CurrentClassList.Union(gamePlayer.CurrentRaceList.Union(ally.CurrentClassList.Union(ally.CurrentRaceList))).ToList() :
                     gamePlayer.CurrentClassList.Union(gamePlayer.CurrentRaceList).ToList();
                 foreach (CharacterModifier cm in lcm)
                 {
@@ -55,6 +53,34 @@ namespace MunchkinMonitor.Classes
                     {
                         result = true;
                         break;
+                    }
+                }
+                if(!result)
+                {
+                    foreach(CharacterHelper ch in gamePlayer.Helpers)
+                    {
+                        if(ch.RaceModifier.WinsTies)
+                        {
+                            result = true;
+                            break;
+                        }
+                        if(ch.ClassModifier.WinsTies)
+                        {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                if(!result && HasAlly)
+                {
+                    lcm = ally.CurrentClassList.Union(ally.CurrentRaceList).ToList();
+                    foreach(CharacterModifier cm in lcm)
+                    {
+                        if(cm.WinsTies)
+                        {
+                            result = true;
+                            break;
+                        }
                     }
                 }
                 return result;
@@ -71,7 +97,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return HasAlly ? ally.FightingLevel : 0;
+                return HasAlly ? ally.AllyLevel : 0;
             }
         }
         public int playerPoints
@@ -80,7 +106,7 @@ namespace MunchkinMonitor.Classes
             {
                 int points = gamePlayer.FightingLevel;
                 if (ally != null)
-                    points += ally.FightingLevel;
+                    points += ally.AllyLevel;
                 points += playerOneTimeBonus;
                 return points;
             }
@@ -104,18 +130,18 @@ namespace MunchkinMonitor.Classes
             {
                 int levels = 0;
                 foreach (Monster m in opponents)
-                    levels += m.LevelsToWin;
-                if (gamePlayer.CurrentRaceList.Where(r => r.ExtraLevelForTenOrHigherWhenAlone).Count() > 0 || gamePlayer.CurrentClassList.Where(c => c.ExtraLevelForTenOrHigherWhenAlone).Count() > 0 || gamePlayer.Helpers.Where(h => h.Modifier != null && h.Modifier.LevelsForHelp).Count() > 0)
                 {
-                    if (ally == null)
+                    levels += m.LevelsToWin;
+                    if (gamePlayer.CurrentRaceList.Where(r => r.ExtraLevelForTenOrHigherWhenAlone).Count() > 0 || gamePlayer.CurrentClassList.Where(c => c.ExtraLevelForTenOrHigherWhenAlone).Count() > 0)
                     {
-                        int strenth = 0;
-                        foreach (Monster m in opponents)
-                            strenth += m.Level;
-                        if (strenth >= 10)
-                            levels += 1;
+                        if (ally == null)
+                        {
+                            if (gamePlayer.FightingLevel - m.Level >= 10)
+                                levels += 1;
+                        }
                     }
                 }
+               
                 return levels;
             }
         }
@@ -125,7 +151,7 @@ namespace MunchkinMonitor.Classes
             get
             {
                 int levels = 0;
-                if(ally != null && (ally.CurrentRaceList.Where(r => r.LevelsForHelp).Count() > 0 || ally.CurrentClassList.Where(c => c.LevelsForHelp).Count() > 0 || ally.Helpers.Where(h => h.Modifier != null && h.Modifier.LevelsForHelp).Count() > 0))
+                if(ally != null && (ally.CurrentRaceList.Where(r => r.LevelsForHelp).Count() > 0 || ally.CurrentClassList.Where(c => c.LevelsForHelp).Count() > 0 || ally.Helpers.Where(h => h.RaceModifier != null && h.RaceModifier.LevelsForHelp).Count() > 0))
                 {
                     foreach (Monster m in opponents)
                         levels += 1;

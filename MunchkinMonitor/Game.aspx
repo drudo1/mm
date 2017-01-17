@@ -235,10 +235,10 @@
             <div class="gamePlayerList">
                 <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
                     <div class="col-sm-7" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
-                        {player.currentPlayer.DisplayName}
+                        &nbsp;&nbsp;{player.currentPlayer.DisplayName}
                     </div>
                     <div class="col-sm-5" rv-class-hide="player.CurrentLevel | lt 1" >
-                        Level {player.CurrentLevel}
+                        {player.CurrentLevel} | {player.FightingLevel} | {player.AllyLevel}
                     </div>
                 </div>
             </div>
