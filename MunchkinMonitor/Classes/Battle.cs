@@ -59,12 +59,12 @@ namespace MunchkinMonitor.Classes
                 {
                     foreach(CharacterHelper ch in gamePlayer.Helpers)
                     {
-                        if(ch.RaceModifier.WinsTies)
+                        if(ch.RaceModifier != null && ch.RaceModifier.WinsTies)
                         {
                             result = true;
                             break;
                         }
-                        if(ch.ClassModifier.WinsTies)
+                        if(ch.ClassModifier != null && ch.ClassModifier.WinsTies)
                         {
                             result = true;
                             break;

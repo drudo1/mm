@@ -22,6 +22,7 @@ namespace MunchkinMonitor.Classes
         public int GearBonus { get; set; }
         public int Treasures { get; set; }
         public List<CharacterHelper> Helpers { get; set; }
+        public int Bank { get; set; }
 
         public CurrentGamePlayer()
         {
@@ -33,6 +34,7 @@ namespace MunchkinMonitor.Classes
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
             SuperMunchkin = false;
             CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
+            Bank = 0;
         }
         public CurrentGamePlayer(Player player)
         {
@@ -44,6 +46,7 @@ namespace MunchkinMonitor.Classes
             CurrentRaceList = new List<CharacterModifier> { CharacterModifier.GetRaceList()[0], CharacterModifier.GetRaceList()[0] };
             SuperMunchkin = false;
             CurrentClassList = new List<CharacterModifier> { CharacterModifier.GetClassList()[0], CharacterModifier.GetClassList()[0] };
+            Bank = 0;
         }
 
         public List<string> turnReminders
@@ -344,6 +347,18 @@ namespace MunchkinMonitor.Classes
                 idx = (idx + 1) % list.Count;
                 CurrentClassList[1] = list[idx];
             }
+        }
+
+        public void SellItem(int amount)
+        {
+            Bank += amount;
+            int levels = Bank / 1000;
+            for(int i = 0; i< levels; i++)
+            {
+                if (CurrentLevel < (AppState.CurrentState().gameState.isEpic ? 18 : 9))
+                    CurrentLevel = CurrentLevel + 1;
+            }
+            Bank = Bank % 1000;
         }
     }
 }
