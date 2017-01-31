@@ -325,11 +325,11 @@
         </tr>
     </table>
     <div id="bound">
-    <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | eq 0">
+    <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | neq 1">
         <input id="btnNewGame" type="button" class="btn mkn" value="Start New Game" /><br />
         <input id="btnNewEpic" type="button" class="btn mkn" value="Start New Epic Game" />
     </div>
-    <div rv-show="appData.currentState | neq 0">
+    <div rv-show="appData.currentState | eq 1">
         <div id="divSetup" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 0">
             <div id="divAddExistingPlayer">
                 <select id="ddlPlayers" class="form-control">

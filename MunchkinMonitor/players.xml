@@ -1,27 +1,51 @@
 <?xml version="1.0"?>
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
-    <PlayerID>1</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>dave</FirstName>
-    <LastName>rudolph</LastName>
-    <NickName />
-    <Victories>0</Victories>
-    <Kills>0</Kills>
-    <Treasures>0</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>0</GamesPlayed>
-  </Player>
-  <Player>
     <PlayerID>2</PlayerID>
     <Gender>Male</Gender>
     <FirstName>bob</FirstName>
     <LastName>smith</LastName>
     <NickName />
     <Victories>0</Victories>
-    <Kills>0</Kills>
-    <Treasures>0</Treasures>
+    <Kills>13</Kills>
+    <Treasures>26</Treasures>
+    <Assists>9</Assists>
+    <GamesPlayed>1</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>1</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>dave</FirstName>
+    <LastName>rudolph</LastName>
+    <NickName />
+    <Victories>1</Victories>
+    <Kills>9</Kills>
+    <Treasures>29</Treasures>
+    <Assists>15</Assists>
+    <GamesPlayed>1</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>4</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>John</FirstName>
+    <LastName>Boy</LastName>
+    <NickName />
+    <Victories>0</Victories>
+    <Kills>8</Kills>
+    <Treasures>21</Treasures>
+    <Assists>10</Assists>
+    <GamesPlayed>1</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>3</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>sam</FirstName>
+    <LastName>Smith</LastName>
+    <NickName />
+    <Victories>0</Victories>
+    <Kills>11</Kills>
+    <Treasures>19</Treasures>
     <Assists>0</Assists>
-    <GamesPlayed>0</GamesPlayed>
+    <GamesPlayed>1</GamesPlayed>
   </Player>
 </ArrayOfPlayer>
