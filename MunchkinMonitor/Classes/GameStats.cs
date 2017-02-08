@@ -7,6 +7,7 @@ namespace MunchkinMonitor.Classes
 {
     public class TrophyRequirement
     {
+        public int difficulty { get; set; }
         public string Title { get; set; }
         public int kills { get; set; }
         public int treasures { get; set; }
@@ -21,17 +22,20 @@ namespace MunchkinMonitor.Classes
         public string reason { get; set; }
         public static List<TrophyRequirement> possibleTrophies = new List<TrophyRequirement>
         {
-            new TrophyRequirement {Title= "Armed to the Teeth!" , maxGear=10, reason="Achieved a gear bonus of {0}" },
-            new TrophyRequirement {Title= "The Lone Munchkin", singleHandedKills=5, reason="Had {0} single-handed kills."},
-            new TrophyRequirement {Title= "Got BLING!", treasures= 25, reason="Captured {0} treasures" },
-            new TrophyRequirement {Title= "Rolling in It!", treasures=25, reason="Captured {0} treasures" },
-            new TrophyRequirement {Title= "There and Back Again...", genderChanges=2, reason="Had their gender changed {0} times." },
-            new TrophyRequirement {Title= "Confused Little Munchkin", genderChanges=2, reason="Had their gender changed {0} times."},
-            new TrophyRequirement {Title= "Never Say DIE!", deaths=2, reason="Died {0} times." },
-            new TrophyRequirement {Title= "Good Samaritan", assists=3, reason="Provided assistance {0} times." },
-            new TrophyRequirement {Title= "Rough Ride Award", levelsLost=2, reason="Lost {0} levels." },
-            new TrophyRequirement {Title= "Slayer!", maxMonster=18, reason="Single-handedly won a battle against a fighting level of {0}." },
-            new TrophyRequirement {Title= "Consolation Prize", reason="Yeah... you really didn't accomplish anything.  Better luck next time..." }
+            new TrophyRequirement {Title= "Armed to the Teeth!" , maxGear=10, reason="Achieved a gear bonus of {0}", difficulty= 1 },
+            new TrophyRequirement {Title= "The Lone Munchkin", singleHandedKills=3, reason="Had {0} single-handed kills.", difficulty= 2},
+            new TrophyRequirement {Title= "Got BLING!", treasures= 4, reason="Captured {0} treasures", difficulty= 1 },
+            new TrophyRequirement {Title= "Rolling in It!", treasures=4, reason="Captured {0} treasures", difficulty= 1 },
+            new TrophyRequirement {Title= "There and Back Again...", genderChanges=2, reason="Had their gender changed {0} times.", difficulty= 3 },
+            new TrophyRequirement {Title= "Confused Little Munchkin", genderChanges=2, reason="Had their gender changed {0} times.", difficulty= 3},
+            new TrophyRequirement {Title= "Never Say DIE!", deaths=2, reason="Died and resurrected {0} times.", difficulty= 4 },
+            new TrophyRequirement {Title= "Good Samaritan", assists=3, reason="Provided assistance {0} times.", difficulty= 3 },
+            new TrophyRequirement {Title= "Rough Ride Award", levelsLost=2, reason="Lost {0} levels.", difficulty= 2 },
+            new TrophyRequirement {Title= "Slayer!", maxMonster=20, reason="Single-handedly won a battle against a fighting level of {0}.", difficulty= 1 },
+            new TrophyRequirement {Title= "Why Won't You DIE?", losses=7, reason="Lost {0} battles and kept coming back for more!", difficulty= 2 },
+            new TrophyRequirement {Title= "Consolation Prize", reason="Yeah... you really didn't accomplish anything.  Better luck next time...", difficulty= 0 },
+            new TrophyRequirement {Title= "Defeat", reason="For every winner, there are dozens of losers...  Odds are you're one of them.", difficulty= 0 },
+            new TrophyRequirement {Title= "Blame", reason="The secret to success is knowing who to blame for your failures.", difficulty= 0 }
         };
     }
     public class Trophy
@@ -123,18 +127,16 @@ namespace MunchkinMonitor.Classes
             
             List<Trophy> trophies = new List<Trophy>();
             trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = AppState.CurrentState().playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
-            int cnt = CurrentGameStats.Count;
-            List<int> attempted = new List<int> { 0 };
-            while(trophies.Count < cnt && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
+            List<string> attempted = new List<string> { "King Munchkin" };
+            while(CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0 && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
             {
+                attempted.Clear();
                 Trophy trophy = null;
                 while(trophy == null && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
                 {
-                    Random rnd = new Random(Environment.TickCount);
-                    int idx = rnd.Next(0, TrophyRequirement.possibleTrophies.Where(pt => !trophies.Select(t => t.Title).Contains(pt.Title)).Count());
-                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !trophies.Select(t => t.Title).Contains(pt.Title)).ToList()[idx];
-                    if (!attempted.Contains(idx))
-                        attempted.Add(idx);
+                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !trophies.Select(t => t.Title).Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures > 0)).OrderByDescending(pt => pt.difficulty).ToList()[0];
+                    if (!attempted.Contains(tmp.Title))
+                        attempted.Add(tmp.Title);
                     bool qualified = false;
                     foreach(GameStats gs in CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)))
                     {
@@ -306,7 +308,7 @@ namespace MunchkinMonitor.Classes
                 if(trophy != null)
                     trophies.Add(trophy);
             }
-            while (trophies.Count < cnt)
+            while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0)
             {
                 Random rnd = new Random(Environment.TickCount);
                 int idx = rnd.Next(0, TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures == 0).Count());

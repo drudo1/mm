@@ -137,7 +137,7 @@
             playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none; min-height:700px;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
-                             +'         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             + '         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span>&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.Bank | neq 0" style="font-weight:bold;">${appData.gameState.currentPlayer.Bank}</span></h1>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">'
@@ -235,10 +235,10 @@
             <div class="gamePlayerList">
                 <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
                     <div class="col-sm-7" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
-                        {player.currentPlayer.DisplayName}
+                        &nbsp;&nbsp;{player.currentPlayer.DisplayName}
                     </div>
                     <div class="col-sm-5" rv-class-hide="player.CurrentLevel | lt 1" >
-                        Level {player.CurrentLevel}
+                        L:{player.CurrentLevel} | FL:{player.FightingLevel} | AL:{player.AllyLevel}
                     </div>
                 </div>
             </div>

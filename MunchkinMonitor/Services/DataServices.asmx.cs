@@ -551,6 +551,20 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod]
+        public void SellItem(int amount)
+        {
+            AppState state = AppState.CurrentState();
+            if (state.gameState != null)
+            {
+                if (state.gameState.currentPlayer != null)
+                {
+                    state.gameState.currentPlayer.SellItem(amount);
+                    state.Update();
+                }
+            }
+        }
+
+        [WebMethod]
         public void Fake()
         {
             AppState state = AppState.CurrentState();

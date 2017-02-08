@@ -297,15 +297,39 @@
                 data.run('EndGame');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
+            $('#btnOpenSellPanel').click(function () {
+                $('#divPlayerSettings').slideUp();
+                $('#divSellItem').slideDown();
+            });
+            $('#btnCancelSell').click(function () {
+                $('#divPlayerSettings').slideDown();
+                $('#divSellItem').slideUp();
+                $('#txtSaleAmount').val('');
+            });
+            $('#btnSellItem').click(function () {
+                data.run('SellItem', { amount: $('#txtSaleAmount').val() });
+                $('#divPlayerSettings').slideDown();
+                $('#divSellItem').slideUp();
+                $('#txtSaleAmount').val('');
+            });
         });
     </script>
-    <img src="Images/controllerBG.jpg" id="bg" alt="">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <img src="Images/controllerBG.jpg" id="bg" alt="">
+            </td>
+            <td style="text-align:right">
+                <input rv-show="appData.gameState.currentState | eq 1" type="button" id="btnOpenSellPanel" class="btn mkn btn-xs" value="Sell Item" />
+            </td>
+        </tr>
+    </table>
     <div id="bound">
-    <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | eq 0">
+    <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | neq 1">
         <input id="btnNewGame" type="button" class="btn mkn" value="Start New Game" /><br />
         <input id="btnNewEpic" type="button" class="btn mkn" value="Start New Epic Game" />
     </div>
-    <div rv-show="appData.currentState | neq 0">
+    <div rv-show="appData.currentState | eq 1">
         <div id="divSetup" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 0">
             <div id="divAddExistingPlayer">
                 <select id="ddlPlayers" class="form-control">
@@ -517,7 +541,7 @@
                             <h3>{hireling.GearBonus}</h3>
                         </div>
                         <div class="col-xs-5 mkn">
-                            <h3>{hireling.Race}</h3>
+                            <h3>{hireling.RaceClass}</h3>
                         </div>
                     </div>
                     <div class="col-xs-6">
@@ -583,8 +607,11 @@
                         </div>
                     </div>
                     <div class="row" rv-show="helper.isHireling">
-                        <div class="col-xs-12 mkn" style="text-align:center;">
+                        <div class="col-xs-6 mkn" style="text-align:center;">
                             <input type="button" class="btn btn-xs mkn" id="btnChangeHelperRace" rv-value="helper.Race" />
+                        </div>
+                        <div class="col-xs-6 mkn" style="text-align:center;">
+                            <input type="button" class="btn btn-xs mkn" id="btnChangeHelperClass" rv-value="helper.Class" />
                         </div>
                     </div>
                     <div class="row" rv-show="helper.isHireling">
@@ -780,6 +807,19 @@
                 </div>
                 <div class="col-xs-6 mkn">
                     <input type="button" id="btnCloseMonster" class="btn mkn btn-xs" value="Go Back" />
+                </div>
+            </div>
+        </div>
+        <div id="divSellItem" class="mobile mkn2 mkn" style="display:none;" >
+            <div class="row">
+                <div class="col-xs-4 mkn">
+                    <input type="number" class="form-control" id="txtSaleAmount" />
+                </div>
+                <div class="col-xs-4 mkn">
+                    <input type="button" id="btnSellItem" class="btn mkn btn-xs" value="Sell" />
+                </div>
+                <div class="col-xs-4 mkn">
+                    <input type="button" id="btnCancelSell" class="btn mkn btn-xs" value="Cancel" />
                 </div>
             </div>
         </div>
