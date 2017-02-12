@@ -202,6 +202,7 @@
             $('#btnNextPlayer').click(function () {
                 data.run('NextPlayer');
                 objectCopy(data.run('GetCurrentAppState'), appData);
+                $('#btnShowReminders').text('Help');
             });
             $('.playerSetupHome').click(function () {
                 $('#divPlayerSettings').slideDown();
@@ -312,6 +313,13 @@
                 $('#divSellItem').slideUp();
                 $('#txtSaleAmount').val('');
             });
+            $('#btnShowReminders').click(function () {
+                if ($('#btnShowReminders').val() == 'Help')
+                    $('#btnShowReminders').val('Hide');
+                else
+                    $('#btnShowReminders').val('Help');
+                data.run('ToggleCheatCard');
+            });
         });
     </script>
     <table style="width:100%">
@@ -320,6 +328,7 @@
                 <img src="Images/controllerBG.jpg" id="bg" alt="">
             </td>
             <td style="text-align:right">
+                <input rv-show="appData.gameState.currentState | eq 1" type="button" id="btnShowReminders" class="btn mkn btn-xs" value="Help" />
                 <input rv-show="appData.gameState.currentState | eq 1" type="button" id="btnOpenSellPanel" class="btn mkn btn-xs" value="Sell Item" />
             </td>
         </tr>

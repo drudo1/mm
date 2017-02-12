@@ -608,5 +608,13 @@ namespace MunchkinMonitor.Services
             }
             state.Update();
         }
+
+        [WebMethod]
+        public void ToggleCheatCard()
+        {
+            AppState state = AppState.CurrentState();
+            state.gameState.currentPlayer.showCheatCard = state.gameState.currentPlayer.showCheatCard == "true" ? "false" : "true";
+            state.Update();
+        }
     }
 }

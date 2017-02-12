@@ -23,6 +23,7 @@ namespace MunchkinMonitor.Classes
         public int Treasures { get; set; }
         public List<CharacterHelper> Helpers { get; set; }
         public int Bank { get; set; }
+        public string showCheatCard { get; set; }
 
         public CurrentGamePlayer()
         {
