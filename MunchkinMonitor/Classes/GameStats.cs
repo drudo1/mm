@@ -127,7 +127,7 @@ namespace MunchkinMonitor.Classes
             
             List<Trophy> trophies = new List<Trophy>();
             trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = AppState.CurrentState().playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
-            List<string> attempted = new List<string> { "King Munchkin" };
+            List<string> attempted  = new List<string> { "King Munchkin" };
             while(CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0 && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
             {
                 attempted.Clear();
