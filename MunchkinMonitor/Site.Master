@@ -79,7 +79,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="body-content">
+        <div class="body-content" style="margin-left:30px;">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>

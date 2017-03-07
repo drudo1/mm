@@ -247,20 +247,37 @@
         })
     </script>
     <img src="Images/gameBG.jpg" id="bg" alt="">
-    <div class="row" style="margin-left: 15px;">
-        <div class="col-lg-4">
+    <div class="row">
+        <div class="col-lg-5">
             <div class="gamePlayerList">
+                <div class="row playerRow">
+                    <div class="col-sm-offset-6 col-sm-2">
+                        Level
+                    </div>
+                    <div class="col-sm-2">
+                        Fight
+                    </div>
+                    <div class="col-sm-2">
+                        Ally
+                    </div>
+                </div>
                 <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
-                    <div class="col-sm-7" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
+                    <div class="col-sm-6" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
                         &nbsp;&nbsp;{player.currentPlayer.DisplayName}
                     </div>
-                    <div class="col-sm-5" rv-class-hide="player.CurrentLevel | lt 1" >
-                        L:{player.CurrentLevel} | FL:{player.FightingLevel} | AL:{player.AllyLevel}
+                    <div class="col-sm-2" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >
+                        {player.CurrentLevel}
+                    </div>
+                    <div class="col-sm-2" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >
+                        {player.FightingLevel}
+                    </div>
+                    <div class="col-sm-2" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >
+                        {player.AllyLevel}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <div id="divCurrentAction">
                 <div id="divBattle" class="statePanels" style="display:none;">
                     <div class="row mkn" style="text-align:center; font-size:60px;">VS</div>
