@@ -230,7 +230,7 @@
         })
     </script>
     <img src="Images/gameBG.jpg" id="bg" alt="">
-    <div class="row">
+    <div class="row" style="margin-left: 15px;">
         <div class="col-lg-4">
             <div class="gamePlayerList">
                 <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
