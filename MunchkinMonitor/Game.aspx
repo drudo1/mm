@@ -47,6 +47,14 @@
                         pageMethods.UpdatePlayer();
                     }
                 },
+                ShowCheatCard: function() {
+                    if (pageMethods.showCheatCard()) {
+                        pageMethods.DisplayCheatCard();
+                    }
+                    else {
+                        pageMethods.HideCheatCard();
+                    }
+                },
                 ChangeGender: function () {
                     if (!pageMethods.playerChanged()) {
                         $('.playerPanel').css('background-image', 'url(' + appData.gameState.currentPlayer.ImagePath + ')');
@@ -58,6 +66,12 @@
                     }
                 }
             },
+            showCheatCard: function() {
+                var result = false;
+                if (appData.gameState.currentPlayer.showCheatCard == 'true')
+                    result = true;
+                return result;
+            },
             playerChanged: function () {
                 var result = false;
                 if (appData.gameState.currentPlayer.currentPlayer.PlayerID != -1) {
@@ -68,43 +82,46 @@
                 }
                 return result;
             },
+            DisplayCheatCard: function() {
+
+                if (appData.gameState.currentPlayer.hasTurnReminders) {
+                    var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                    $(pageMethods.playerRemindersTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
+                    rivets.bind($('#divPlayer_' + newPID + '_' + this.guid + '_reminders'), { appData: appData })
+                    $('.playerPanel').hide('slide', { direction: 'left' });
+                    $($('#divPlayer_' + newPID + '_' + this.guid + '_reminders').get(0)).show('slide', { direction: 'right' });
+                    $('.ui-effects-placeholder').remove();
+                }
+            },
+            HideCheatCard: function () {
+                if ($('.reminderPanel').is(':visible')) {
+                    var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                    $('.playerPanel').hide('slide', { direction: 'left' });
+                    $('.reminderPanel').hide('slide', { direction: 'left' });
+                    $('.playerPanel').remove();
+                    $('.reminderPanel').remove();
+                    $('.ui-effects-placeholder').remove();
+                    $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
+                    rivets.bind($('#divPlayer_' + newPID + '_' + this.guid), { appData: appData })
+                    $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                    $('#divPlayer_' + newPID + '_' + this.guid).show('slide', { direction: 'right' });
+                }
+            },
+            guid,
             UpdatePlayer: function () {
                 var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
-                var guid = newGuid();
+                this.guid = newGuid();
                 $('.playerPanel').hide('slide', { direction: 'left' });
                 $('.reminderPanel').hide('slide', { direction: 'left' });
                 $('.playerPanel').remove();
                 $('.reminderPanel').remove();
-                if (appData.gameState.currentPlayer.hasTurnReminders) {
-                    $(pageMethods.playerRemindersTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
-                    rivets.bind($('#divPlayer_' + newPID + '_' + guid + '_reminders'), { appData: appData })
-                    $($('#divPlayer_' + newPID + '_' + guid + '_reminders').get(0)).show('slide', { direction: 'right' });
-                    $('.ui-effects-placeholder').remove();
-
-                    if(timeout != null)
-                        clearTimeout(timeout);
-                    timeout =
-                        setTimeout(function () {
-                            $('.playerPanel').hide('slide', { direction: 'left' });
-                            $('.reminderPanel').hide('slide', { direction: 'left' });
-                            $('.playerPanel').remove();
-                            $('.reminderPanel').remove();
-                            $('.ui-effects-placeholder').remove();
-                            $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
-                            rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
-                            $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
-                            $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
-                        }, 15000);
-                }
-                else {
-                    $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + guid)).prependTo('#divCurrentAction');
-                    rivets.bind($('#divPlayer_' + newPID + '_' + guid), { appData: appData })
-                    $('.ui-effects-placeholder').remove();
-                    $('#divPlayer_' + newPID + '_' + guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
-                    $('#divPlayer_' + newPID + '_' + guid).show('slide', { direction: 'right' });
-                }
+                $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
+                rivets.bind($('#divPlayer_' + newPID + '_' + this.guid), { appData: appData })
+                $('.ui-effects-placeholder').remove();
+                $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                $('#divPlayer_' + newPID + '_' + this.guid).show('slide', { direction: 'right' });
                 pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
-                pageState.currentGuid = guid;
+                pageState.currentGuid = this.guid;
             },
             gameStateChanged: function () {
                 var result = false;
