@@ -236,7 +236,7 @@
                 $('#divBattle').slideUp();
                 $('#divMonsterEdit').slideDown();
             });
-            $('.updMonsterLevel').click(function () {
+            $('.monsterLevel').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateMonsterLevel', { monsterIDX: mIdx, amount: amount });
                 objectCopy(data.run('GetCurrentAppState'), appData);
@@ -428,10 +428,10 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-4 mkn">
-                                <h2 style="padding:0;">-</h2>
                                 <input type="button" class="btn btn-xs mkn gearUpdate" value="5" amount="-5" />
                                 <input type="button" class="btn btn-xs mkn gearUpdate" value="2" amount="-2" />
                                 <input type="button" class="btn btn-xs mkn gearUpdate" value="1" amount="-1" />
+                                <h2 style="padding:0;">-</h2>
                             </div>
                             <div class="col-xs-4 mkn">
                                 <h1>{appData.gameState.currentPlayer.GearBonus}</h1><span style="font-size:20px;">Gear</span>
@@ -625,10 +625,10 @@
                     </div>
                     <div class="row" rv-show="helper.isHireling">
                         <div class="col-xs-4 mkn">
-                            <h2 style="padding:0;">-</h2>
                             <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="5" amount="-5" />
                             <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="2" amount="-2" />
                             <input type="button" class="btn btn-xs mkn hlpGearUpdate" value="1" amount="-1" />
+                            <h2 style="padding:0;">-</h2>
                         </div>
                         <div class="col-xs-4 mkn">
                             <h1 rv-text="helper.GearBonus"></h1><span style="font-size:20px;">Gear</span>
@@ -673,10 +673,10 @@
             </div>
             <div class="row">
                 <div class="col-xs-4 mkn">
-                    <h2 style="padding:0;">-</h2>
                     <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="-5" />
                     <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="-2" />
                     <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="-1" />
+                    <h2 style="padding:0;">-</h2>
                 </div>
                 <div class="col-xs-4 mkn">
                     <h2>{appData.gameState.currentBattle.playerOneTimeBonus}</h2><span style="font-size:20px;">Bonus</span>
@@ -762,13 +762,19 @@
             <input type="hidden" id="hdnMonsterID" rv-value="curMonster.MonsterID" />
             <div class="row">
                 <div class="col-xs-4" style="vertical-align:middle;">
-                    <input type="button" id="btnSubtractMonsterLevel" class="btn mkn btn-xs updMonsterLevel" amount="-1" value="<" />
+                    <h2 style="padding:0;">-</h2>
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="5" amount="-5" />
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="2" amount="-2" />
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="1" amount="-1" />
                 </div>
                 <div class="col-xs-4 mkn" style="vertical-align:middle;">
-                    <h1>{curMonster.Level}</h1><span style="font-size:20px;">Level</span>
+                    <h1 rv-text="curMonster.Level"></h1><span style="font-size:20px;">Level</span>
                 </div>
                 <div class="col-xs-4" style="vertical-align:middle;">
-                    <input type="button" id="btnAddMonsterLevel" class="btn mkn btn-xs updMonsterLevel" amount="1" value=">" />
+                    <h2 style="padding:0;">+</h2>
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="1" amount="1" />
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="2" amount="2" />
+                    <input type="button" class="btn btn-xs mkn monsterLevel" value="5" amount="5" />
                 </div>
             </div>
             <div class="row">
@@ -779,7 +785,7 @@
                     <input type="button" class="btn btn-xs mkn monsterBonus" value="1" amount="-1" />
                 </div>
                 <div class="col-xs-4 mkn">
-                    <h1>{curMonster.Bonus}</h1><span style="font-size:20px;">Bonus</span>
+                    <h1 rv-text="curMonster.OneTimeBonus"></h1><span style="font-size:20px;">Bonus</span>
                 </div>
                 <div class="col-xs-4 mkn">
                     <h2 style="padding:0;">+</h2>
@@ -793,7 +799,7 @@
                     <input type="button" id="btnSubtractMonsterLevelsToWin" class="btn mkn btn-xs updMonsterLTW" amount="-1" value="<" />
                 </div>
                 <div class="col-xs-4 mkn" style="vertical-align:middle;">
-                    <h1>{curMonster.LevelsToWin}</h1><span style="font-size:20px;">Prize Levels</span>
+                    <h1 rv-text="curMonster.LevelsToWin"></h1><span style="font-size:20px;">Prize Levels</span>
                 </div>
                 <div class="col-xs-4" style="vertical-align:middle;">
                     <input type="button" id="btnAddMonsterLevelsToWin" class="btn mkn btn-xs updMonsterLTW" amount="1" value=">" />
@@ -804,7 +810,7 @@
                     <input type="button" id="btnSubtractMonsterTreasures" class="btn mkn btn-xs updMonsterTreasure" amount="-1" value="<" />
                 </div>
                 <div class="col-xs-4 mkn" style="vertical-align:middle;">
-                    <h1>{curMonster.Treasures}</h1><span style="font-size:20px;">Treasures</span>
+                    <h1 rv-text="curMonster.Treasures"></h1><span style="font-size:20px;">Treasures</span>
                 </div>
                 <div class="col-xs-4 mkn" style="vertical-align:middle;">
                     <input type="button" id="btnAddMonsterTreasures" class="btn mkn btn-xs updMonsterTreasure" amount="1" value=">" />

@@ -24,7 +24,7 @@ namespace MunchkinMonitor.Services
         [WebMethod]
         public bool CheckForStateUpdate(DateTime lastUpdate)
         {
-            return (AppState.CurrentState().stateUpdated.Subtract(lastUpdate).TotalMilliseconds > 1);
+            return (AppState.CurrentState().stateUpdated.Minute != lastUpdate.Minute || (AppState.CurrentState().stateUpdated.Minute == lastUpdate.Minute && AppState.CurrentState().stateUpdated.Second > lastUpdate.Second));
         }
 
         [WebMethod]
