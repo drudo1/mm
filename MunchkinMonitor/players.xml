@@ -1,28 +1,16 @@
 <?xml version="1.0"?>
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
-    <PlayerID>5</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Dave</FirstName>
-    <LastName>Rudolph</LastName>
-    <NickName />
-    <Victories>0</Victories>
-    <Kills>4</Kills>
-    <Treasures>7</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>1</GamesPlayed>
-  </Player>
-  <Player>
     <PlayerID>1</PlayerID>
     <Gender>Male</Gender>
     <FirstName>Jeff</FirstName>
     <LastName>Beiermann</LastName>
     <NickName />
-    <Victories>0</Victories>
-    <Kills>4</Kills>
-    <Treasures>8</Treasures>
-    <Assists>2</Assists>
-    <GamesPlayed>1</GamesPlayed>
+    <Victories>2</Victories>
+    <Kills>92</Kills>
+    <Treasures>204</Treasures>
+    <Assists>86</Assists>
+    <GamesPlayed>7</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>4</PlayerID>
@@ -31,22 +19,10 @@
     <LastName>Becker</LastName>
     <NickName />
     <Victories>1</Victories>
-    <Kills>5</Kills>
-    <Treasures>12</Treasures>
-    <Assists>2</Assists>
-    <GamesPlayed>1</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>2</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Matt</FirstName>
-    <LastName>Becker</LastName>
-    <NickName />
-    <Victories>0</Victories>
-    <Kills>3</Kills>
-    <Treasures>11</Treasures>
-    <Assists>1</Assists>
-    <GamesPlayed>1</GamesPlayed>
+    <Kills>103</Kills>
+    <Treasures>195</Treasures>
+    <Assists>62</Assists>
+    <GamesPlayed>7</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
@@ -54,10 +30,34 @@
     <FirstName>Ryan</FirstName>
     <LastName>Schneider</LastName>
     <NickName />
-    <Victories>0</Victories>
-    <Kills>3</Kills>
-    <Treasures>7</Treasures>
-    <Assists>1</Assists>
-    <GamesPlayed>1</GamesPlayed>
+    <Victories>1</Victories>
+    <Kills>82</Kills>
+    <Treasures>117</Treasures>
+    <Assists>10</Assists>
+    <GamesPlayed>7</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>5</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Dave</FirstName>
+    <LastName>Rudolph</LastName>
+    <NickName />
+    <Victories>2</Victories>
+    <Kills>69</Kills>
+    <Treasures>154</Treasures>
+    <Assists>62</Assists>
+    <GamesPlayed>7</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>2</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Matt</FirstName>
+    <LastName>Becker</LastName>
+    <NickName />
+    <Victories>1</Victories>
+    <Kills>76</Kills>
+    <Treasures>169</Treasures>
+    <Assists>53</Assists>
+    <GamesPlayed>7</GamesPlayed>
   </Player>
 </ArrayOfPlayer>

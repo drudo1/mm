@@ -127,14 +127,13 @@ namespace MunchkinMonitor.Classes
             
             List<Trophy> trophies = new List<Trophy>();
             trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = AppState.CurrentState().playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
-            List<string> attempted  = new List<string> { "King Munchkin" };
-            while(CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0 && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
+            List<string> attempted = new List<string> { "King Munchkin" };
+            while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0)
             {
-                attempted.Clear();
                 Trophy trophy = null;
                 while(trophy == null && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
                 {
-                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !trophies.Select(t => t.Title).Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures > 0)).OrderByDescending(pt => pt.difficulty).ToList()[0];
+                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !attempted.Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures > 0)).OrderByDescending(pt => pt.difficulty).ToList()[0];
                     if (!attempted.Contains(tmp.Title))
                         attempted.Add(tmp.Title);
                     bool qualified = false;
