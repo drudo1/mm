@@ -154,7 +154,7 @@
             playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none; min-height:700px;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
-                             + '         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span>&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.Bank | neq 0" style="font-weight:bold;">${appData.gameState.currentPlayer.Bank}</span></h1>'
+                             + '         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span>&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.Bank | neq 0" style="font-weight:bold;">${appData.gameState.currentPlayer.Bank}</span></h1>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">'
@@ -227,7 +227,7 @@
             playerRemindersTemplate: '<div id="divPlayer_template_reminders" class="mkn reminderPanel" style="display:none;">'
                              +'    <div class="row">'
                              +'        <div class="col-lg-12 mkn">'
-                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentPlayer.Gender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
                              +'        </div>'
                              +'    </div>'
                              +'    <ul>'
@@ -248,7 +248,7 @@
     </script>
     <img src="Images/gameBG.jpg" id="bg" alt="">
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="gamePlayerList">
                 <div class="row playerRow">
                     <div class="col-sm-offset-6 col-sm-2">
@@ -277,7 +277,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div id="divCurrentAction">
                 <div id="divBattle" class="statePanels" style="display:none;">
                     <div class="row mkn" style="text-align:center; font-size:60px;">VS</div>
