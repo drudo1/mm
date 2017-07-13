@@ -360,6 +360,7 @@ namespace MunchkinMonitor.Classes
                     CurrentLevel = CurrentLevel + 1;
             }
             Bank = Bank % 1000;
+            GameStats.LogSale(currentPlayer.PlayerID, amount);
         }
     }
 }

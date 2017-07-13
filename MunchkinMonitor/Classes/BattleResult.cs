@@ -45,7 +45,22 @@ namespace MunchkinMonitor.Classes
                     "ONE DAY I WILL STOP WINNING...\r\nBUT TODAY IS NOT THAT DAY!",
                     "SO MUCH WIN!",
                     "IT'S NOT ABOUT WINNING...\r\nIT'S ABOUT SENDING A MESSAGE.",
-                    "WHO'S AWESOME?\r\nYOU'RE AWESOME!"
+                    "WHO'S AWESOME?\r\nYOU'RE AWESOME!",
+                    "VICTORY SHALL BE MINE!",
+                    "SOME PEOPLE DREAM OF SUCCESS, WHILE OTHERS LIVE TO CRUSH THOSE DREAMS!",
+                    "THERE CAN BE ONLY ONE!",
+                    "MAY GOD HAVE MERCY ON MY ENEMIES... BECAUSE I WON'T!",
+                    "PAIN IS ONLY TEMPORARY, BUT VICTORY IS FOREVER.",
+                    "I DON'T KNOW...  I WAS TOO BUSY WINNING!",
+                    "YOU'RE A WINNER... AND YOU'RE A WINNER... AND YOU'RE A WINNER... EVERYONE'S A WINNER!!!",
+                    "WINNER, WINNER, CHICKEN DINNER...",
+                    "SPRINKLES ARE FOR WINNERS...",
+                    "IF IT'S NOT ABOUT WINNING, WHAT'S THE POINT OF PLAYING?",
+                    "ALL I DO IS WIN!",
+                    "I DON'T ALWAYS WIN... OH WAIT... YES I DO!",
+                    "THIS IS MY WINNING FACE",
+                    "NOW THIS... THIS IS WHAT A WINNER LOOKS LIKE.",
+                    "WINNING IS JUST MY THING..."
                 };
                 List<string> loserMessages = new List<string>
                 {
@@ -75,7 +90,12 @@ namespace MunchkinMonitor.Classes
                     "SOME THINGS CANNOT BE OVERCOME WITH DETERMINATION AND A POSITIVE ATTITUDE.",
                     "BEFORE YOU ATTEMPT TO BEAT THE ODDS, BE SURE YOU CAN SURVIVE THE ODDS BEATING YOU.",
                     "PAIN IS JUST WEEKNESS LEAVING THE BODY... LOTS OF WEEKNESS.",
-                    "QUITTERS NEVER WIN, WINNERS NEVER QUIT, BUT THOSE WHO NEVER WIN AND NEVER QUIT ARE IDIOTS."
+                    "QUITTERS NEVER WIN, WINNERS NEVER QUIT, BUT THOSE WHO NEVER WIN AND NEVER QUIT ARE IDIOTS.",
+                    "TYPE LOSER.COM IN TO YOUR BROWSER AND SEE WHAT COMES UP... IT'S AWESOME.",
+                    "YEAH, IF YOU COULD STOP BEIN A LIL BITCH... THAT WOULD BE GREAT...",
+                    "NOT SURE IF I DON'T HAVE ANY FRIENDS BECAUSE I'M A LOSER... OR IF I AM A LOSER BECAUSE I DON'T HAVE ANY FRIENDS...",
+                    "WHEN YOU REALISE, THIS REALLY ISN'T YOUR GAME...",
+                    "GET IN LOSER... WE'RE GOIN' TO WALMART."
                 };
                 Random r = new Random(Environment.TickCount);
                 if (Victory)

@@ -19,6 +19,7 @@ namespace MunchkinMonitor.Classes
         public int levelsLost { get; set; }
         public int deaths { get; set; }
         public int genderChanges { get; set; }
+        public int totalSales { get; set; }
         public string reason { get; set; }
         public static List<TrophyRequirement> possibleTrophies = new List<TrophyRequirement>
         {
@@ -30,12 +31,14 @@ namespace MunchkinMonitor.Classes
             new TrophyRequirement {Title= "Confused Little Munchkin", genderChanges=2, reason="Had their gender changed {0} times.", difficulty= 3},
             new TrophyRequirement {Title= "Never Say DIE!", deaths=2, reason="Died and resurrected {0} times.", difficulty= 4 },
             new TrophyRequirement {Title= "Good Samaritan", assists=3, reason="Provided assistance {0} times.", difficulty= 3 },
+            new TrophyRequirement {Title= "Sellin' His Soul...", totalSales=12000, reason="Sold {0} gold pieces worth of crap to scrabble their way to the top.", difficulty= 2 },
             new TrophyRequirement {Title= "Rough Ride Award", levelsLost=2, reason="Lost {0} levels.", difficulty= 2 },
             new TrophyRequirement {Title= "Slayer!", maxMonster=20, reason="Single-handedly won a battle against a fighting level of {0}.", difficulty= 1 },
             new TrophyRequirement {Title= "Why Won't You DIE?", losses=7, reason="Lost {0} battles and kept coming back for more!", difficulty= 2 },
             new TrophyRequirement {Title= "Consolation Prize", reason="Yeah... you really didn't accomplish anything.  Better luck next time...", difficulty= 0 },
             new TrophyRequirement {Title= "Defeat", reason="For every winner, there are dozens of losers...  Odds are you're one of them.", difficulty= 0 },
-            new TrophyRequirement {Title= "Blame", reason="The secret to success is knowing who to blame for your failures.", difficulty= 0 }
+            new TrophyRequirement {Title= "Blame", reason="The secret to success is knowing who to blame for your failures.", difficulty= 0 },
+            new TrophyRequirement {Title= "Sellin' His Soul...", totalSales=12000, reason="Sold {0} gold pieces worth of crap to scrabble their way to the top.", difficulty= 2 }
         };
     }
     public class Trophy
@@ -57,6 +60,7 @@ namespace MunchkinMonitor.Classes
         public int levelsLost { get; set; }
         public int deaths { get; set; }
         public int genderChanges { get; set; }
+        public int totalSales { get; set; }
         public bool Victory { get; set; }
         static Random rnd = new Random();
 
@@ -100,6 +104,10 @@ namespace MunchkinMonitor.Classes
 
             if (br.assistedBy != null)
                 playerStats(br.assistedBy.currentPlayer.PlayerID).assists += 1;
+        }
+        public static void LogSale(int playerID, int amount)
+        {
+            playerStats(playerID).totalSales = playerStats(playerID).totalSales + amount;
         }
         public static void LogLevelLost(int playerID)
         {
