@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GameResults.aspx.cs" Inherits="MunchkinMonitor.GameResults" %>
+﻿<%@ Page Title="Game Results" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GameResults.aspx.cs" Inherits="MunchkinMonitor.GameResults" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         var trophies;

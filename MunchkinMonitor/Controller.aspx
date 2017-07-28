@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Controller.aspx.cs" Inherits="MunchkinMonitor.Controller" %>
+﻿<%@ Page Title="Munchkin Controller" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Controller.aspx.cs" Inherits="MunchkinMonitor.Controller" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         var appData = null;
@@ -65,11 +65,11 @@
                 data.run('StartGame');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
-            $('#btnSubtractLevel').click(function () {
+            $('#btnSubtractLevel, #btnSubtractLevel2').click(function () {
                 data.run('SubtractLevel');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
-            $('#btnAddLevel').click(function () {
+            $('#btnAddLevel, #btnAddLevel2').click(function () {
                 data.run('AddLevel');
                 objectCopy(data.run('GetCurrentAppState'), appData);
             });
@@ -428,19 +428,27 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-4 mkn">
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="5" amount="-5" />
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="2" amount="-2" />
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="1" amount="-1" />
-                                <h2 style="padding:0;">-</h2>
+                                <table>
+                                    <tr><td colspan="3" style="text-align:center"><h2 style="padding:0;">-</h2></td></tr>
+                                    <tr>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="5" amount="-5" /></td>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="2" amount="-2" /></td>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="1" amount="-1" /></td>
+                                    </tr>
+                                </table>
                             </div>
                             <div class="col-xs-4 mkn">
                                 <h1>{appData.gameState.currentPlayer.GearBonus}</h1><span style="font-size:20px;">Gear</span>
                             </div>
                             <div class="col-xs-4 mkn">
-                                <h2 style="padding:0;">+</h2>
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="1" amount="1" />
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="2" amount="2" />
-                                <input type="button" class="btn btn-xs mkn gearUpdate" value="5" amount="5" />
+                                <table>
+                                    <tr><td colspan="3" style="text-align:center"><h2 style="padding:0;">+</h2></td></tr>
+                                    <tr>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="1" amount="1" /></td>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="2" amount="2" /></td>
+                                        <td style="text-align:center"><input type="button" class="btn btn-xs mkn gearUpdate" value="5" amount="5" /></td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                         <div class="row">
@@ -656,11 +664,25 @@
                 <h3>Combatants</h3>
             </div>
             <div class="row playerRow">
-                <div class="col-xs-6 mkn">
+                <div class="col-xs-2 mkn">
+                    <table><tr>
+                        <td><input type="button" id="btnSubtractLevel2" class="btn mkn btn-xs" value="L" /></td>
+                        <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="-1" /></td>
+                        <td><h3>-</h3></td>
+                    </tr></table>
+                </div>
+                <div class="col-xs-5 mkn">
                     <h3>{appData.gameState.currentBattle.gamePlayer.currentPlayer.DisplayName}</h3>
                 </div>
-                <div class="col-xs-6 mkn">
+                <div class="col-xs-2 mkn">
                     <h3>+{appData.gameState.currentBattle.gamePlayer.FightingLevel}</h3>
+                </div>
+                <div class="col-xs-2 mkn">
+                    <table><tr>
+                        <td><h3>+</h3></td>
+                        <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="1" /></td>
+                        <td><input type="button" id="btnAddLevel2" class="btn mkn btn-xs" value="L" /></td>
+                    </tr></table>
                 </div>
             </div>
             <div class="row playerRow" rv-show="appData.gameState.currentBattle.HasAlly">
