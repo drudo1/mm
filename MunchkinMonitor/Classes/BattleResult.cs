@@ -60,7 +60,13 @@ namespace MunchkinMonitor.Classes
                     "I DON'T ALWAYS WIN... OH WAIT... YES I DO!",
                     "THIS IS MY WINNING FACE",
                     "NOW THIS... THIS IS WHAT A WINNER LOOKS LIKE.",
-                    "WINNING IS JUST MY THING..."
+                    "WINNING IS JUST MY THING...",
+                    "THEY TOLD ME TO ADMIT DEFEAT... I ADMITTED THEM TO THEIR GRAVES.",
+                    "I SHALL DEFEAT MY ENEMIES... WITH NUKES... AND SPIDERS!",
+                    "WHO ARE YOU? ..... I'M BATMAN.",
+                    "Y U NO ACCEPT DEFEAT?",
+                    "YOU WIN.... THIS TIME.",
+                    "TO ALL MY HATERS... THIS WIN IS FOR YOU."
                 };
                 List<string> loserMessages = new List<string>
                 {
@@ -95,7 +101,10 @@ namespace MunchkinMonitor.Classes
                     "YEAH, IF YOU COULD STOP BEIN A LIL BITCH... THAT WOULD BE GREAT...",
                     "NOT SURE IF I DON'T HAVE ANY FRIENDS BECAUSE I'M A LOSER... OR IF I AM A LOSER BECAUSE I DON'T HAVE ANY FRIENDS...",
                     "WHEN YOU REALISE, THIS REALLY ISN'T YOUR GAME...",
-                    "GET IN LOSER... WE'RE GOIN' TO WALMART."
+                    "GET IN LOSER... WE'RE GOIN' TO WALMART.",
+                    "EAT, SLEEP, LOSE... REPEAT",
+                    "I HAVE NO IDEA WHAT I'M DOING.",
+                    "THIS IS WHAT DEFEAT SMELLS LIKE."
                 };
                 Random r = new Random(Environment.TickCount);
                 if (Victory)
