@@ -31,7 +31,6 @@ namespace MunchkinMonitor.Classes
             new TrophyRequirement {Title= "Confused Little Munchkin", genderChanges=2, reason="Had their gender changed {0} times.", difficulty= 3},
             new TrophyRequirement {Title= "Never Say DIE!", deaths=2, reason="Died and resurrected {0} times.", difficulty= 4 },
             new TrophyRequirement {Title= "Good Samaritan", assists=3, reason="Provided assistance {0} times.", difficulty= 3 },
-            new TrophyRequirement {Title= "Sellin' His Soul...", totalSales=12000, reason="Sold {0} gold pieces worth of crap to scrabble their way to the top.", difficulty= 2 },
             new TrophyRequirement {Title= "Rough Ride Award", levelsLost=2, reason="Lost {0} levels.", difficulty= 2 },
             new TrophyRequirement {Title= "Slayer!", maxMonster=20, reason="Single-handedly won a battle against a fighting level of {0}.", difficulty= 1 },
             new TrophyRequirement {Title= "Why Won't You DIE?", losses=7, reason="Lost {0} battles and kept coming back for more!", difficulty= 2 },
