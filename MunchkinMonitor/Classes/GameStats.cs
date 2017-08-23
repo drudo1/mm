@@ -49,16 +49,16 @@ namespace MunchkinMonitor.Classes
     public class GameStats
     {
         public int playerID { get; set; }
-        public int kills { get; set; }
-        public int treasures { get; set; }
-        public int singleHandedKills { get; set; }
-        public int assists { get; set; }
-        public int losses { get; set; }
-        public int maxGear { get; set; }
+        public int kills { get; set; }//
+        public int treasures { get; set; }//
+        public int singleHandedKills { get; set; }//
+        public int assists { get; set; }//
+        public int losses { get; set; }//
+        public int maxGear { get; set; }//
         public int maxMonster { get; set; }
-        public int levelsLost { get; set; }
-        public int deaths { get; set; }
-        public int genderChanges { get; set; }
+        public int levelsLost { get; set; }//
+        public int deaths { get; set; }//
+        public int genderChanges { get; set; }//
         public int totalSales { get; set; }
         public bool Victory { get; set; }
         static Random rnd = new Random();
@@ -136,13 +136,13 @@ namespace MunchkinMonitor.Classes
             List<Trophy> trophies = new List<Trophy>();
             trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = AppState.CurrentState().playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
             List<string> attempted = new List<string> { "King Munchkin" };
-            while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0)
+            while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0 && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales > 0).Count())
             {
                 Trophy trophy = null;
-                while(trophy == null && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures > 0).Count())
+                while(trophy == null && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales > 0).Count())
                 {
-                    int r = rnd.Next(TrophyRequirement.possibleTrophies.Where(pt => !attempted.Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures > 0)).OrderByDescending(pt => pt.difficulty).Count());
-                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !attempted.Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures > 0)).OrderByDescending(pt => pt.difficulty).ToList()[r];
+                    int r = rnd.Next(TrophyRequirement.possibleTrophies.Where(pt => !attempted.Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures + pt.maxMonster + pt.totalSales > 0)).OrderByDescending(pt => pt.difficulty).Count());
+                    TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(pt => !attempted.Contains(pt.Title) && (pt.assists + pt.deaths + pt.genderChanges + pt.kills + pt.levelsLost + pt.losses + pt.maxGear + pt.singleHandedKills + pt.treasures + pt.maxMonster + pt.totalSales > 0)).OrderByDescending(pt => pt.difficulty).ToList()[r];
                     if (!attempted.Contains(tmp.Title))
                         attempted.Add(tmp.Title);
                     bool qualified = false;
@@ -194,6 +194,11 @@ namespace MunchkinMonitor.Classes
                             break;
                         }
                         else if (tmp.treasures > 0 && gs.treasures >= tmp.treasures)
+                        {
+                            qualified = true;
+                            break;
+                        }
+                        else if (tmp.totalSales > 0 && gs.totalSales >= tmp.totalSales)
                         {
                             qualified = true;
                             break;
@@ -311,6 +316,17 @@ namespace MunchkinMonitor.Classes
                                 Reason = string.Format(tmp.reason, stat.treasures)
                             };
                         }
+                        else if (tmp.totalSales > 0)
+                        {
+                            int max = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Max(gs => gs.totalSales);
+                            GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.totalSales == max).FirstOrDefault();
+                            trophy = new Trophy
+                            {
+                                player = AppState.CurrentState().playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                Title = tmp.Title,
+                                Reason = string.Format(tmp.reason, stat.totalSales)
+                            };
+                        }
                     }
                 }
                 if(trophy != null)
@@ -319,8 +335,8 @@ namespace MunchkinMonitor.Classes
             while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0)
             {
                 Random rnd = new Random(Environment.TickCount);
-                int idx = rnd.Next(0, TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures == 0).Count());
-                TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures == 0).ToList()[idx];
+                int idx = rnd.Next(0, TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales == 0).Count());
+                TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales == 0).ToList()[idx];
                 Trophy trophy = new Trophy
                 {
                     player = AppState.CurrentState().playerStats.players.Where(p => !trophies.Select(t => t.player.PlayerID).Contains(p.PlayerID)).FirstOrDefault(),
