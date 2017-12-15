@@ -1,6 +1,20 @@
 <?xml version="1.0"?>
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
+    <PlayerID>5</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Dave</FirstName>
+    <LastName>Rudolph</LastName>
+    <NickName />
+    <customImagePathMale>daveMale.png</customImagePathMale>
+    <customImagePathFemale>daveFemale.png</customImagePathFemale>
+    <Victories>3</Victories>
+    <Kills>30</Kills>
+    <Treasures>56</Treasures>
+    <Assists>8</Assists>
+    <GamesPlayed>8</GamesPlayed>
+  </Player>
+  <Player>
     <PlayerID>4</PlayerID>
     <Gender>Male</Gender>
     <FirstName>John</FirstName>
@@ -9,24 +23,24 @@
     <customImagePathMale>johnMale.png</customImagePathMale>
     <customImagePathFemale>johnFemale.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>14</Kills>
-    <Treasures>30</Treasures>
-    <Assists>8</Assists>
-    <GamesPlayed>4</GamesPlayed>
+    <Kills>28</Kills>
+    <Treasures>50</Treasures>
+    <Assists>11</Assists>
+    <GamesPlayed>8</GamesPlayed>
   </Player>
   <Player>
-    <PlayerID>5</PlayerID>
+    <PlayerID>6</PlayerID>
     <Gender>Male</Gender>
-    <FirstName>Dave</FirstName>
-    <LastName>Rudolph</LastName>
+    <FirstName>Jason</FirstName>
+    <LastName>White</LastName>
     <NickName />
-    <customImagePathMale>daveMale.png</customImagePathMale>
-    <customImagePathFemale>daveFemale.png</customImagePathFemale>
-    <Victories>2</Victories>
-    <Kills>16</Kills>
-    <Treasures>28</Treasures>
-    <Assists>4</Assists>
-    <GamesPlayed>4</GamesPlayed>
+    <customImagePathMale>jasonMale.png</customImagePathMale>
+    <customImagePathFemale>jasonFemale.png</customImagePathFemale>
+    <Victories>1</Victories>
+    <Kills>25</Kills>
+    <Treasures>54</Treasures>
+    <Assists>3</Assists>
+    <GamesPlayed>7</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
@@ -37,10 +51,10 @@
     <customImagePathMale>ryanMale2.png</customImagePathMale>
     <customImagePathFemale>ryanFemale2.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>18</Kills>
-    <Treasures>29</Treasures>
-    <Assists>3</Assists>
-    <GamesPlayed>4</GamesPlayed>
+    <Kills>23</Kills>
+    <Treasures>43</Treasures>
+    <Assists>7</Assists>
+    <GamesPlayed>8</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>1</PlayerID>
@@ -50,11 +64,11 @@
     <NickName />
     <customImagePathMale>jeffMale.png</customImagePathMale>
     <customImagePathFemale>jeffFemale.png</customImagePathFemale>
-    <Victories>0</Victories>
-    <Kills>8</Kills>
-    <Treasures>15</Treasures>
+    <Victories>1</Victories>
+    <Kills>16</Kills>
+    <Treasures>30</Treasures>
     <Assists>4</Assists>
-    <GamesPlayed>4</GamesPlayed>
+    <GamesPlayed>8</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>2</PlayerID>
@@ -62,25 +76,23 @@
     <FirstName>Matt</FirstName>
     <LastName>Becker</LastName>
     <NickName />
+    <Victories>1</Victories>
+    <Kills>14</Kills>
+    <Treasures>31</Treasures>
+    <Assists>3</Assists>
+    <GamesPlayed>8</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>8</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Douglas</FirstName>
+    <LastName>Rudolph</LastName>
+    <NickName />
     <Victories>0</Victories>
-    <Kills>3</Kills>
+    <Kills>4</Kills>
     <Treasures>11</Treasures>
     <Assists>1</Assists>
     <GamesPlayed>4</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>6</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Jason</FirstName>
-    <LastName>White</LastName>
-    <NickName />
-    <customImagePathMale>jasonMale.png</customImagePathMale>
-    <customImagePathFemale>jasonFemale.png</customImagePathFemale>
-    <Victories>0</Victories>
-    <Kills>6</Kills>
-    <Treasures>14</Treasures>
-    <Assists>1</Assists>
-    <GamesPlayed>3</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>7</PlayerID>
@@ -94,6 +106,18 @@
     <Kills>2</Kills>
     <Treasures>1</Treasures>
     <Assists>0</Assists>
-    <GamesPlayed>2</GamesPlayed>
+    <GamesPlayed>6</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>9</PlayerID>
+    <Gender>Male</Gender>
+    <FirstName>Brian</FirstName>
+    <LastName>Tanner</LastName>
+    <NickName />
+    <Victories>0</Victories>
+    <Kills>3</Kills>
+    <Treasures>5</Treasures>
+    <Assists>0</Assists>
+    <GamesPlayed>1</GamesPlayed>
   </Player>
 </ArrayOfPlayer>
