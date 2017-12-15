@@ -24,6 +24,20 @@ namespace MunchkinMonitor.Classes
                 return ally != null;
             }
         }
+        public bool needsOpponent
+        {
+            get
+            {
+                return opponents == null | opponents.Count == 0;
+            }
+        }
+        public bool hasOpponent
+        {
+            get
+            {
+                return !needsOpponent;
+            }
+        }
         public string AllyName
         {
             get
@@ -191,6 +205,15 @@ namespace MunchkinMonitor.Classes
             battleDT = DateTime.Now;
             gamePlayer = challenger;
             opponents = new List<Monster> { new Monster(monsterLevel, levelsToWin, treasures) };
+            playerOneTimeBonus = 0;
+            lastUpdated = DateTime.Now;
+        }
+
+        public Battle(CurrentGamePlayer challenger)
+        {
+            battleDT = DateTime.Now;
+            gamePlayer = challenger;
+            opponents = new List<Monster>();
             playerOneTimeBonus = 0;
             lastUpdated = DateTime.Now;
         }

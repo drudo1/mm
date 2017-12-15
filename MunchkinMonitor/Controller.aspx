@@ -51,7 +51,7 @@
                 $('#divAddNewPlayer').slideUp();
             });
             $('#btnSaveNewPlayer').click(function () {
-                data.run('AddNewPlayer', { firstName: $('#txtFirstName').val(), lastName: $('#txtLastName').val(), nickName: $('#txtNickName').val(), gender: $('#ddlGender').val() });
+                data.run('AddNewPlayer', { username: $('#txtUserName').val(), firstName: $('#txtFirstName').val(), lastName: $('#txtLastName').val(), nickName: $('#txtNickName').val(), gender: $('#ddlGender').val() });
                 data.run('LoadPlayers');
                 objectCopy(data.run('GetCurrentAppState'), appData);
                 $('#txtFirstName').val('');
@@ -194,7 +194,7 @@
                     $('#divSteeds').slideDown();
                 $('#divAddHelper').slideUp();
                 $('#divEditHelper').slideUp();
-            })
+            });
             $('#btnPrevPlayer').click(function () {
                 data.run('PrevPlayer');
                 objectCopy(data.run('GetCurrentAppState'), appData);
@@ -356,6 +356,14 @@
                 </div>
             </div>
             <div id="divAddNewPlayer" style="display:none;">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="txtUserName">User Name</label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input id="txtUserName" class="form-control" />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-xs-3">
                         <label for="txtFirstName">First</label>
