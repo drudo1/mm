@@ -68,9 +68,9 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
-        public void AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
+        public void AddNewPlayer(string username, string firstName, string lastName, string nickName, Gender gender)
         {
-            int id = Player.AddNewPlayer(firstName, lastName, nickName, gender);
+            int id = Player.AddNewPlayer(username, firstName, lastName, nickName, gender);
             AddExistingPlayer(id);
         }
 
@@ -118,6 +118,12 @@ namespace MunchkinMonitor.Classes
         public void StartBattle(int level, int levelsToWin, int treasures)
         {
             currentBattle = new Battle(currentPlayer, level, levelsToWin, treasures);
+            SetState(GameStates.Battle);
+        }
+
+        public void StartEmptyBattle()
+        {
+            currentBattle = new Battle(currentPlayer);
             SetState(GameStates.Battle);
         }
 

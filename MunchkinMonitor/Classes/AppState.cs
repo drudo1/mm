@@ -103,4 +103,139 @@ namespace MunchkinMonitor.Classes
             stateUpdated = DateTime.Now;
         }
     }
+
+    [Serializable]
+    public class PlayerState
+    {
+        public void Update()
+        {
+            AppState.CurrentState().Update();
+        }
+        public AppStates gameState
+        {
+            get
+            {
+                return AppState.CurrentState().currentState;
+            }
+        }
+        public CurrentGamePlayer Player
+        {
+            get
+            {
+                return AppState.CurrentState().gameState.players.Where(p => p.currentPlayer.PlayerID == (int)HttpContext.Current.Session["PlayerID"]).FirstOrDefault();
+            }
+        }
+        public string DisplayName
+        {
+            get
+            {
+                return Player.currentPlayer.DisplayName;
+            }
+        }
+        public int CurrentLevel
+        {
+            get
+            {
+                return Player.CurrentLevel;
+            }
+        }
+        public int FightingLevel
+        {
+            get
+            {
+                return Player.FightingLevel;
+            }
+        }
+        public int AllyLevel
+        {
+            get
+            {
+                return Player.AllyLevel;
+            }
+        }
+        public string Race
+        {
+            get
+            {
+                return Player.currentRaces;
+            }
+        }
+        public string Gender
+        {
+            get
+            {
+                return Player.CurrentGender.ToString();
+            }
+        }
+        public string Class
+        {
+            get
+            {
+                return Player.currentClasses;
+            }
+        }
+        public bool myTurn
+        {
+            get
+            {
+                return Player.currentPlayer.PlayerID == AppState.CurrentState().gameState.currentPlayer.currentPlayer.PlayerID;
+            }
+        }
+        public bool CanAlly
+        {
+            get
+            {
+                return AppState.CurrentState().gameState.currentState == GameStates.Battle && !myTurn && !AppState.CurrentState().gameState.currentBattle.HasAlly;
+            }
+        }
+        public int GearBonus
+        {
+            get
+            {
+                return Player.GearBonus;
+            }
+        }
+        public bool HasSteeds
+        {
+            get
+            {
+                return Player.HasSteeds;
+            }
+        }
+        public bool HasHirelings
+        {
+            get
+            {
+                return Player.HasHirelings;
+            }
+        }
+        public List<CharacterHelper> Steeds
+        {
+            get
+            {
+                return Player.Steeds;
+            }
+        }
+        public List<CharacterHelper> Hirelings
+        {
+            get
+            {
+                return Player.Hirelings;
+            }
+        }
+        public bool IsInBattle
+        {
+            get
+            {
+                return AppState.CurrentState().gameState.currentState == GameStates.Battle && myTurn;
+            }
+        }
+        public Battle currentBattle
+        {
+            get
+            {
+                return IsInBattle ? AppState.CurrentState().gameState.currentBattle : null;
+            }
+        }
+    }
 }

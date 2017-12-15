@@ -2,6 +2,7 @@
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
     <PlayerID>4</PlayerID>
+    <UserName>JohnB</UserName>
     <Gender>Male</Gender>
     <FirstName>John</FirstName>
     <LastName>Becker</LastName>
@@ -16,6 +17,7 @@
   </Player>
   <Player>
     <PlayerID>5</PlayerID>
+    <UserName>DaveR</UserName>
     <Gender>Male</Gender>
     <FirstName>Dave</FirstName>
     <LastName>Rudolph</LastName>
@@ -30,6 +32,7 @@
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
+    <UserName>RyanS</UserName>
     <Gender>Male</Gender>
     <FirstName>Ryan</FirstName>
     <LastName>Schneider</LastName>
@@ -44,6 +47,7 @@
   </Player>
   <Player>
     <PlayerID>1</PlayerID>
+    <UserName>JeffB</UserName>
     <Gender>Male</Gender>
     <FirstName>Jeff</FirstName>
     <LastName>Beiermann</LastName>
@@ -58,6 +62,7 @@
   </Player>
   <Player>
     <PlayerID>2</PlayerID>
+    <UserName>MattB</UserName>
     <Gender>Male</Gender>
     <FirstName>Matt</FirstName>
     <LastName>Becker</LastName>
@@ -70,6 +75,7 @@
   </Player>
   <Player>
     <PlayerID>6</PlayerID>
+    <UserName>JasonW</UserName>
     <Gender>Male</Gender>
     <FirstName>Jason</FirstName>
     <LastName>White</LastName>
@@ -84,6 +90,7 @@
   </Player>
   <Player>
     <PlayerID>7</PlayerID>
+    <UserName>JeremyC</UserName>
     <Gender>Male</Gender>
     <FirstName>Jeremy</FirstName>
     <LastName>Curtis</LastName>

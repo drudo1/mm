@@ -18,6 +18,7 @@ namespace MunchkinMonitor.Classes
     public class Player
     {
         public int PlayerID { get; set; }
+        public string UserName { get; set; }
         public Gender Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -45,11 +46,12 @@ namespace MunchkinMonitor.Classes
             }
         }
 
-        public static int AddNewPlayer(string firstName, string lastName, string nickName, Gender gender)
+        public static int AddNewPlayer(string username, string firstName, string lastName, string nickName, Gender gender)
         {
             string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
             Player p = new Player
             {
+                UserName = username,
                 Gender = gender,
                 FirstName = firstName,
                 LastName = lastName,
@@ -80,6 +82,22 @@ namespace MunchkinMonitor.Classes
             }
 
             return p.PlayerID;
+        }
+
+        public static Player GetPlayerByUserName(string username)
+        {
+            string path = HttpContext.Current.Server.MapPath("~/ ") + "players.xml";
+            Player p = null;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    List<Player> players = (List<Player>)serializer.Deserialize(stream);
+                    p = players.Where(x => x.UserName == username).FirstOrDefault();
+                }
+            }
+            return p;
         }
 
         public static Player GetPlayerByID(int id)
