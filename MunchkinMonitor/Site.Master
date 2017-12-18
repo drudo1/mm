@@ -57,7 +57,14 @@
                 else
                     return false;
             };
+            rivets.formatters.isCurrentPlayer = function (value) {
+                if (appData.currentGame.currentPlayer != null && value == appData.currentGame.currentPlayer.currentPlayer.PlayerID)
+                    return true;
+                else
+                    return false;
+            };
             rivets.bind($(document), { appData: appData });
+            $('#bg').appendTo('body');
         });
     </script>
 </head>
@@ -79,7 +86,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="body-content" style="margin-left:30px;">
+        <div class="body-content" style="padding-left:30px;">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>

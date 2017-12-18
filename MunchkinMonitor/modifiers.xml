@@ -103,6 +103,36 @@
   </CharacterModifier>
   <CharacterModifier>
     <ModifierID>7</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Lizard Guy</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>Usable only once: Modifiers played to help a monster count double.</string>
+      <string>You may drop your tail for +1 to run away from monsters level 10-15 or + 2 from level 16 or higher.</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>8</ModifierID>
+    <isRace>true</isRace>
+    <isClass>false</isClass>
+    <GameTypeID>0</GameTypeID>
+    <Description>Lizard Guy</Description>
+    <WinsTies>false</WinsTies>
+    <LevelsForHelp>false</LevelsForHelp>
+    <ExtraLevelForTenOrHigherWhenAlone>false</ExtraLevelForTenOrHigherWhenAlone>
+    <combatBonusForHelp>0</combatBonusForHelp>
+    <turnReminders>
+      <string>You may wear 2 footgears.</string>
+      <string>You may have any number of steeds.</string>
+    </turnReminders>
+  </CharacterModifier>
+  <CharacterModifier>
+    <ModifierID>7</ModifierID>
     <isRace>false</isRace>
     <isClass>true</isClass>
     <GameTypeID>0</GameTypeID>

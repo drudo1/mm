@@ -322,10 +322,11 @@
             });
         });
     </script>
+                <img src="Images/controllerBG.jpg" id="bg" alt="">
     <table style="width:100%">
         <tr>
             <td>
-                <img src="Images/controllerBG.jpg" id="bg" alt="">
+                
             </td>
             <td style="text-align:right">
                 <input rv-show="appData.gameState.currentState | eq 1" type="button" id="btnShowReminders" class="btn mkn btn-xs" value="Help" />

@@ -356,7 +356,7 @@ namespace MunchkinMonitor.Classes
             int levels = Bank / 1000;
             for(int i = 0; i< levels; i++)
             {
-                if (CurrentLevel < (AppState.CurrentState().gameState.isEpic ? 18 : 9))
+                if (CurrentLevel < (AppState.CurrentState.gameState.isEpic ? 18 : 9))
                     CurrentLevel = CurrentLevel + 1;
             }
             Bank = Bank % 1000;

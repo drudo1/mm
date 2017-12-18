@@ -2,6 +2,7 @@
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
     <PlayerID>5</PlayerID>
+    <UserName>DaveR</UserName>
     <Gender>Male</Gender>
     <FirstName>Dave</FirstName>
     <LastName>Rudolph</LastName>
@@ -9,13 +10,14 @@
     <customImagePathMale>daveMale.png</customImagePathMale>
     <customImagePathFemale>daveFemale.png</customImagePathFemale>
     <Victories>3</Victories>
-    <Kills>30</Kills>
-    <Treasures>56</Treasures>
-    <Assists>8</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <Kills>35</Kills>
+    <Treasures>67</Treasures>
+    <Assists>10</Assists>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>4</PlayerID>
+    <UserName>JohnB</UserName>
     <Gender>Male</Gender>
     <FirstName>John</FirstName>
     <LastName>Becker</LastName>
@@ -23,27 +25,29 @@
     <customImagePathMale>johnMale.png</customImagePathMale>
     <customImagePathFemale>johnFemale.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>28</Kills>
-    <Treasures>50</Treasures>
+    <Kills>31</Kills>
+    <Treasures>59</Treasures>
     <Assists>11</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>6</PlayerID>
+    <UserName>JasonW</UserName>
     <Gender>Male</Gender>
     <FirstName>Jason</FirstName>
     <LastName>White</LastName>
     <NickName />
     <customImagePathMale>jasonMale.png</customImagePathMale>
     <customImagePathFemale>jasonFemale.png</customImagePathFemale>
-    <Victories>1</Victories>
-    <Kills>25</Kills>
-    <Treasures>54</Treasures>
+    <Victories>2</Victories>
+    <Kills>31</Kills>
+    <Treasures>72</Treasures>
     <Assists>3</Assists>
-    <GamesPlayed>7</GamesPlayed>
+    <GamesPlayed>8</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
+    <UserName>RyanS</UserName>
     <Gender>Male</Gender>
     <FirstName>Ryan</FirstName>
     <LastName>Schneider</LastName>
@@ -51,13 +55,14 @@
     <customImagePathMale>ryanMale2.png</customImagePathMale>
     <customImagePathFemale>ryanFemale2.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>23</Kills>
-    <Treasures>43</Treasures>
-    <Assists>7</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <Kills>26</Kills>
+    <Treasures>50</Treasures>
+    <Assists>8</Assists>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>1</PlayerID>
+    <UserName>JeffB</UserName>
     <Gender>Male</Gender>
     <FirstName>Jeff</FirstName>
     <LastName>Beiermann</LastName>
@@ -68,22 +73,24 @@
     <Kills>16</Kills>
     <Treasures>30</Treasures>
     <Assists>4</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>2</PlayerID>
+    <UserName>MatthewB</UserName>
     <Gender>Male</Gender>
     <FirstName>Matt</FirstName>
     <LastName>Becker</LastName>
     <NickName />
     <Victories>1</Victories>
-    <Kills>14</Kills>
-    <Treasures>31</Treasures>
-    <Assists>3</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <Kills>17</Kills>
+    <Treasures>45</Treasures>
+    <Assists>4</Assists>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>8</PlayerID>
+    <UserName>DouglasR</UserName>
     <Gender>Male</Gender>
     <FirstName>Douglas</FirstName>
     <LastName>Rudolph</LastName>
@@ -92,10 +99,24 @@
     <Kills>4</Kills>
     <Treasures>11</Treasures>
     <Assists>1</Assists>
-    <GamesPlayed>4</GamesPlayed>
+    <GamesPlayed>5</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>9</PlayerID>
+    <UserName>BrianT</UserName>
+    <Gender>Male</Gender>
+    <FirstName>Brian</FirstName>
+    <LastName>Tanner</LastName>
+    <NickName />
+    <Victories>0</Victories>
+    <Kills>3</Kills>
+    <Treasures>5</Treasures>
+    <Assists>0</Assists>
+    <GamesPlayed>2</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>7</PlayerID>
+    <UserName>JeremyC</UserName>
     <Gender>Male</Gender>
     <FirstName>Jeremy</FirstName>
     <LastName>Curtis</LastName>
@@ -106,18 +127,6 @@
     <Kills>2</Kills>
     <Treasures>1</Treasures>
     <Assists>0</Assists>
-    <GamesPlayed>6</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>9</PlayerID>
-    <Gender>Male</Gender>
-    <FirstName>Brian</FirstName>
-    <LastName>Tanner</LastName>
-    <NickName />
-    <Victories>0</Victories>
-    <Kills>3</Kills>
-    <Treasures>5</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>1</GamesPlayed>
+    <GamesPlayed>7</GamesPlayed>
   </Player>
 </ArrayOfPlayer>

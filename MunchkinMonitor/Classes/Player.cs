@@ -41,7 +41,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                AppState state = AppState.CurrentState();
+                AppState state = AppState.CurrentState;
                 return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0}{1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : (state.playerStats != null && state.playerStats.players.Where(p => p.FirstName == FirstName).Count() > 1) ? string.Format(" {0}.", LastName.Substring(0,1)) : "") : NickName;
             }
         }
@@ -94,7 +94,7 @@ namespace MunchkinMonitor.Classes
                 using (FileStream stream = File.OpenRead(path))
                 {
                     List<Player> players = (List<Player>)serializer.Deserialize(stream);
-                    p = players.Where(x => x.UserName == username).FirstOrDefault();
+                    p = players.Where(x => x.UserName.ToLower() == username.ToLower()).FirstOrDefault();
                 }
             }
             return p;
