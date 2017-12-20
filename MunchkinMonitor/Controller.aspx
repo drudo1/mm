@@ -9,7 +9,7 @@
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
-                appData = data.run('GetCurrentAppState');
+                appData = data.run('GetControllerState');
                 getUpdate = false;
             }
             else {
@@ -17,7 +17,7 @@
             }
 
             if (getUpdate) {
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetControllerState'), appData);
             }
         };
         $(document).ready(function () {
@@ -39,7 +39,7 @@
                 if ($('#ddlPlayers').val() != -1) {
                     data.run('AddExistingPlayer', { id: $('#ddlPlayers').val() });
                     $('#ddlPlayers').val('-1');
-                    objectCopy(data.run('GetCurrentAppState'), appData);
+                    objectCopy(data.run('GetCurrentRoomState'), appData);
                 }
                 else {
                     $('#divAddExistingPlayer').slideUp();
@@ -53,7 +53,7 @@
             $('#btnSaveNewPlayer').click(function () {
                 data.run('AddNewPlayer', { username: $('#txtUserName').val(), firstName: $('#txtFirstName').val(), lastName: $('#txtLastName').val(), nickName: $('#txtNickName').val(), gender: $('#ddlGender').val() });
                 data.run('LoadPlayers');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 $('#txtFirstName').val('');
                 $('#txtLastName').val('');
                 $('#txtNickName').val('');
@@ -63,20 +63,20 @@
             });
             $('#btnStartGame').click(function () {
                 data.run('StartGame');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnSubtractLevel, #btnSubtractLevel2').click(function () {
                 data.run('SubtractLevel');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnAddLevel, #btnAddLevel2').click(function () {
                 data.run('AddLevel');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('.gearUpdate').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateGear', { amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnRace').click(function () {
                 $('#divPlayerSettings').slideUp();
@@ -84,15 +84,15 @@
             });
             $('#btnChgRace').click(function () {
                 data.run('NextRace');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnHalfBreed').click(function () {
                 data.run('ToggleHalfBreed');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnChgHBRace').click(function () {
                 data.run('NextHalfBreed');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnClass').click(function () {
                 $('#divPlayerSettings').slideUp();
@@ -100,15 +100,15 @@
             });
             $('#btnChgClass').click(function () {
                 data.run('NextClass');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnSuperMkn').click(function () {
                 data.run('ToggleSuperMunchkin');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnChgSMClass').click(function () {
                 data.run('NextSMClass');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnGender').click(function () {
                 $('#divPlayerSettings').slideUp();
@@ -116,13 +116,13 @@
             });
             $('#btnChgGender').click(function () {
                 data.run('ChangeGender', { penalty: $('#txtGenderPenalty').val() });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 $('#divPlayerSettings').slideDown();
                 $('#divGender').slideUp();
             });
             $('#btnDie').click(function () {
                 data.run('KillCurrentPlayer');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             })
             $('#btnHirelings').click(function () {
                 $('#divPlayerSettings').slideUp();
@@ -142,7 +142,7 @@
             $('#btnSaveHelper').click(function () {
                 var steed = ($('#hdnHelperType').val() == 'steed');
                 data.run('AddHelper', { steed: steed, bonus: $('#txtHelperBonus').val() });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 if ($('#hdnHelperType').val() == 'hireling')
                     $('#divHirelings').slideDown();
                 else
@@ -176,17 +176,17 @@
             $('.hlpGearUpdate').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateHelperGear', { helperID: $('#hdnHelperID').val(), amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentPlayer.Hirelings[idx], helperData);
             });
             $('#btnChangeHelperRace').click(function () {
                 data.run('ChangeHelperRace', { helperID: $('#hdnHelperID').val() });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentPlayer.Hirelings[idx], helperData);
             });
             $('#btnKillHelper').click(function () {
                 data.run('KillHelper', { helperID: $('#hdnHelperID').val() });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
 
                 if ($('#hdnHelperType').val() == 'hireling')
                     $('#divHirelings').slideDown();
@@ -197,11 +197,11 @@
             });
             $('#btnPrevPlayer').click(function () {
                 data.run('PrevPlayer');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnNextPlayer').click(function () {
                 data.run('NextPlayer');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 $('#btnShowReminders').text('Help');
             });
             $('.playerSetupHome').click(function () {
@@ -214,20 +214,20 @@
             });
             $('#btnBattle').click(function () {
                 data.run('StartBattle', { level: 1, levelsToWin: 1, treasures: 1 });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('.BattleBonus').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('BattleBonus', { amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnAddAlly').click(function () {
                 data.run('AddAlly', { allyID: $('#ddlAvailableAllys').val(), allyTreasures: $('#ddlAllyTreasures').val() });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnRemoveAlly').click(function () {
                 data.run('RemoveAlly');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $(document).on('click', '.monsterButton', function () {
                 mIdx = $(this).attr('monsterIDX');
@@ -239,30 +239,30 @@
             $('.monsterLevel').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateMonsterLevel', { monsterIDX: mIdx, amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
             });
             $('.monsterBonus').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateMonsterBonus', { monsterIDX: mIdx, amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
             });
             $('.updMonsterLTW').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateMonsterLTW', { monsterIDX: mIdx, amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
             });
             $('.updMonsterTreasure').click(function () {
                 var amount = $(this).attr('amount');
                 data.run('UpdateMonsterTreasures', { monsterIDX: mIdx, amount: amount });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 objectCopy(appData.gameState.currentBattle.opponents[mIdx], monsterData);
             });
             $('#btnRemoveMonster').click(function () {
                 data.run('RemoveMonster', { monsterIDX: mIdx });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 mIdx = -1;
                 monsterData = null;
                 $('#divBattle').slideDown();
@@ -276,7 +276,7 @@
             });
             $('#btnAddMonster').click(function () {
                 mIdx = data.run('AddMonster', { level: 1, levelsToWin: 1, treasures: 1 });
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
                 monsterData = appData.gameState.currentBattle.opponents[mIdx];
                 rivets.bind($('#divMonsterEdit'), { curMonster: monsterData });
                 $('#divBattle').slideUp();
@@ -284,19 +284,19 @@
             });
             $('#btnCancelBattle').click(function () {
                 mIdx = data.run('CancelBattle');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnResolveBattle').click(function () {
                 mIdx = data.run('ResolveBattle');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnCompleteBattle').click(function () {
                 mIdx = data.run('CompleteBattle');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnEndGame').click(function () {
                 data.run('EndGame');
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentRoomState'), appData);
             });
             $('#btnOpenSellPanel').click(function () {
                 $('#divPlayerSettings').slideUp();
@@ -335,9 +335,12 @@
         </tr>
     </table>
     <div id="bound">
-    <div id="divPreGame" class="mobile mkn2 mkn" rv-show="appData.currentState | neq 1">
-        <input id="btnNewGame" type="button" class="btn mkn" value="Start New Game" /><br />
-        <input id="btnNewEpic" type="button" class="btn mkn" value="Start New Epic Game" />
+    <div id="divChooseGame" class="mobile mkn2 mkn" >
+        <div class="row">
+            <div class="col-xs-12 mkn">
+                <h3>Select a Room</h3>
+            </div>
+        </div>
     </div>
     <div rv-show="appData.currentState | eq 1">
         <div id="divSetup" class="mobile mkn2 mkn" rv-show="appData.gameState.currentState | eq 0">

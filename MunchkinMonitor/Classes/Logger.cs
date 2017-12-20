@@ -9,14 +9,14 @@ namespace MunchkinMonitor.Classes
     {
         internal static void LogBattle(BattleResult br)
         {
-            AppState state = AppState.CurrentState;
+            RoomState state = RoomState.CurrentState;
             GameStats.LogBattle(br);
             if(br.Victory)
                 state.playerStats.LogBattleVictory(br);
         }
         internal static void LogVictory(int playerID)
         {
-            AppState state = AppState.CurrentState;
+            RoomState state = RoomState.CurrentState;
             state.playerStats.LogVictory(playerID);
             GameStats.LogVictory(playerID);
         }

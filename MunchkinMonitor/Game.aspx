@@ -6,7 +6,7 @@
         objPing.UpdateState = function () {
             var getUpdate = false;
             if (appData == null) {
-                appData = data.run('GetCurrentAppState');
+                appData = data.run('GetCurrentGameState');
                 getUpdate = false;
             }
             else {
@@ -14,7 +14,7 @@
             }
             
             if (getUpdate) {
-                objectCopy(data.run('GetCurrentAppState'), appData);
+                objectCopy(data.run('GetCurrentGameState'), appData);
                 pageMethods.TriggerChange();
             }
         };

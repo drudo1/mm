@@ -49,9 +49,14 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                AppState state = AppState.CurrentState;
-                List<CurrentGamePlayer> results = state.gameState.players.Where(p => p != gamePlayer).ToList();
-                return results;
+                Game state = Game.CurrentGame;
+                if (state != null)
+                {
+                    List<CurrentGamePlayer> results = state.players.Where(p => p != gamePlayer).ToList();
+                    return results;
+                }
+                else
+                    return null;
             }
         }
         public bool WinsTies

@@ -24,6 +24,28 @@ namespace MunchkinMonitor.Classes
         public List<CharacterHelper> Helpers { get; set; }
         public int Bank { get; set; }
         public string showCheatCard { get; set; }
+        public bool DroppedOut { get; set; }
+        public bool NeedsASeat
+        {
+            get
+            {
+                if (Game.CurrentGame != null)
+                    return Game.CurrentGame.NeedNextPlayer && !Game.CurrentGame.playerSeats.Contains(currentPlayer.PlayerID);
+                else
+                    return false;
+            }
+        }
+
+        public static CurrentGamePlayer CurrentPlayer
+        {
+            get
+            {
+                if (HttpContext.Current.Session["RoomID"] != null && HttpContext.Current.Session["GameID"] != null && HttpContext.Current.Session["PlayerID"] != null)
+                    return Game.CurrentGame.currentPlayer;
+                else
+                    return null;
+            }
+        }
 
         public CurrentGamePlayer()
         {
@@ -356,7 +378,7 @@ namespace MunchkinMonitor.Classes
             int levels = Bank / 1000;
             for(int i = 0; i< levels; i++)
             {
-                if (CurrentLevel < (AppState.CurrentState.gameState.isEpic ? 18 : 9))
+                if (CurrentLevel < (Game.CurrentGame.isEpic ? 18 : 9))
                     CurrentLevel = CurrentLevel + 1;
             }
             Bank = Bank % 1000;

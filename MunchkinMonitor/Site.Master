@@ -63,6 +63,12 @@
                 else
                     return false;
             };
+            rivets.formatters.pipeSplit = function (value, idx) {
+                if (value.split("|").length > idx)
+                    return value.split("|")[idx];
+                else
+                    return "";
+            };
             rivets.bind($(document), { appData: appData });
             $('#bg').appendTo('body');
         });

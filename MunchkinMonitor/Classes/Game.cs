@@ -18,13 +18,18 @@ namespace MunchkinMonitor.Classes
     [Serializable]
     public class Game
     {
+        public int GameID { get; set; }
+        public string Name { get; set; }
+        public string ScoreBoardName { get; set; }
         public bool isEpic { get; set; }
         public GameStates currentState { get; set; }
         public List<CurrentGamePlayer> players { get; set; }
+        public List<int> playerSeats { get; set; }
         public DateTime gameDate { get; set; }
         public CurrentGamePlayer currentPlayer { get; set; }
         public Battle currentBattle { get; set; }
         public DateTime lastUpdated { get; set; }
+        public bool NeedNextPlayer { get; set; }
         public double lastUpdatedJS
         {
             get
@@ -39,16 +44,35 @@ namespace MunchkinMonitor.Classes
                 return !(currentPlayer == null);
             }
         }
-
-        public Game(bool epic)
+        public List<Player> AvailablePlayers
         {
+            get
+            {
+                return RoomState.CurrentState.playerStats.players.Where(p => !players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).OrderByDescending(p => p.GamesPlayed).ThenBy(p => p.DisplayName).ToList();
+            }
+        }
+        public static Game CurrentGame
+        {
+            get
+            {
+                if (HttpContext.Current.Session["RoomID"] != null && HttpContext.Current.Session["GameID"] != null)
+                    return (Game)RoomState.CurrentState.games[HttpContext.Current.Session["GameID"].ToString()];
+                else
+                    return null;
+            }
+        }
+
+        public Game(int id, string name, bool epic)
+        {
+            GameID = id;
+            Name = name;
             gameDate = DateTime.Now;
             players = new List<CurrentGamePlayer>();
             currentState = GameStates.Setup;
             isEpic = epic;
             lastUpdated = DateTime.Now;
-            currentPlayer = new CurrentGamePlayer();
-            currentBattle = new Battle();
+            currentPlayer = null;
+            currentBattle = null;
         }
 
         public void AddExistingPlayer(int id)
@@ -68,9 +92,9 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
-        public void AddNewPlayer(string username, string firstName, string lastName, string nickName, Gender gender)
+        public void AddNewPlayer(string username, string password, string firstName, string lastName, string nickName, Gender gender)
         {
-            int id = Player.AddNewPlayer(username, firstName, lastName, nickName, gender);
+            int id = Player.AddNewPlayer(username, password, firstName, lastName, nickName, gender);
             AddExistingPlayer(id);
         }
 
@@ -80,9 +104,17 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
         }
 
+        public void Update()
+        {
+            lastUpdated = DateTime.Now;
+        }
+
         public void StartGame()
         {
-            StartGame(players[0].currentPlayer.PlayerID);
+            playerSeats = new List<int>();
+            NeedNextPlayer = true;
+            currentPlayer = null;
+            SetState(GameStates.BattlePrep);
         }
 
         public void StartGame(int playerID)
@@ -96,11 +128,19 @@ namespace MunchkinMonitor.Classes
             int idx = 0;
             if (currentPlayer != null)
             {
-                idx = players.IndexOf(currentPlayer);
+                idx = playerSeats.IndexOf(currentPlayer.currentPlayer.PlayerID);
                 idx = (idx + 1) % players.Count;
             }
-            currentPlayer = players[idx];
-            SetState(GameStates.BattlePrep);
+            if (idx >= playerSeats.Count)
+            {
+                currentPlayer = null;
+                NeedNextPlayer = true;
+            }
+            else
+            {
+                currentPlayer = players.Where(p=> p.currentPlayer.PlayerID == playerSeats[idx]).FirstOrDefault();
+                SetState(GameStates.BattlePrep);
+            }
         }
 
         public void PrevPlayer()

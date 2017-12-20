@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ArrayOfRoomMembership xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RoomMembership>
+    <RoomID>1</RoomID>
+    <RoomName>dave's room</RoomName>
+    <RoomKey>dave wins</RoomKey>
+    <RoomPlayers>
+      <int>5</int>
+      <int>4</int>
+    </RoomPlayers>
+  </RoomMembership>
+</ArrayOfRoomMembership>

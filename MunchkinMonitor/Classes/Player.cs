@@ -19,6 +19,7 @@ namespace MunchkinMonitor.Classes
     {
         public int PlayerID { get; set; }
         public string UserName { get; set; }
+        public string Password { get; set; }
         public Gender Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -41,17 +42,18 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                AppState state = AppState.CurrentState;
-                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0}{1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : (state.playerStats != null && state.playerStats.players.Where(p => p.FirstName == FirstName).Count() > 1) ? string.Format(" {0}.", LastName.Substring(0,1)) : "") : NickName;
+                RoomState state = RoomState.CurrentState;
+                return string.IsNullOrWhiteSpace(NickName) ? string.Format("{0}{1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName, string.IsNullOrWhiteSpace(LastName) ? "" : (state != null && state.playerStats != null && state.playerStats.players.Where(p => p.FirstName == FirstName).Count() > 1) ? string.Format(" {0}.", LastName.Substring(0,1)) : "") : NickName;
             }
         }
 
-        public static int AddNewPlayer(string username, string firstName, string lastName, string nickName, Gender gender)
+        public static int AddNewPlayer(string username, string password, string firstName, string lastName, string nickName, Gender gender)
         {
             string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
             Player p = new Player
             {
                 UserName = username,
+                Password = password,
                 Gender = gender,
                 FirstName = firstName,
                 LastName = lastName,
@@ -84,6 +86,24 @@ namespace MunchkinMonitor.Classes
             return p.PlayerID;
         }
 
+        public static int Login(string username, string password)
+        {
+            string path = HttpContext.Current.Server.MapPath("~/ ") + "players.xml";
+            int id = -1;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    List<Player> players = (List<Player>)serializer.Deserialize(stream);
+                    Player p = players.Where(x => x.UserName.ToLower() == username.ToLower() && x.Password == password).FirstOrDefault();
+                    if(p != null)
+                        id = p.PlayerID;
+                }
+            }
+            return id;
+        }
+
         public static Player GetPlayerByUserName(string username)
         {
             string path = HttpContext.Current.Server.MapPath("~/ ") + "players.xml";
@@ -114,6 +134,153 @@ namespace MunchkinMonitor.Classes
                 }
             }
             return p;
+        }
+    }
+
+    [Serializable]
+    public class RoomMembership
+    {
+        public int RoomID { get; set; }
+        public string RoomName { get; set; }
+        public string RoomKey { get; set; }
+        public List<int> RoomPlayers { get; set; }
+
+        public static List<string> CurrentPlayerRooms
+        {
+            get
+            {
+                List<string> result = new List<string>();
+                if(HttpContext.Current.Session["PlayerID"] != null)
+                {
+                    string path = HttpContext.Current.Server.MapPath("~/") + "rooms.xml";
+
+                    List<RoomMembership> rooms;
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<RoomMembership>));
+                    if (File.Exists(path))
+                    {
+                        using (FileStream stream = File.OpenRead(path))
+                        {
+                            rooms = (List<RoomMembership>)serializer.Deserialize(stream);
+                            result = rooms.Where(cr => cr.RoomPlayers.Contains((int)HttpContext.Current.Session["PlayerID"])).Select(cr => string.Format("{0}|{1}", cr.RoomID, cr.RoomName)).ToList();
+                        }
+                    }
+                }
+                return result;
+            }
+        }
+
+        public static string AddNewRoom(string name, string key)
+        {
+            int id = 1;
+            string path = HttpContext.Current.Server.MapPath("~/") + "rooms.xml";
+
+            List<RoomMembership> rooms;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<RoomMembership>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    rooms = (List<RoomMembership>)serializer.Deserialize(stream);
+                }
+            }
+            else
+                rooms = new List<RoomMembership>();
+
+            if (rooms.Count() > 0)
+                id = rooms.Max(cr => cr.RoomID) + 1;
+
+            if (!rooms.Exists(cr => cr.RoomName == name))
+            {
+                RoomMembership r = new RoomMembership
+                {
+                    RoomID = id,
+                    RoomName = name,
+                    RoomKey = key,
+                    RoomPlayers = new List<int>()
+                };
+                r.RoomPlayers.Add((int)HttpContext.Current.Session["PlayerID"]);
+                HttpContext.Current.Session["RoomID"] = id;
+                rooms.Add(r);
+
+                using (FileStream stream = File.OpenWrite(path))
+                {
+                    serializer.Serialize(stream, rooms);
+                }
+
+                return "RoomCreated";
+            }
+            else
+            {
+                return "Room Name is already in use.";
+            }
+        }
+
+        public static string JoinRoom(string key)
+        {
+            int id = 0;
+            string path = HttpContext.Current.Server.MapPath("~/") + "rooms.xml";
+
+            List<RoomMembership> rooms;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<RoomMembership>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    rooms = (List<RoomMembership>)serializer.Deserialize(stream);
+                }
+            }
+            else
+                rooms = new List<RoomMembership>();
+
+            if (rooms.Exists(cr => cr.RoomKey == key))
+            {
+                RoomMembership r = rooms.Where(cr => cr.RoomKey == key).FirstOrDefault();
+                r.RoomPlayers.Add((int)HttpContext.Current.Session["PlayerID"]);
+                HttpContext.Current.Session["RoomID"] = r.RoomID;
+
+                using (FileStream stream = File.OpenWrite(path))
+                {
+                    serializer.Serialize(stream, rooms);
+                }
+
+                return "RoomJoined";
+            }
+            else
+            {
+                return "Invalid Room Key.";
+            }
+        }
+
+        public static void LeaveRoom()
+        {
+            int id = 0;
+            string path = HttpContext.Current.Server.MapPath("~/") + "rooms.xml";
+
+            List<RoomMembership> rooms;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<RoomMembership>));
+            if (File.Exists(path))
+            {
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    rooms = (List<RoomMembership>)serializer.Deserialize(stream);
+                }
+            }
+            else
+                rooms = new List<RoomMembership>();
+
+            if (rooms.Exists(cr => cr.RoomID == (int)HttpContext.Current.Session["RoomID"]))
+            {
+                RoomMembership r = rooms.Where(cr => cr.RoomID == (int)HttpContext.Current.Session["RoomID"]).FirstOrDefault();
+                r.RoomPlayers.Remove((int)HttpContext.Current.Session["PlayerID"]);
+                if (r.RoomPlayers.Count == 0)
+                    rooms.Remove(r);
+                HttpContext.Current.Session.Remove("RoomID");
+
+                using (FileStream stream = File.OpenWrite(path))
+                {
+                    serializer.Serialize(stream, rooms);
+                }
+            }
         }
     }
 }

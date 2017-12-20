@@ -134,7 +134,7 @@ namespace MunchkinMonitor.Classes
         {
             
             List<Trophy> trophies = new List<Trophy>();
-            trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
+            trophies.AddRange(CurrentGameStats.Where(gs => gs.Victory).Select(gs => new Trophy { Title = "King Munchkin", player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == gs.playerID).FirstOrDefault(), Reason = "For Thieving, Lying, Backstabbing, and all around Good Munchkinry... and for getting there first..." }));
             List<string> attempted = new List<string> { "King Munchkin" };
             while (CurrentGameStats.Where(gs => trophies.Where(t => t.player.PlayerID == gs.playerID).Count() == 0).Count() > 0 && attempted.Count < TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales > 0).Count())
             {
@@ -212,7 +212,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.assists == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.assists)
                             };
@@ -223,7 +223,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.deaths == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.deaths)
                             };
@@ -234,7 +234,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.genderChanges == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.genderChanges)
                             };
@@ -245,7 +245,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.kills == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.kills)
                             };
@@ -256,7 +256,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.levelsLost == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.levelsLost)
                             };
@@ -267,7 +267,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.losses == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.losses)
                             };
@@ -278,7 +278,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.maxGear == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.maxGear)
                             };
@@ -289,7 +289,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.maxMonster == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.maxMonster)
                             };
@@ -300,7 +300,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.singleHandedKills == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.singleHandedKills)
                             };
@@ -311,7 +311,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.treasures == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.treasures)
                             };
@@ -322,7 +322,7 @@ namespace MunchkinMonitor.Classes
                             GameStats stat = CurrentGameStats.Where(gs => !trophies.Select(t => t.player.PlayerID).Contains(gs.playerID)).Where(gs => gs.totalSales == max).FirstOrDefault();
                             trophy = new Trophy
                             {
-                                player = AppState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
+                                player = RoomState.CurrentState.playerStats.players.Where(p => p.PlayerID == stat.playerID).FirstOrDefault(),
                                 Title = tmp.Title,
                                 Reason = string.Format(tmp.reason, stat.totalSales)
                             };
@@ -339,7 +339,7 @@ namespace MunchkinMonitor.Classes
                 TrophyRequirement tmp = TrophyRequirement.possibleTrophies.Where(t => t.assists + t.deaths + t.genderChanges + t.kills + t.levelsLost + t.losses + t.maxGear + t.singleHandedKills + t.treasures + t.maxMonster + t.totalSales == 0).ToList()[idx];
                 Trophy trophy = new Trophy
                 {
-                    player = AppState.CurrentState.playerStats.players.Where(p => !trophies.Select(t => t.player.PlayerID).Contains(p.PlayerID)).FirstOrDefault(),
+                    player = RoomState.CurrentState.playerStats.players.Where(p => !trophies.Select(t => t.player.PlayerID).Contains(p.PlayerID)).FirstOrDefault(),
                     Title = tmp.Title,
                     Reason = tmp.reason
                 };
