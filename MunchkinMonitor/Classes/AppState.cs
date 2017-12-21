@@ -168,7 +168,10 @@ namespace MunchkinMonitor.Classes
             Game g = new Game(id, name, isEpic);
             g.ScoreBoardName = sbName;
             games[id.ToString()] = g;
-            AppState.CurrentState.ScoreBoardGamePairings.Add(sbName, id.ToString());
+            if (AppState.CurrentState.ScoreBoardGamePairings[sbName] == null)
+                AppState.CurrentState.ScoreBoardGamePairings.Add(sbName, id.ToString());
+            else
+                AppState.CurrentState.ScoreBoardGamePairings[sbName] = id.ToString();
             SetState(RoomStates.Game);
             HttpContext.Current.Session["GameID"] = g.GameID;
         }
