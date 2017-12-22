@@ -57,7 +57,7 @@
                 },
                 ChangeGender: function () {
                     if (!pageMethods.playerChanged()) {
-                        $('.playerPanel').css('background-image', 'url(' + appData.gameState.currentPlayer.ImagePath + ')');
+                        $('.playerPanel').css('background-image', 'url(' + appData.currentPlayer.ImagePath + ')');
                     }
                 },
                 ChangeGameState: function () {
@@ -68,24 +68,24 @@
             },
             showCheatCard: function() {
                 var result = false;
-                if (appData.gameState.currentPlayer.showCheatCard == 'true')
+                if (appData.currentPlayer.showCheatCard == 'true')
                     result = true;
                 return result;
             },
             playerChanged: function () {
                 var result = false;
-                if (appData.gameState.currentPlayer.currentPlayer.PlayerID != -1) {
+                if (appData.currentPlayer.currentPlayer.PlayerID != -1) {
                     if (pageState.currentPlayerID == -1)
                         result = true;
-                    else if (appData.gameState.currentPlayer.currentPlayer.PlayerID != pageState.currentPlayerID)
+                    else if (appData.currentPlayer.currentPlayer.PlayerID != pageState.currentPlayerID)
                         result = true;
                 }
                 return result;
             },
             DisplayCheatCard: function() {
 
-                if (appData.gameState.currentPlayer.hasTurnReminders) {
-                    var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                if (appData.currentPlayer.hasTurnReminders) {
+                    var newPID = appData.currentPlayer.currentPlayer.PlayerID;
                     $(pageMethods.playerRemindersTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
                     rivets.bind($('#divPlayer_' + newPID + '_' + this.guid + '_reminders'), { appData: appData })
                     $('.playerPanel').hide('slide', { direction: 'left' });
@@ -95,7 +95,7 @@
             },
             HideCheatCard: function () {
                 if ($('.reminderPanel').is(':visible')) {
-                    var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                    var newPID = appData.currentPlayer.currentPlayer.PlayerID;
                     $('.playerPanel').hide('slide', { direction: 'left' });
                     $('.reminderPanel').hide('slide', { direction: 'left' });
                     $('.playerPanel').remove();
@@ -103,13 +103,13 @@
                     $('.ui-effects-placeholder').remove();
                     $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
                     rivets.bind($('#divPlayer_' + newPID + '_' + this.guid), { appData: appData })
-                    $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                    $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                     $('#divPlayer_' + newPID + '_' + this.guid).show('slide', { direction: 'right' });
                 }
             },
             guid,
             UpdatePlayer: function () {
-                var newPID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                var newPID = appData.currentPlayer.currentPlayer.PlayerID;
                 this.guid = newGuid();
                 $('.playerPanel').hide('slide', { direction: 'left' });
                 $('.reminderPanel').hide('slide', { direction: 'left' });
@@ -118,33 +118,33 @@
                 $(pageMethods.playerPanelTemplate.replace('divPlayer_template', 'divPlayer_' + newPID + '_' + this.guid)).prependTo('#divCurrentAction');
                 rivets.bind($('#divPlayer_' + newPID + '_' + this.guid), { appData: appData })
                 $('.ui-effects-placeholder').remove();
-                $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.gameState.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
+                $('#divPlayer_' + newPID + '_' + this.guid).css({ 'background-image': 'url(' + appData.currentPlayer.ImagePath + ')', 'background-position': 'left bottom', 'background-repeat': 'no-repeat' });
                 $('#divPlayer_' + newPID + '_' + this.guid).show('slide', { direction: 'right' });
-                pageState.currentPlayerID = appData.gameState.currentPlayer.currentPlayer.PlayerID;
+                pageState.currentPlayerID = appData.currentPlayer.currentPlayer.PlayerID;
                 pageState.currentGuid = this.guid;
             },
             gameStateChanged: function () {
                 var result = false;
-                if (appData.gameState.currentState != -1) {
+                if (appData.currentState != -1) {
                     if (pageState.currentGameState == -1)
                         result = true;
-                    else if (appData.gameState.currentstate != pageState.currentGameState)
+                    else if (appData.currentstate != pageState.currentGameState)
                         result = true;
                 }
                 return result;
             },
             UpdateGameState: function() {
-                if (appData.gameState.currentState == 0 || appData.gameState.currentState == 1) {
+                if (appData.currentState == 0 || appData.currentState == 1) {
                     $('.playerPanel').slideDown();
                     $('#divBattle').slideUp();
                     $('#divBattleResults').slideUp();
                 }
-                else if (appData.gameState.currentState == 2) {
+                else if (appData.currentState == 2) {
                     $('#divBattle').slideDown();
                     $('.playerPanel').slideUp();
                     $('#divBattleResults').slideUp();
                 }
-                else if (appData.gameState.currentState == 3) {
+                else if (appData.currentState == 3) {
                     $('#divBattleResults').slideDown();
                     $('#divBattle').slideUp();
                     $('.playerPanel').slideUp();
@@ -154,33 +154,33 @@
             playerPanelTemplate: '<div id="divPlayer_template" class="battlePrep mkn playerPanel" style="display:none; min-height:700px;">'
                              +' <div class="row">'
                              +'     <div class="col-lg-12 mkn">'
-                             + '         <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span>&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.Bank | neq 0" style="font-weight:bold;">${appData.gameState.currentPlayer.Bank}</span></h1>'
+                             + '         <h1>{appData.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span>&nbsp;&nbsp;&nbsp;<span rv-show="appData.currentPlayer.Bank | neq 0" style="font-weight:bold;">${appData.currentPlayer.Bank}</span></h1>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">'
                              +'     <div class="col-lg-6 mkn" stye="text-align:center;">'
-                             +'         <h2>Race: {appData.gameState.currentPlayer.currentRaces}</h2>'
+                             +'         <h2>Race: {appData.currentPlayer.currentRaces}</h2>'
                              +'     </div>'
                              +'     <div class="col-lg-6 mkn" style="text-align:center;">'
-                             +'         <h2>Class: {appData.gameState.currentPlayer.currentClasses}</h2>'
+                             +'         <h2>Class: {appData.currentPlayer.currentClasses}</h2>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">'
                              +'     <div class="col-lg-6 mkn">'
-                             +'         <h2>Level: {appData.gameState.currentPlayer.CurrentLevel}</h2>'
+                             +'         <h2>Level: {appData.currentPlayer.CurrentLevel}</h2>'
                              +'     </div>'
                              +'     <div class="col-lg-6 mkn">'
-                             +'         <h2>Gear: {appData.gameState.currentPlayer.GearBonus}</h2>'
+                             +'         <h2>Gear: {appData.currentPlayer.GearBonus}</h2>'
                              +'     </div>'
                              +' </div>'
                              +' <div class="row">&nbsp;</div>'
                              +' <div class="row">&nbsp;</div>'
-                             +' <div rv-show="appData.gameState.currentPlayer.HasHelpers" class="row">'
+                             +' <div rv-show="appData.currentPlayer.HasHelpers" class="row">'
                              +'     <div class="col-lg-12 playerRow mkn">'
                              +'         <h2>Helpers</h2>'
                              +'     </div>'
                              +' </div>'
-                             +' <div rv-show="appData.gameState.currentPlayer.HasHelpers" class="row">'
+                             +' <div rv-show="appData.currentPlayer.HasHelpers" class="row">'
                              +'     <div class="col-lg-2 playerRow mkn" style="font-weight:bold;">'
                              +'         <h3>Type</h3>'
                              +'     </div>'
@@ -197,7 +197,7 @@
                              +'         <h3>Race</h3>'
                              +'     </div>'
                              +' </div>'
-                             +' <div class="row playerRow" rv-show="appData.gameState.currentPlayer.HasHelpers" rv-each-helper="appData.gameState.currentPlayer.OrderedHelpers">'
+                             +' <div class="row playerRow" rv-show="appData.currentPlayer.HasHelpers" rv-each-helper="appData.currentPlayer.OrderedHelpers">'
                              +'     <div class="col-lg-2 mkn">'
                              +'         <h3>'
                              +'             <span rv-show="helper.isHireling">Hireling</span>'
@@ -220,18 +220,18 @@
                              +' <div class="row">'
                              +'    <div class="col-lg-12 mkn">'
                              +'        <h1>Fighting Level</h1>'
-                             + '        <div class="mknFightingLevel" style="border:2px solid #350400; padding:12px; width:150px;">{appData.gameState.currentPlayer.FightingLevel}</div>'
+                             + '        <div class="mknFightingLevel" style="border:2px solid #350400; padding:12px; width:150px;">{appData.currentPlayer.FightingLevel}</div>'
                              +'    </div>'
                              +' </div>'
                              +'</div>',
             playerRemindersTemplate: '<div id="divPlayer_template_reminders" class="mkn reminderPanel" style="display:none;">'
                              +'    <div class="row">'
                              +'        <div class="col-lg-12 mkn">'
-                             +'            <h1>{appData.gameState.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.gameState.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.gameState.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
+                             +'            <h1>{appData.currentPlayer.currentPlayer.DisplayName}&nbsp;&nbsp;&nbsp;<span rv-show="appData.currentPlayer.CurrentGender | eq 0" style="font-weight:bold;">&#9794;</span><span rv-show="appData.currentPlayer.currentGender | eq 1" style="font-weight:bold;">&#9792;</span></h1>'
                              +'        </div>'
                              +'    </div>'
                              +'    <ul>'
-                             + '        <li class="mknReminder" rv-each-minder="appData.gameState.currentPlayer.turnReminders" rv-text="minder">'
+                             + '        <li class="mknReminder" rv-each-minder="appData.currentPlayer.turnReminders" rv-text="minder">'
                              +'        </li>'
                              +'    </ul>'
                              +'</div>'
@@ -242,7 +242,6 @@
             currentGameState: -1
         };
         $(document).ready(function () {
-            appData.gameState.players = [{ currentPlayer: { PlayerID: -1, DisplayName: 'Add a Player' }, CurrentLevel: -1 }];
             rivets.bind($(document), { appData: appData });
         })
     </script>
@@ -250,18 +249,18 @@
     <div class="row">
         <div class="col-lg-4">
             <div class="gamePlayerList">
-                <div class="row playerRow">
+                <div class="row playerRow" style="padding-top:50px;">
                     <div class="col-sm-offset-6 col-sm-2">
-                        Level
+                        L
                     </div>
                     <div class="col-sm-2">
-                        Fight
+                        FL
                     </div>
                     <div class="col-sm-2">
-                        Ally
+                        AL
                     </div>
                 </div>
-                <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.gameState.players">
+                <div class='row playerRow' rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.playersOrdered">
                     <div class="col-sm-6" rv-class-col-sm-12="player.CurrentLevel | lt 1" >
                         &nbsp;&nbsp;{player.currentPlayer.DisplayName}
                     </div>
@@ -286,43 +285,43 @@
                         <div class="col-lg-6 mkn battleLeft" >
                             <div class="row">
                                 <div class="col-md-12 mkn">
-                                    <h1 rv-text="appData.gameState.currentBattle.gamePlayer.currentPlayer.DisplayName"></h1>
+                                    <h1 rv-text="appData.currentBattle.gamePlayer.currentPlayer.DisplayName"></h1>
                                 </div>
                                 <div class="col-md-12 mkn">
-                                    <h2>Fighting Level: {appData.gameState.currentBattle.gamePlayer.FightingLevel}</h2>
+                                    <h2>Fighting Level: {appData.currentBattle.gamePlayer.FightingLevel}</h2>
                                 </div>
                             </div>
                             <div class="row" style="height:4px; background-color: #350400;">&nbsp;</div>
-                            <div class="row" rv-show="appData.gameState.currentBattle.HasAlly">
+                            <div class="row" rv-show="appData.currentBattle.HasAlly">
                                 <div class="col-md-12 mkn">
-                                    <h1>Ally: {appData.gameState.currentBattle.ally.currentPlayer.DisplayName}</h1>
+                                    <h1>Ally: {appData.currentBattle.ally.currentPlayer.DisplayName}</h1>
                                 </div>
                                 <div class="col-md-12 mkn">
-                                    <h2>Fighting Level: {appData.gameState.currentBattle.ally.FightingLevel}</h2>
-                                </div>
-                            </div>
-                            <div class="row" rv-show="appData.gameState.currentBattle.HasAlly" style="height:4px; background-color: #350400;">&nbsp;</div>
-                            <div class="row">
-                                <div class="col-md-12 mkn">
-                                    <h1>Battle Bonus: {appData.gameState.currentBattle.playerOneTimeBonus}</h1>
+                                    <h2>Fighting Level: {appData.currentBattle.ally.FightingLevel}</h2>
                                 </div>
                             </div>
+                            <div class="row" rv-show="appData.currentBattle.HasAlly" style="height:4px; background-color: #350400;">&nbsp;</div>
                             <div class="row">
                                 <div class="col-md-12 mkn">
-                                    <h1>Total: {appData.gameState.currentBattle.playerPoints}</h1>
+                                    <h1>Battle Bonus: {appData.currentBattle.playerOneTimeBonus}</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mkn">
+                                    <h1>Total: {appData.currentBattle.playerPoints}</h1>
                                 </div>
                             </div>
                             <div class="row" style="position:absolute; bottom:0">
-                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                <div class="col-md-12" rv-show="appData.currentBattle.GoodGuysWin" style="text-align:center;">
                                     <img src="Images/playerWins.png" style="height:250px;" />
                                 </div>
-                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                <div class="col-md-12" rv-hide="appData.currentBattle.GoodGuysWin" style="text-align:center;">
                                     <img src="Images/playerLoses.png" style="height:250px;" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 mkn battleRight">                            
-                            <div class="row playerRow" rv-each-monster="appData.gameState.currentBattle.opponents">
+                            <div class="row playerRow" rv-each-monster="appData.currentBattle.opponents">
                                 <div class="col-md-6 mkn playerRow" style="padding-top:8px;">
                                     Level: {monster.Level}
                                 </div>
@@ -341,14 +340,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12 mkn">
-                                    <h1>Total: {appData.gameState.currentBattle.opponentPoints}</h1>
+                                    <h1>Total: {appData.currentBattle.opponentPoints}</h1>
                                 </div>
                             </div>
                             <div class="row" style="position:absolute; bottom:0;">
-                                <div class="col-md-12" rv-show="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                <div class="col-md-12" rv-show="appData.currentBattle.GoodGuysWin" style="text-align:center;">
                                     <img src="Images/monsterLoses.png" style="height:250px;" />
                                 </div>
-                                <div class="col-md-12" rv-hide="appData.gameState.currentBattle.GoodGuysWin" style="text-align:center;">
+                                <div class="col-md-12" rv-hide="appData.currentBattle.GoodGuysWin" style="text-align:center;">
                                     <img src="Images/monsterWins.png" style="height:250px;" />
                                 </div>
                             </div>
@@ -358,11 +357,11 @@
                 <div id="divBattleResults" class="statePanels" style="display:none;">
                     <div class="row">
                         <div class="col-lg-12 mkn playerRow" style="text-align:center;">
-                            <h1 rv-text="appData.gameState.currentBattle.result.Message"></h1>
+                            <h1 rv-text="appData.currentBattle.result.Message"></h1>
                         </div>
                     </div>
                     <div class="row" >
-                        <div class="col-lg-12 mkn" rv-each-result="appData.gameState.currentBattle.result.battleResults" style="text-align:center;">
+                        <div class="col-lg-12 mkn" rv-each-result="appData.currentBattle.result.battleResults" style="text-align:center;">
                             <h2 rv-text="result"></h2>
                         </div>
                     </div>

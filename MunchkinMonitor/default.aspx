@@ -314,7 +314,7 @@
                 objectCopy(data.run('GetPlayerState'), appData);
             });
             $('#btnScoreboard').click(function () {
-                $('#divScoreBoardHeader').after('<div class="row playerRow playerRowBound" rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer" rv-each-player="appData.currentGame.players"><div class="col-xs-6 mkn" rv-class-col-xs-12="player.CurrentLevel | lt 1" >&nbsp;&nbsp;{player.currentPlayer.DisplayName}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.CurrentLevel}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.FightingLevel}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.AllyLevel}</div></div>');
+                $('#divScoreBoardHeader').after('<div class="row playerRow playerRowBound" rv-class-selected="player.currentPlayer.PlayerID | isCurrentPlayer2" rv-each-player="appData.currentGame.playersOrdered"><div class="col-xs-6 mkn" rv-class-col-xs-12="player.CurrentLevel | lt 1" >&nbsp;&nbsp;{player.currentPlayer.DisplayName}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.CurrentLevel}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.FightingLevel}</div><div class="col-xs-2 mkn" rv-class-hide="player.CurrentLevel | lt 1" style="text-align:center" >{player.AllyLevel}</div></div>');
                 rivets.bind($('#divScoreBoard'), { appData: appData });
                 $('#divPlayerDashboard').hide();
                 $('#divScoreBoard').slideDown();

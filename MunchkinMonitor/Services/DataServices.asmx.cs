@@ -45,6 +45,12 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
+        public Classes.Game GetCurrentGameState()
+        {
+            return Classes.Game.CurrentGame;
+        }
+
+        [WebMethod(EnableSession = true)]
         public AppState GetControllerState()
         {
             return AppState.CurrentState;

@@ -105,7 +105,13 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return HttpContext.Current.Session["boardName"] != null && (AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString()] != "-1");
+                if (HttpContext.Current.Session["boardName"] != null && (AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString()] != "-1"))
+                {
+                    HttpContext.Current.Session["GameID"] = AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString()];
+                    return true;
+                }
+                else
+                    return false;
             }
         }
 
@@ -168,7 +174,8 @@ namespace MunchkinMonitor.Classes
             Game g = new Game(id, name, isEpic);
             g.ScoreBoardName = sbName;
             games[id.ToString()] = g;
-            AppState.CurrentState.ScoreBoardGamePairings.Add(sbName, id.ToString());
+            if (AppState.CurrentState.ScoreBoardGamePairings[sbName] != null)
+                AppState.CurrentState.ScoreBoardGamePairings[sbName] = id.ToString();
             SetState(RoomStates.Game);
             HttpContext.Current.Session["GameID"] = g.GameID;
         }

@@ -2,8 +2,10 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
-        var appData = null;
+        var appData = data.run('GetCurrentRoomState');
         var loggedIn = false;
+        if (appData != null && appData.RoomID != null)
+            loggedIn = true;
         var paired = false;
         objPing.UpdateState = function () {
             if(loggedIn) {
@@ -37,7 +39,13 @@
                 else {
                     $('#divJoinRoom').append('<div class="error mkn" style="color:red;"><h3>' + state + '</h3></div>');
                 }
-
+                if (loggedIn) {
+                    $('#divJoinRoom').hide();
+                    $('#divJoinRoom').after('<div class="scoreboard" style="display:none;"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
+                    appData = data.run('GetCurrentRoomState');
+                    rivets.bind($(document), { appData: appData });
+                    $('.scoreboard').slideDown();
+                }
             });
             if (loggedIn) {
                 $('#divJoinRoom').hide();

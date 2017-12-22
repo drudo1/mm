@@ -30,7 +30,7 @@ namespace MunchkinMonitor.Classes
         public Battle currentBattle { get; set; }
         public DateTime lastUpdated { get; set; }
         public bool NeedNextPlayer { get; set; }
-        public double lastUpdatedJS
+        public double stateUpdatedJS
         {
             get
             {
@@ -49,6 +49,13 @@ namespace MunchkinMonitor.Classes
             get
             {
                 return RoomState.CurrentState.playerStats.players.Where(p => !players.Select(gp => gp.currentPlayer.PlayerID).Contains(p.PlayerID)).OrderByDescending(p => p.GamesPlayed).ThenBy(p => p.DisplayName).ToList();
+            }
+        }
+        public List<CurrentGamePlayer> playersOrdered
+        {
+            get
+            {
+                return players.OrderBy(p => playerSeats != null && playerSeats.Contains(p.currentPlayer.PlayerID) ? playerSeats.IndexOf(p.currentPlayer.PlayerID) : 100).ThenBy(p => p.currentPlayer.DisplayName).ToList();
             }
         }
         public static Game CurrentGame

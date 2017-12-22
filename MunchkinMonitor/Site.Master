@@ -52,12 +52,12 @@
                 return value;
             }
             rivets.formatters.isCurrentPlayer = function (value) {
-                if (appData.gameState.currentPlayer != null && value == appData.gameState.currentPlayer.currentPlayer.PlayerID)
+                if (appData.currentPlayer != null && value == appData.currentPlayer.currentPlayer.PlayerID)
                     return true;
                 else
                     return false;
             };
-            rivets.formatters.isCurrentPlayer = function (value) {
+            rivets.formatters.isCurrentPlayer2 = function (value) {
                 if (appData.currentGame.currentPlayer != null && value == appData.currentGame.currentPlayer.currentPlayer.PlayerID)
                     return true;
                 else
