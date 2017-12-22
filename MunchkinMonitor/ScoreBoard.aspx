@@ -20,10 +20,20 @@
             
                 if (getUpdate) {
                     objectCopy(data.run('GetCurrentRoomState'), appData);
+                    $('.scoreboard').remove();
+                    if (appData != null && appData.playerStats != null) {
+                        $('#divJoinRoom').hide();
+                        $('#divJoinRoom').after('<div class="scoreboard"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
+                        rivets.bind($(document), { appData: appData });
+                    }
+                    else
+                    {
+                        $('#divJoinRoom').slideDown();
+
+                    }
                 }
-                if (appData.PairedToGame)
+                if (appData != null && appData.PairedToGame)
                     window.location = "Game.aspx";
-            }
         };
 
         $(document).ready(function() {
@@ -46,6 +56,17 @@
                     rivets.bind($(document), { appData: appData });
                     $('.scoreboard').slideDown();
                 }
+                if (loggedIn) {
+                    $('#divJoinRoom').hide();
+                    $('#divJoinRoom').after('<div class="scoreboard" style="display:none;"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
+                    if (appData != null)
+                        objectCopy(data.run('GetCurrentRoomState'), appData);
+                    else
+                        appData = data.run('GetCurrentRoomState');
+                    rivets.bind($(document), { appData: appData });
+                    $('.scoreboard').slideDown();
+                }
+
             });
             if (loggedIn) {
                 $('#divJoinRoom').hide();
@@ -56,11 +77,11 @@
         });
     </script>
     <img src="Images/scoreboardBG.jpg" id="bg" alt="">
-    <div class="row" id="divJoinRoom">
+    <div class="row scoreboard_login" id="divJoinRoom">
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-6 mkn" style="text-align:right;">
-                    Score Board Name:
+                    <h3>Score Board Name:</h3>
                 </div>
                 <div class="col-lg-6 mkn">
                     <input id="txtBoardName" type="text" class="form-control" />
@@ -68,7 +89,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6 mkn" style="text-align:right;">
-                    Room Key:
+                    <h3>Room Key:</h3>
                 </div>
                 <div class="col-lg-6 mkn">
                     <input id="txtRoomKey" type="text" class="form-control" />
@@ -76,7 +97,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 mkn">
-                    <input type="button" id="btnJoinRoom" value="Join Room" />
+                    <input type="button" id="btnJoinRoom" class="btn mkn btn-xs" value="Join Room" />
                 </div>
             </div>
         </div>
