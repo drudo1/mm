@@ -10,6 +10,7 @@
             var getUpdate = false;
             if (appData == null) {
                 appData = data.run('GetControllerState');
+                rivets.bind($(document), { appData: appData });
                 getUpdate = false;
             }
             else {

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace MunchkinMonitor.Classes
 {
-    public enum RoomStates
+    public enum ScoreBoardStates
     {
         TournamentScoreBoard,
         Game,
@@ -42,19 +42,18 @@ namespace MunchkinMonitor.Classes
         public Dictionary<string, RoomState> Rooms { get; set; }
         public string LinkScoreBoardToRoom(string boardName, string roomKey)
         {
-            if (ScoreBoardGamePairings.ContainsKey(boardName))
-                return "Board Name is Already in Use.";
-            else if (!Rooms.Values.Cast<RoomState>().ToList().Exists(r => r.RoomKey == roomKey))
+            if (!Rooms.Values.Cast<RoomState>().ToList().Exists(r => r.RoomKey == roomKey))
                 return "Invalid Room Key.";
             else
             {
-                HttpContext.Current.Session["boardName"] = boardName;
+                HttpContext.Current.Session["boardName"] = boardName.ToLower();
                 RoomState room = Rooms.Values.Cast<RoomState>().Where(r => r.RoomKey == roomKey).FirstOrDefault();
                 HttpContext.Current.Session["RoomID"] = room.RoomID;
                 int gameID = -1;
-                if (room.games.Cast<Game>().ToList().Exists(g => g.ScoreBoardName == boardName))
-                    gameID = room.games.Cast<Game>().Where(g => g.ScoreBoardName == boardName).FirstOrDefault().GameID;
-                ScoreBoardGamePairings.Add(boardName, gameID.ToString());
+                if (room.games.Values.Cast<Game>().ToList().Exists(g => g.ScoreBoardName.ToLower() == boardName.ToLower()))
+                    gameID = room.games.Values.Cast<Game>().Where(g => g.ScoreBoardName.ToLower() == boardName.ToLower()).FirstOrDefault().GameID;
+                if(!ScoreBoardGamePairings.Keys.Contains(boardName.ToLower()))
+                    ScoreBoardGamePairings.Add(boardName.ToLower(), gameID.ToString());
                 return "LoggedIn";
             }
         }
@@ -80,20 +79,12 @@ namespace MunchkinMonitor.Classes
     [Serializable]
     public class RoomState
     {
-        public RoomStates currentState { get; set; }
         public int RoomID { get; set; }
         public string RoomKey { get; set; }
         public string Name { get; set; }
         public Dictionary<string, Game> games { get; set; }
         public PlayerStats playerStats { get; set; }
         public DateTime stateUpdated { get; set; }
-        public string currentStateDescription
-        {
-            get
-            {
-                return currentState.ToString();
-            }
-        }
         public double stateUpdatedJS
         {
             get
@@ -107,11 +98,21 @@ namespace MunchkinMonitor.Classes
             {
                 if (HttpContext.Current.Session["boardName"] != null && (AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString()] != "-1"))
                 {
-                    HttpContext.Current.Session["GameID"] = AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString()];
+                    HttpContext.Current.Session["GameID"] = AppState.CurrentState.ScoreBoardGamePairings[HttpContext.Current.Session["boardName"].ToString().ToLower()];
                     return true;
                 }
                 else
                     return false;
+            }
+        }
+        public string currentSBStateDescription
+        {
+            get
+            {
+                if (HttpContext.Current.Session["GameID"] == null)
+                    return "TournamentScoreBoard";
+                else
+                    return Game.CurrentGame.sbState.ToString();
             }
         }
 
@@ -160,12 +161,6 @@ namespace MunchkinMonitor.Classes
             return tbl;
         }
 
-        public void SetState(RoomStates newState)
-        {
-            currentState = newState;
-            stateUpdated = DateTime.Now;
-        }
-
         public void NewGame(string name, bool isEpic, string sbName)
         {
             int id = 1;
@@ -174,9 +169,11 @@ namespace MunchkinMonitor.Classes
             Game g = new Game(id, name, isEpic);
             g.ScoreBoardName = sbName;
             games[id.ToString()] = g;
-            if (AppState.CurrentState.ScoreBoardGamePairings[sbName] != null)
-                AppState.CurrentState.ScoreBoardGamePairings[sbName] = id.ToString();
-            SetState(RoomStates.Game);
+            if (AppState.CurrentState.ScoreBoardGamePairings.Keys.Contains(sbName))
+                AppState.CurrentState.ScoreBoardGamePairings[sbName.ToLower()] = id.ToString();
+            else
+                AppState.CurrentState.ScoreBoardGamePairings.Add(sbName.ToLower(), id.ToString());
+            g.SetSBState(ScoreBoardStates.Game);
             HttpContext.Current.Session["GameID"] = g.GameID;
         }
 
@@ -185,7 +182,6 @@ namespace MunchkinMonitor.Classes
             if (games.Values.Cast<Game>().ToList().Exists(g => g.GameID == (int)HttpContext.Current.Session["GameID"]))
                 games.Remove(HttpContext.Current.Session["GameID"].ToString());
             HttpContext.Current.Session.Remove("GameID");
-            SetState(RoomStates.TournamentScoreBoard);
         }
 
         public void EndGame()
@@ -193,14 +189,15 @@ namespace MunchkinMonitor.Classes
             if (games[HttpContext.Current.Session["GameID"].ToString()] != null)
             {
                 ((Game)games[HttpContext.Current.Session["GameID"].ToString()]).LogWinner();
-                SetState(RoomStates.GameResults);
+                ((Game)games[HttpContext.Current.Session["GameID"].ToString()]).SetSBState(ScoreBoardStates.GameResults);
+                ((Game)games[HttpContext.Current.Session["GameID"].ToString()]).Update();
+                RoomState.CurrentState.Update();
             }
         }
 
         public void LoadScoreboard()
         {
             playerStats = new PlayerStats();
-            SetState(RoomStates.TournamentScoreBoard);
         }
 
         public List<Trophy> GetGameResults()
@@ -233,6 +230,7 @@ namespace MunchkinMonitor.Classes
         }
         public void Update()
         {
+            Game.CurrentGame.Update();
             RoomState.CurrentState.Update();
         }
         public bool loggedIn
@@ -254,6 +252,16 @@ namespace MunchkinMonitor.Classes
             get
             {
                 return HttpContext.Current.Session["GameID"] != null;
+            }
+        }
+        public bool GameNotStarted
+        {
+            get
+            {
+                if (currentGame != null && currentGame.currentState == GameStates.Setup)
+                    return true;
+                else
+                    return false;
             }
         }
         public CurrentGamePlayer Player
@@ -389,6 +397,23 @@ namespace MunchkinMonitor.Classes
             get
             {
                 return Game.CurrentGame == null ? false :  Game.CurrentGame.currentState == GameStates.Battle && myTurn;
+            }
+        }
+        public bool showBattleResults
+        {
+            get
+            {
+                return Game.CurrentGame == null ? false : Game.CurrentGame.currentState == GameStates.BattleResults && myTurn;
+            }
+        }
+        public bool GameResults
+        {
+            get
+            {
+                if (Game.CurrentGame == null)
+                    return false;
+                else
+                    return Game.CurrentGame.sbState == ScoreBoardStates.GameResults;
             }
         }
         public Battle currentBattle

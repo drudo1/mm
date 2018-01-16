@@ -49,8 +49,7 @@ function objectCopy(source, target) {
     for (var key in source) {
         if (Object.prototype.toString.call(source[key]) === '[object Array]') {
             if (Object.prototype.toString.call(target[key]) === '[object Array]') {
-                while (target[key].length > 0)
-                    target[key].pop();
+                target[key].length = 0;
                 for (var el in source[key])
                     target[key].push(source[key][el]);
             }

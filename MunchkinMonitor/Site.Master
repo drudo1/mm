@@ -40,7 +40,10 @@
                 return (value != equalVal);
             };
             rivets.formatters.lt = function (value, compare) {
-                return (value == undefined || value < compare);
+                return (value == undefined || parseInt(value) < parseInt(compare));
+            };
+            rivets.formatters.gt = function (value, compare) {
+                return (value == undefined || parseInt(value) > parseInt(compare));
             };
             rivets.formatters.ite = function (value, trueVal, falseVal) {
                 if (value)
@@ -52,13 +55,13 @@
                 return value;
             }
             rivets.formatters.isCurrentPlayer = function (value) {
-                if (appData.currentPlayer != null && value == appData.currentPlayer.currentPlayer.PlayerID)
+                if (appData.data.currentPlayer != null && value == appData.data.currentPlayer.currentPlayer.PlayerID)
                     return true;
                 else
                     return false;
             };
             rivets.formatters.isCurrentPlayer2 = function (value) {
-                if (appData.currentGame.currentPlayer != null && value == appData.currentGame.currentPlayer.currentPlayer.PlayerID)
+                if (appData.data.currentGame.currentPlayer != null && value == appData.data.currentGame.currentPlayer.currentPlayer.PlayerID)
                     return true;
                 else
                     return false;
@@ -69,7 +72,6 @@
                 else
                     return "";
             };
-            rivets.bind($(document), { appData: appData });
             $('#bg').appendTo('body');
         });
     </script>

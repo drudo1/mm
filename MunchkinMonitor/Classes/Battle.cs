@@ -13,6 +13,7 @@ namespace MunchkinMonitor.Classes
         public CurrentGamePlayer gamePlayer { get; set; }
         public CurrentGamePlayer ally { get; set; }
         public List<Monster> opponents { get; set; }
+        public List<string> offers { get; set; }
         public int playerOneTimeBonus { get; set; }
         public int allyTreasures { get; set; }
         public DateTime lastUpdated { get; set; }
@@ -201,6 +202,7 @@ namespace MunchkinMonitor.Classes
         {
             gamePlayer = new CurrentGamePlayer();
             opponents = new List<Monster>();
+            offers = new List<string>();
             playerOneTimeBonus = 0;
             lastUpdated = DateTime.Now;
         }
@@ -210,6 +212,7 @@ namespace MunchkinMonitor.Classes
             battleDT = DateTime.Now;
             gamePlayer = challenger;
             opponents = new List<Monster> { new Monster(monsterLevel, levelsToWin, treasures) };
+            offers = new List<string>();
             playerOneTimeBonus = 0;
             lastUpdated = DateTime.Now;
         }

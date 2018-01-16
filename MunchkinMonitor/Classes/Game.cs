@@ -21,6 +21,7 @@ namespace MunchkinMonitor.Classes
         public int GameID { get; set; }
         public string Name { get; set; }
         public string ScoreBoardName { get; set; }
+        public ScoreBoardStates sbState { get; set; }
         public bool isEpic { get; set; }
         public GameStates currentState { get; set; }
         public List<CurrentGamePlayer> players { get; set; }
@@ -30,6 +31,14 @@ namespace MunchkinMonitor.Classes
         public Battle currentBattle { get; set; }
         public DateTime lastUpdated { get; set; }
         public bool NeedNextPlayer { get; set; }
+        public List<Trophy> results { get; set; }
+        public string currentSBStateDescription
+        {
+            get
+            {
+                return sbState.ToString();
+            }
+        }
         public double stateUpdatedJS
         {
             get
@@ -80,6 +89,12 @@ namespace MunchkinMonitor.Classes
             lastUpdated = DateTime.Now;
             currentPlayer = null;
             currentBattle = null;
+        }
+
+        public void SetSBState(ScoreBoardStates newState)
+        {
+            sbState = newState;
+            lastUpdated = DateTime.Now;
         }
 
         public void AddExistingPlayer(int id)
@@ -196,6 +211,17 @@ namespace MunchkinMonitor.Classes
             {
                 CurrentGamePlayer ally = players.Where(gp => gp.currentPlayer.PlayerID == allyID).FirstOrDefault();
                 currentBattle.AddAlly(ally, allyTreasures);
+            }
+        }
+
+        public void OfferToAlly(int allyID, int allyTreasures)
+        {
+            if (currentBattle != null)
+            {
+                if (currentBattle.offers == null)
+                    currentBattle.offers = new List<string>();
+                if (!currentBattle.offers.Exists(o => o.Split('|')[0] == allyID.ToString()))
+                    currentBattle.offers.Add(string.Format("{0}|{1}|{2}", allyID, players.Where(p => p.currentPlayer.PlayerID == allyID).First().currentPlayer.DisplayName, allyTreasures));
             }
         }
 

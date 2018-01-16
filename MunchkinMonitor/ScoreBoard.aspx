@@ -2,9 +2,11 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
-        var appData = data.run('GetCurrentRoomState');
+        var appData = { data: null };
+        appData.data = data.run('GetCurrentRoomState');
+        rivets.bind($(document), { appData: appData });
         var loggedIn = false;
-        if (appData != null && appData.RoomID != null)
+        if (appData.data != null && appData.data.RoomID != null)
             loggedIn = true;
         var paired = false;
         objPing.UpdateState = function () {
@@ -15,15 +17,15 @@
                     getUpdate = false;
                 }
                 else {
-                    getUpdate = data.run('CheckForStateUpdate', { lastUpdate: new Date(appData.stateUpdatedJS) });
+                    getUpdate = data.run('CheckForStateUpdate', { lastUpdate: new Date(appData.data.stateUpdatedJS) });
                 }
 
                 if (getUpdate) {
-                    objectCopy(data.run('GetCurrentRoomState'), appData);
+                    objectCopy(data.run('GetCurrentRoomState'), appData.data);
                     $('.scoreboard').remove();
-                    if (appData != null && appData.playerStats != null) {
+                    if (appData.data != null && appData.data.playerStats != null) {
                         $('#divJoinRoom').hide();
-                        $('#divJoinRoom').after('<div class="scoreboard"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
+                        $('#divJoinRoom').after('<div class="scoreboard"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.data.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
                         rivets.bind($(document), { appData: appData });
                     }
                     else {
@@ -32,7 +34,7 @@
                     }
                 }
             }
-            if (appData != null && appData.PairedToGame)
+            if (appData.data != null && appData.data.PairedToGame)
                 window.location = "Game.aspx";
         };
 
@@ -51,11 +53,11 @@
                 }
                 if (loggedIn) {
                     $('#divJoinRoom').hide();
-                    $('#divJoinRoom').after('<div class="scoreboard" style="display:none;"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
-                    if (appData != null)
-                        objectCopy(data.run('GetCurrentRoomState'), appData);
+                    $('#divJoinRoom').after('<div class="scoreboard" style="display:none;"><table><tr><th>&nbsp;</th><th>Victories</th><th>Kills</th><th>Treasures</th></tr><tr rv-each-player="appData.data.playerStats.players"><td class="title">{player.DisplayName}</td><td>{player.Victories}</td><td>{player.Kills}</td><td>{player.Treasures}</td></tr></table></div>');
+                    if (appData.data != null)
+                        objectCopy(data.run('GetCurrentRoomState'), appData.data);
                     else
-                        appData = data.run('GetCurrentRoomState');
+                        appData.data = data.run('GetCurrentRoomState');
                     rivets.bind($(document), { appData: appData });
                     $('.scoreboard').slideDown();
                 }

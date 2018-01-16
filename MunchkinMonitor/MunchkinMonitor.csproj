@@ -150,6 +150,7 @@
     <Content Include="default.aspx" />
     <Content Include="Game.aspx" />
     <Content Include="GameResults.aspx" />
+    <Content Include="GameResultsMobile.aspx" />
     <Content Include="Images\controllerBG.jpg" />
     <Content Include="Images\Custom\brianFemale.png" />
     <Content Include="Images\Custom\brianMale.png" />
@@ -265,6 +266,13 @@
     </Compile>
     <Compile Include="GameResults.aspx.designer.cs">
       <DependentUpon>GameResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GameResultsMobile.aspx.cs">
+      <DependentUpon>GameResultsMobile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GameResultsMobile.aspx.designer.cs">
+      <DependentUpon>GameResultsMobile.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScoreBoard.aspx.cs">
       <DependentUpon>ScoreBoard.aspx</DependentUpon>

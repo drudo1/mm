@@ -30,12 +30,20 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public bool CheckForStateUpdate(DateTime lastUpdate)
         {
+            bool result = false;
             if (HttpContext.Current.Session["GameID"] != null)
-                return (Classes.Game.CurrentGame.lastUpdated.Minute != lastUpdate.Minute || (Classes.Game.CurrentGame.lastUpdated.Minute == lastUpdate.Minute && Classes.Game.CurrentGame.lastUpdated.Second > lastUpdate.Second));
+            {
+                if ((Classes.Game.CurrentGame.lastUpdated.Minute != lastUpdate.Minute || (Classes.Game.CurrentGame.lastUpdated.Minute == lastUpdate.Minute && Classes.Game.CurrentGame.lastUpdated.Second > lastUpdate.Second)))
+                    result = true;
+            }
             else if (HttpContext.Current.Session["RoomID"] != null)
-                return (RoomState.CurrentState.stateUpdated.Minute != lastUpdate.Minute || (RoomState.CurrentState.stateUpdated.Minute == lastUpdate.Minute && RoomState.CurrentState.stateUpdated.Second > lastUpdate.Second));
+            {
+                if ((RoomState.CurrentState.stateUpdated.Minute != lastUpdate.Minute || (RoomState.CurrentState.stateUpdated.Minute == lastUpdate.Minute && RoomState.CurrentState.stateUpdated.Second > lastUpdate.Second)))
+                    result = true;
+            }
             else
-                return true;
+                result = true;
+            return result;
         }
 
         [WebMethod(EnableSession = true)]
@@ -63,21 +71,24 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void PlayerEnterRoom(int id)
+        public PlayerState PlayerEnterRoom(int id)
         {
             Session["RoomID"] = id;
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void PlayerExitRoom()
+        public PlayerState PlayerExitRoom()
         {
             Session.Remove("RoomID");
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void PlayerLeaveRoom()
+        public PlayerState PlayerLeaveRoom()
         {
             RoomMembership.LeaveRoom();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -107,12 +118,13 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void PlayerJoinGame(int id)
+        public PlayerState PlayerJoinGame(int id)
         {
             Session["GameID"] = id;
             if (HttpContext.Current.Session["PlayerID"] != null)
                 Classes.Game.CurrentGame.AddExistingPlayer((int)HttpContext.Current.Session["PlayerID"]);
             RoomState.CurrentState.Update();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -166,13 +178,14 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void StartGame()
+        public PlayerState StartGame()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 state.StartGame();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -212,14 +225,17 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void AddPlayerLevel()
+        public int AddPlayerLevel()
         {
+            int newLevel = 0;
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.CurrentLevel++;
+                state.Player.CurrentLevel++;
                 state.Update();
+                newLevel = state.CurrentLevel;
             }
+            return newLevel;
         }
 
         [WebMethod(EnableSession = true)]
@@ -238,7 +254,7 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdatePlayerGear(int amount)
+        public PlayerState UpdatePlayerGear(int amount)
         {
             if (Session["PlayerID"] != null)
             {
@@ -247,6 +263,7 @@ namespace MunchkinMonitor.Services
                 GameStats.LogMaxGear((new PlayerState()).Player.currentPlayer.PlayerID, (new PlayerState()).Player.GearBonus);
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -348,80 +365,87 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void ChangePlayerGender()
+        public string ChangePlayerGender()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.ChangeGender(0);
+                state.Player.ChangeGender(0);
                 state.Update();
             }
+            return GetPlayerState().Gender;
         }
 
         [WebMethod(EnableSession = true)]
-        public void NextPlayerRace()
+        public string NextPlayerRace()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.NextRace();
+                state.Player.NextRace();
                 state.Update();
             }
+            return GetPlayerState().Race;
         }
 
         [WebMethod(EnableSession = true)]
-        public void TogglePlayerHalfBreed()
+        public string TogglePlayerHalfBreed()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.ToggleHalfBreed();
+                state.Player.ToggleHalfBreed();
                 state.Update();
             }
+            return GetPlayerState().Race;
         }
 
         [WebMethod(EnableSession = true)]
-        public void NextPlayerHalfBreed()
+        public string NextPlayerHalfBreed()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.NextHalfBreed();
+                state.Player.NextHalfBreed();
                 state.Update();
             }
+            return GetPlayerState().Race;
         }
 
         [WebMethod(EnableSession = true)]
-        public void TogglePlayerSuperMunchkin()
+        public string TogglePlayerSuperMunchkin()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.ToggleSuperMunchkin();
+                state.Player.ToggleSuperMunchkin();
                 state.Update();
             }
+            return GetPlayerState().Class;
         }
 
         [WebMethod(EnableSession = true)]
-        public void NextPlayerSMClass()
+        public string NextPlayerSMClass()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.NextSMClass();
+                state.Player.NextSMClass();
                 state.Update();
             }
+            return GetPlayerState().Class;
         }
 
         [WebMethod(EnableSession = true)]
-        public void NextPlayerClass()
+        public string NextPlayerClass()
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.NextClass();
+                state.Player.NextClass();
                 state.Update();
             }
+            return GetPlayerState().Class;
         }
 
         [WebMethod(EnableSession = true)]
@@ -453,14 +477,15 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void AddPlayerHelper(bool steed, int bonus)
+        public CurrentGamePlayer AddPlayerHelper(bool steed, int bonus)
         {
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.AddHelper(steed, bonus);
+                state.Player.AddHelper(steed, bonus);
                 state.Update();
             }
+            return GetPlayerState().Player;
         }
 
         [WebMethod(EnableSession = true)]
@@ -482,8 +507,9 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdatePlayerHelperGear(Guid helperID, int amount)
+        public int UpdatePlayerHelperGear(Guid helperID, int amount)
         {
+            int newGear = 0;
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
@@ -492,8 +518,10 @@ namespace MunchkinMonitor.Services
                 {
                     hlp.GearBonus += amount;
                     state.Update();
+                    newGear = hlp.GearBonus;
                 }
             }
+            return newGear;
         }
 
         [WebMethod(EnableSession = true)]
@@ -515,8 +543,9 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void ChangePlayerHelperRace(Guid helperID)
+        public string ChangePlayerHelperRace(Guid helperID)
         {
+            string race = "";
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
@@ -525,8 +554,10 @@ namespace MunchkinMonitor.Services
                 {
                     hlp.ChangeRace();
                     state.Update();
+                    race = hlp.Race;
                 }
             }
+            return race;
         }
 
         [WebMethod(EnableSession = true)]
@@ -547,7 +578,7 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void KillPlayerHelper(Guid helperID)
+        public PlayerState KillPlayerHelper(Guid helperID)
         {
             if (Session["PlayerID"] != null)
             {
@@ -558,6 +589,7 @@ namespace MunchkinMonitor.Services
                     state.Update();
                 }
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -579,19 +611,22 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void SubtractPlayerLevel()
+        public int SubtractPlayerLevel()
         {
+            int newLevel = 0;
             if (Session["PlayerID"] != null)
             {
                 PlayerState state = new PlayerState();
-                (new PlayerState()).Player.CurrentLevel--;
+                state.Player.CurrentLevel--;
                 GameStats.LogLevelLost((new PlayerState()).Player.currentPlayer.PlayerID);
                 state.Update();
+                newLevel = state.Player.CurrentLevel;
             }
+            return newLevel;
         }
 
         [WebMethod(EnableSession = true)]
-        public void NextPlayer()
+        public PlayerState NextPlayer()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -599,10 +634,11 @@ namespace MunchkinMonitor.Services
                 state.NextPlayer();
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void IAmNext()
+        public PlayerState IAmNext()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -615,6 +651,7 @@ namespace MunchkinMonitor.Services
                 state.NeedNextPlayer = false;
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -637,15 +674,16 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void StartEmptyBattle()
+        public PlayerState StartEmptyBattle()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             state.StartEmptyBattle();
             state.Update();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void BattleBonus(int amount)
+        public Battle BattleBonus(int amount)
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -656,10 +694,11 @@ namespace MunchkinMonitor.Services
                     state.Update();
                 }
             }
+            return GetPlayerState().currentBattle;
         }
 
         [WebMethod(EnableSession = true)]
-        public int AddMonster(int level, int levelsToWin, int treasures)
+        public Battle AddFirstMonster(int level, int levelsToWin, int treasures)
         {
             int idx = -1;
             Classes.Game state = Classes.Game.CurrentGame;
@@ -668,11 +707,25 @@ namespace MunchkinMonitor.Services
                 idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
                 state.Update();
             }
-            return idx;
+            return GetPlayerState().currentBattle;
         }
 
         [WebMethod(EnableSession = true)]
-        public void RemoveMonster(int monsterIDX)
+        public Monster AddMonster(int level, int levelsToWin, int treasures)
+        {
+            Monster m = null;
+            Classes.Game state = Classes.Game.CurrentGame;
+            if (state != null)
+            {
+                int idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
+                m = GetPlayerState().currentBattle.opponents[idx];
+                state.Update();
+            }
+            return m;
+        }
+
+        [WebMethod(EnableSession = true)]
+        public Battle RemoveMonster(int monsterIDX)
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -680,66 +733,79 @@ namespace MunchkinMonitor.Services
                 state.RemoveMonster(monsterIDX);
                 state.Update();
             }
+            return GetPlayerState().currentBattle;
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdateMonsterLevel(int monsterIDX, int amount)
+        public Monster UpdateMonsterLevel(int monsterIDX, int amount)
         {
+            Monster m = null;
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 if (state.currentBattle != null)
                 {
-                    state.currentBattle.opponents[monsterIDX].Level += amount;
+                    m = state.currentBattle.opponents[monsterIDX];
+                    m.Level += amount;
                     state.Update();
                 }
             }
+            return m;
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdateMonsterBonus(int monsterIDX, int amount)
+        public Monster UpdateMonsterBonus(int monsterIDX, int amount)
         {
+            Monster m = null;
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 if (state.currentBattle != null)
                 {
-                    state.currentBattle.opponents[monsterIDX].OneTimeBonus += amount;
+                    m = state.currentBattle.opponents[monsterIDX];
+                    m.OneTimeBonus += amount;
                     state.Update();
                 }
             }
+            return m;
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdateMonsterLTW(int monsterIDX, int amount)
+        public Monster UpdateMonsterLTW(int monsterIDX, int amount)
         {
+            Monster m = null;
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 if (state.currentBattle != null)
                 {
-                    state.currentBattle.opponents[monsterIDX].LevelsToWin += amount;
+                    m = state.currentBattle.opponents[monsterIDX];
+                    m.LevelsToWin += amount;
                     state.Update();
                 }
             }
+            return m;
         }
 
         [WebMethod(EnableSession = true)]
-        public void UpdateMonsterTreasures(int monsterIDX, int amount)
+        public Monster UpdateMonsterTreasures(int monsterIDX, int amount)
         {
+            Monster m = null;
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 if (state.currentBattle != null)
                 {
-                    state.currentBattle.opponents[monsterIDX].Treasures += amount;
+                    m = state.currentBattle.opponents[monsterIDX];
+                    m.Treasures += amount;
                     state.Update();
                 }
             }
+            return m;
         }
 
         [WebMethod(EnableSession = true)]
-        public void AddAlly(int allyID, int allyTreasures)
+        public PlayerState AddAlly(int allyID, int allyTreasures)
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -747,6 +813,7 @@ namespace MunchkinMonitor.Services
                 state.AddAlly(allyID, allyTreasures);
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -761,7 +828,19 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void RemoveAlly()
+        public PlayerState OfferToAlly(string allyTreasures)
+        {
+            Classes.Game state = Classes.Game.CurrentGame;
+            if (state != null)
+            {
+                state.OfferToAlly((int)Session["PlayerID"], Convert.ToInt32(allyTreasures));
+                state.Update();
+            }
+            return GetPlayerState();
+        }
+
+        [WebMethod(EnableSession = true)]
+        public Battle RemoveAlly()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -769,10 +848,11 @@ namespace MunchkinMonitor.Services
                 state.RemoveAlly();
                 state.Update();
             }
+            return GetPlayerState().currentBattle;
         }
 
         [WebMethod(EnableSession = true)]
-        public void CancelBattle()
+        public PlayerState CancelBattle()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -780,10 +860,11 @@ namespace MunchkinMonitor.Services
                 state.CancelBattle();
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void ResolveBattle()
+        public PlayerState ResolveBattle()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -791,10 +872,11 @@ namespace MunchkinMonitor.Services
                 state.ResolveBattle();
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void CompleteBattle()
+        public PlayerState CompleteBattle()
         {
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
@@ -803,6 +885,7 @@ namespace MunchkinMonitor.Services
                 state.SetState(GameStates.Battle);
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -826,17 +909,24 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void ResetGame()
+        public PlayerState ToggleEpic()
         {
-            HttpContext.Current.Application["CurrentState"] = null;
+            Classes.Game.CurrentGame.isEpic = !Classes.Game.CurrentGame.isEpic;
+            Classes.Game.CurrentGame.Update();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void Reset()
+        public PlayerState ResetGame()
         {
-            HttpContext.Current.Application["CurrentState"] = null;
-            string path = HttpContext.Current.Server.MapPath("~/") + "players.xml";
-            File.Delete(path);
+            List<int> players = Classes.Game.CurrentGame.players.Select(p => p.currentPlayer.PlayerID).ToList();
+            RoomState.CurrentState.games[HttpContext.Current.Session["GameID"].ToString()] = new Classes.Game(Classes.Game.CurrentGame.GameID, Classes.Game.CurrentGame.Name, Classes.Game.CurrentGame.isEpic);
+            foreach(int p in players)
+            {
+                Classes.Game.CurrentGame.AddExistingPlayer(p);
+            }
+            Classes.Game.CurrentGame.Update();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -854,7 +944,7 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void SellPlayerItem(int amount)
+        public PlayerState SellPlayerItem(int amount)
         {
             if (Session["PlayerID"] != null)
             {
@@ -862,24 +952,22 @@ namespace MunchkinMonitor.Services
                 (new PlayerState()).Player.SellItem(amount);
                 state.Update();
             }
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void Fake()
+        public PlayerState Fake()
         {
-            RoomState state = RoomState.CurrentState;
-            Classes.Game gameState;
-            state.currentState = RoomStates.Game;
-            state.LoadPlayers();
-            state.NewGame("TestGame", false, "");
-            gameState = Classes.Game.CurrentGame;
+            RoomState room;
+            room = AppState.CurrentState.Rooms[AppState.CurrentState.Rooms.Keys.ToList()[0]];
+            Classes.Game gameState = room.games[room.games.Keys.ToList()[0]];
             gameState.gameDate = DateTime.Now;
             Random rnd = new Random(Environment.TickCount);
-            foreach (Player p in state.playerStats.players)
-            {
-                gameState.AddExistingPlayer(p.PlayerID);
-            }
             gameState.StartGame();
+            for (int idx = 0; idx < gameState.players.Count; idx++)
+            {
+                gameState.playerSeats.Add(gameState.players[idx].currentPlayer.PlayerID);
+            }
             for (int idx = 0; idx < gameState.players.Count; idx++)
             {
                 gameState.NextPlayer();
@@ -908,7 +996,8 @@ namespace MunchkinMonitor.Services
                     Logger.LogBattle(br);
                 }
             }
-            state.Update();
+            room.Update();
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
@@ -920,19 +1009,25 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public void MakeMeNextPlayer()
+        public PlayerState MakeMeNextPlayer()
         {
-            Session["PlayerID"] = Classes.Game.CurrentGame.players[(Classes.Game.CurrentGame.players.IndexOf(Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID.ToString() == Session["PlayerID"].ToString()).FirstOrDefault()) + 1) % Classes.Game.CurrentGame.players.Count].currentPlayer.PlayerID;
+            CurrentGamePlayer plyr = Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID.ToString() == Session["PlayerID"].ToString()).FirstOrDefault();
+            int curIdx = Classes.Game.CurrentGame.players.IndexOf(plyr);
+            int newIdx = curIdx + 1;
+            newIdx = newIdx % Classes.Game.CurrentGame.players.Count;
+            Session["PlayerID"] = Classes.Game.CurrentGame.players[newIdx].currentPlayer.PlayerID;
+            return GetPlayerState();
         }
 
         [WebMethod(EnableSession = true)]
-        public void RemovePlayerFromRotation()
+        public PlayerState RemovePlayerFromRotation()
         {
             if (Classes.Game.CurrentGame.currentPlayer.currentPlayer.PlayerID == (int)Session["PlayerID"])
                 Classes.Game.CurrentGame.NextPlayer();
             Classes.Game.CurrentGame.playerSeats.Remove((int)Session["PlayerID"]);
             Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID == (int)Session["PlayerID"]).FirstOrDefault().DroppedOut = true;
             Classes.Game.CurrentGame.Update();
+            return GetPlayerState();
         }
     }
 }

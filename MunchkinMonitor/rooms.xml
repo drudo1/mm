@@ -3,11 +3,16 @@
   <RoomMembership>
     <RoomID>1</RoomID>
     <RoomName>dave's room</RoomName>
-    <RoomKey>dave wins</RoomKey>
+    <RoomKey>4242</RoomKey>
     <RoomPlayers>
       <int>5</int>
-      <int>4</int>
+      <int>9</int>
+      <int>3</int>
       <int>6</int>
+      <int>9</int>
+      <int>10</int>
+      <int>1</int>
+      <int>4</int>
     </RoomPlayers>
   </RoomMembership>
 </ArrayOfRoomMembership>

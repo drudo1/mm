@@ -10,11 +10,27 @@
     <NickName />
     <customImagePathMale>daveMale.png</customImagePathMale>
     <customImagePathFemale>daveFemale.png</customImagePathFemale>
-    <Victories>3</Victories>
-    <Kills>35</Kills>
-    <Treasures>67</Treasures>
-    <Assists>10</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <Victories>8</Victories>
+    <Kills>107</Kills>
+    <Treasures>233</Treasures>
+    <Assists>83</Assists>
+    <GamesPlayed>18</GamesPlayed>
+  </Player>
+  <Player>
+    <PlayerID>4</PlayerID>
+    <UserName>JohnB</UserName>
+    <Password>1234</Password>
+    <Gender>Male</Gender>
+    <FirstName>John</FirstName>
+    <LastName>Becker</LastName>
+    <NickName />
+    <customImagePathMale>johnMale.png</customImagePathMale>
+    <customImagePathFemale>johnFemale.png</customImagePathFemale>
+    <Victories>5</Victories>
+    <Kills>103</Kills>
+    <Treasures>182</Treasures>
+    <Assists>37</Assists>
+    <GamesPlayed>18</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>6</PlayerID>
@@ -27,26 +43,10 @@
     <customImagePathMale>jasonMale.png</customImagePathMale>
     <customImagePathFemale>jasonFemale.png</customImagePathFemale>
     <Victories>2</Victories>
-    <Kills>31</Kills>
-    <Treasures>72</Treasures>
-    <Assists>3</Assists>
-    <GamesPlayed>8</GamesPlayed>
-  </Player>
-  <Player>
-    <PlayerID>4</PlayerID>
-    <UserName>JohnB</UserName>
-    <Password>1234</Password>
-    <Gender>Male</Gender>
-    <FirstName>John</FirstName>
-    <LastName>Becker</LastName>
-    <NickName />
-    <customImagePathMale>johnMale.png</customImagePathMale>
-    <customImagePathFemale>johnFemale.png</customImagePathFemale>
-    <Victories>1</Victories>
-    <Kills>32</Kills>
-    <Treasures>60</Treasures>
-    <Assists>11</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <Kills>74</Kills>
+    <Treasures>155</Treasures>
+    <Assists>24</Assists>
+    <GamesPlayed>17</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>3</PlayerID>
@@ -62,7 +62,7 @@
     <Kills>26</Kills>
     <Treasures>50</Treasures>
     <Assists>8</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <GamesPlayed>18</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>2</PlayerID>
@@ -76,7 +76,7 @@
     <Kills>17</Kills>
     <Treasures>45</Treasures>
     <Assists>4</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <GamesPlayed>18</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>1</PlayerID>
@@ -92,7 +92,7 @@
     <Kills>16</Kills>
     <Treasures>30</Treasures>
     <Assists>4</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <GamesPlayed>18</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>8</PlayerID>
@@ -106,7 +106,7 @@
     <Kills>4</Kills>
     <Treasures>11</Treasures>
     <Assists>1</Assists>
-    <GamesPlayed>5</GamesPlayed>
+    <GamesPlayed>14</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>9</PlayerID>
@@ -120,7 +120,7 @@
     <Kills>3</Kills>
     <Treasures>5</Treasures>
     <Assists>0</Assists>
-    <GamesPlayed>2</GamesPlayed>
+    <GamesPlayed>11</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>7</PlayerID>
@@ -136,6 +136,6 @@
     <Kills>2</Kills>
     <Treasures>1</Treasures>
     <Assists>0</Assists>
-    <GamesPlayed>7</GamesPlayed>
+    <GamesPlayed>16</GamesPlayed>
   </Player>
 </ArrayOfPlayer>
