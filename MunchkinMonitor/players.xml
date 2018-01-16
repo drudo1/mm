@@ -10,11 +10,11 @@
     <NickName />
     <customImagePathMale>daveMale.png</customImagePathMale>
     <customImagePathFemale>daveFemale.png</customImagePathFemale>
-    <Victories>3</Victories>
-    <Kills>35</Kills>
-    <Treasures>67</Treasures>
+    <Victories>4</Victories>
+    <Kills>40</Kills>
+    <Treasures>80</Treasures>
     <Assists>10</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <GamesPlayed>10</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>6</PlayerID>
@@ -27,10 +27,10 @@
     <customImagePathMale>jasonMale.png</customImagePathMale>
     <customImagePathFemale>jasonFemale.png</customImagePathFemale>
     <Victories>2</Victories>
-    <Kills>31</Kills>
-    <Treasures>72</Treasures>
+    <Kills>33</Kills>
+    <Treasures>78</Treasures>
     <Assists>3</Assists>
-    <GamesPlayed>8</GamesPlayed>
+    <GamesPlayed>9</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>4</PlayerID>
@@ -59,10 +59,10 @@
     <customImagePathMale>ryanMale2.png</customImagePathMale>
     <customImagePathFemale>ryanFemale2.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>26</Kills>
-    <Treasures>50</Treasures>
-    <Assists>8</Assists>
-    <GamesPlayed>9</GamesPlayed>
+    <Kills>30</Kills>
+    <Treasures>56</Treasures>
+    <Assists>9</Assists>
+    <GamesPlayed>10</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>2</PlayerID>
@@ -89,8 +89,8 @@
     <customImagePathMale>jeffMale.png</customImagePathMale>
     <customImagePathFemale>jeffFemale.png</customImagePathFemale>
     <Victories>1</Victories>
-    <Kills>16</Kills>
-    <Treasures>30</Treasures>
+    <Kills>18</Kills>
+    <Treasures>34</Treasures>
     <Assists>4</Assists>
     <GamesPlayed>9</GamesPlayed>
   </Player>
@@ -118,9 +118,9 @@
     <NickName />
     <Victories>0</Victories>
     <Kills>3</Kills>
-    <Treasures>5</Treasures>
-    <Assists>0</Assists>
-    <GamesPlayed>2</GamesPlayed>
+    <Treasures>2</Treasures>
+    <Assists>1</Assists>
+    <GamesPlayed>3</GamesPlayed>
   </Player>
   <Player>
     <PlayerID>7</PlayerID>

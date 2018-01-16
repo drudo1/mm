@@ -396,7 +396,7 @@ namespace MunchkinMonitor.Classes
         {
             get
             {
-                return Game.CurrentGame == null ? false :  Game.CurrentGame.currentState == GameStates.Battle && myTurn;
+                return Game.CurrentGame == null ? false :  (Game.CurrentGame.currentState == GameStates.Battle || Game.CurrentGame.currentState == GameStates.BattleResults) && myTurn;
             }
         }
         public bool showBattleResults

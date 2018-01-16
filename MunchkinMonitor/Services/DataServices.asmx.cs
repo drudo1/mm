@@ -711,14 +711,14 @@ namespace MunchkinMonitor.Services
         }
 
         [WebMethod(EnableSession = true)]
-        public Monster AddMonster(int level, int levelsToWin, int treasures)
+        public KeyValuePair<int, Monster> AddMonster(int level, int levelsToWin, int treasures)
         {
-            Monster m = null;
+            KeyValuePair<int, Monster> m = new KeyValuePair<int, Monster>();
             Classes.Game state = Classes.Game.CurrentGame;
             if (state != null)
             {
                 int idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
-                m = GetPlayerState().currentBattle.opponents[idx];
+                m = new KeyValuePair<int, Monster>(idx, GetPlayerState().currentBattle.opponents[idx]);
                 state.Update();
             }
             return m;
@@ -871,6 +871,7 @@ namespace MunchkinMonitor.Services
             {
                 state.ResolveBattle();
                 state.Update();
+                RoomState.CurrentState.Update();
             }
             return GetPlayerState();
         }
@@ -882,7 +883,7 @@ namespace MunchkinMonitor.Services
             if (state != null)
             {
                 state.currentBattle = null;
-                state.SetState(GameStates.Battle);
+                state.SetState(GameStates.BattlePrep);
                 state.Update();
             }
             return GetPlayerState();

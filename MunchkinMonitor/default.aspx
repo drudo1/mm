@@ -232,7 +232,9 @@
                 $('#divMonsterEdit').slideDown();
             });
             $('#btnAddMonster').click(function () {
-                monsterData = data.run('AddMonster', { level: 1, levelsToWin: 1, treasures: 1 });
+                var result = data.run('AddMonster', { level: 1, levelsToWin: 1, treasures: 1 });
+                mIdx = result.Key;
+                monsterData = result.Value;
                 rivets.bind($('#divMonsterEdit'), { curMonster: monsterData });
                 $('#divCtrlPlayerBattle').slideUp();
                 $('#divMonsterEdit').slideDown();
@@ -244,7 +246,7 @@
                 objectCopy(data.run('ResolveBattle'), appData.data);
                 setTimeout(function () {
                     objectCopy(data.run('CompleteBattle'), appData.data);
-                }, 30000);
+                }, 20000);
             });
             $('.monsterLevel').click(function () {
                 var amount = $(this).attr('amount');
@@ -671,27 +673,29 @@
                         </div>
                     </div>
                     <div class="row" rv-show="appData.data.IsInBattle">
-                        <div class="col-xs-12" rv-hide="appData.data.currentBattle.needsOpponent">
-                            <div class="row">
-                                <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.GoodGuysWin">
-                                    <h2>Winning</h2>
+                        <div rv-hide="appData.data.showBattleResults">
+                            <div class="col-xs-12" rv-hide="appData.data.currentBattle.needsOpponent">
+                                <div class="row">
+                                    <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.GoodGuysWin">
+                                        <h2>Winning</h2>
+                                    </div>
+                                    <div class="col-xs-12 mkn" rv-hide="appData.data.currentBattle.GoodGuysWin">
+                                        <h2>Losing</h2>
+                                    </div>
                                 </div>
-                                <div class="col-xs-12 mkn" rv-hide="appData.data.currentBattle.GoodGuysWin">
-                                    <h2>Losing</h2>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-4 mkn">
-                                    <h2>{appData.data.currentBattle.playerPoints}</h2>
-                                </div>
-                                <div class="col-xs-4 mkn" rv-show="appData.data.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerWins.png" style="height:50px;" />
-                                </div>
-                                <div class="col-xs-4 mkn" rv-hide="appData.data.currentBattle.GoodGuysWin">
-                                    <img src="Images/playerLoses.png" style="height:80px;" />
-                                </div>
-                                <div class="col-xs-4 mkn">
-                                    <h2>{appData.data.currentBattle.opponentPoints}</h2>
+                                <div class="row">
+                                    <div class="col-xs-4 mkn">
+                                        <h2>{appData.data.currentBattle.playerPoints}</h2>
+                                    </div>
+                                    <div class="col-xs-4 mkn" rv-show="appData.data.currentBattle.GoodGuysWin">
+                                        <img src="Images/playerWins.png" style="height:50px;" />
+                                    </div>
+                                    <div class="col-xs-4 mkn" rv-hide="appData.data.currentBattle.GoodGuysWin">
+                                        <img src="Images/playerLoses.png" style="height:80px;" />
+                                    </div>
+                                    <div class="col-xs-4 mkn">
+                                        <h2>{appData.data.currentBattle.opponentPoints}</h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -788,20 +792,6 @@
                                     <div class="row" rv-show="appData.data.Player.NeedsASeat">
                                         <div class="col-xs-12">
                                             <input type="button" id="btnIAmNext" class="btn mkn btn-xs" style="width:100%;" value="I'm Next!" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" rv-show="appData.data.showBattleResults">
-                                <div class="col-xs-12">
-                                    <div class="row">
-                                        <div class="col-xs-12 mkn playerRow" style="text-align:center;">
-                                            <h1 rv-text="appData.data.currentBattle.result.Message"></h1>
-                                        </div>
-                                    </div>
-                                    <div class="row" >
-                                        <div class="col-xs-12 mkn" rv-each-result="appData.data.currentBattle.result.battleResults" style="text-align:center;">
-                                            <h2 rv-text="result"></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -1028,152 +1018,168 @@
                         </div>
                     </div>
                     <div class="row ctrlPanel" id="divCtrlPlayerBattle" rv-show="appData.data.IsInBattle">
-                        <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.needsOpponent">
-                            <div class="row">
-                                <div class="col-xs-6 mkn"style="vertical-align:bottom;">
-                                    <h3>Fighting Level:</h3>
+                        <div class="row" rv-show="appData.data.showBattleResults">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12 mkn playerRow" style="text-align:center;">
+                                        <h1 rv-text="appData.data.currentBattle.result.Message"></h1>
+                                    </div>
                                 </div>
-                                <div class="col-xs-6 mkn" style="vertical-align:bottom;">
-                                    <input type="number" class="form-control" id="txtFirstMonsterLevel" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 mkn"style="vertical-align:bottom;">
-                                    <h3>Treasures:</h3>
-                                </div>
-                                <div class="col-xs-6 mkn" style="vertical-align:bottom;">
-                                    <input type="number" class="form-control" id="txtFirstMonsterTreasures" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 mkn"style="vertical-align:bottom;">
-                                    <h3>Prize Levels:</h3>
-                                </div>
-                                <div class="col-xs-6 mkn" style="vertical-align:bottom;">
-                                    <input type="number" class="form-control" id="txtFirstMonsterPrizeLevels" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 mkn">
-                                    <input type="button" id="btnAddFirstMonster" class ="btn mkn" value="Go!" />
-                                </div>
-                                <div class="col-xs-6 mkn">
-                                    <input type="button" class ="btn mkn dashboard" id="btnNoBattle" value="Cancel" />
+                                <div class="row" >
+                                    <div class="col-xs-12 mkn" rv-each-result="appData.data.currentBattle.result.battleResults" style="text-align:center;">
+                                        <h2 rv-text="result"></h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.hasOpponent">
-                            <div class="row">
-                                <div class="col-xs-12 mkn playerRow">
-                                    <h3>Combatants</h3>
-                                </div>
-                                <div class="row playerRow">
-                                    <div class="col-xs-2 mkn">
-                                        <table><tr>
-                                            <td><input type="button" id="btnSubtractLevel2" class="btn mkn btn-xs" value="L" /></td>
-                                            <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="-1" /></td>
-                                            <td><h3>-</h3></td>
-                                        </tr></table>
+                        <div rv-hide="appData.data.showBattleResults">
+                            <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.needsOpponent">
+                                <div class="row">
+                                    <div class="col-xs-6 mkn"style="vertical-align:bottom;">
+                                        <h3>Fighting Level:</h3>
                                     </div>
-                                    <div class="col-xs-5 mkn">
-                                        <h3>{appData.data.DisplayName}</h3>
-                                    </div>
-                                    <div class="col-xs-2 mkn">
-                                        <h3>+{appData.data.FightingLevel}</h3>
-                                    </div>
-                                    <div class="col-xs-2 mkn">
-                                        <table><tr>
-                                            <td><h3>+</h3></td>
-                                            <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="1" /></td>
-                                            <td><input type="button" id="btnAddLevel2" class="btn mkn btn-xs" value="L" /></td>
-                                        </tr></table>
+                                    <div class="col-xs-6 mkn" style="vertical-align:bottom;">
+                                        <input type="number" class="form-control" id="txtFirstMonsterLevel" />
                                     </div>
                                 </div>
-                                <div class="row playerRow" rv-show="appData.data.currentBattle.HasAlly">
+                                <div class="row">
+                                    <div class="col-xs-6 mkn"style="vertical-align:bottom;">
+                                        <h3>Treasures:</h3>
+                                    </div>
+                                    <div class="col-xs-6 mkn" style="vertical-align:bottom;">
+                                        <input type="number" class="form-control" id="txtFirstMonsterTreasures" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 mkn"style="vertical-align:bottom;">
+                                        <h3>Prize Levels:</h3>
+                                    </div>
+                                    <div class="col-xs-6 mkn" style="vertical-align:bottom;">
+                                        <input type="number" class="form-control" id="txtFirstMonsterPrizeLevels" />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-xs-6 mkn">
-                                        <input type="button" id="btnRemoveAlly" class="btn btn-xs mkn" rv-value="appData.data.currentBattle.AllyName" />
+                                        <input type="button" id="btnAddFirstMonster" class ="btn mkn" value="Go!" />
                                     </div>
                                     <div class="col-xs-6 mkn">
-                                        <h3>+{appData.data.currentBattle.allyFightingLevel}</h3>
+                                        <input type="button" class ="btn mkn dashboard" id="btnNoBattle" value="Cancel" />
                                     </div>
                                 </div>
-                                <div class="row" rv-hide="appData.data.currentBattle.HasAlly">
-                                    <div class="col-xs-12 mkn">
-                                        <div class="row">
-                                            <div class="col-xs-12 mkn">
-                                                <h3>Potential Allies</h3>
+                            </div>
+                            <div class="col-xs-12 mkn" rv-show="appData.data.currentBattle.hasOpponent">
+                                <div class="row">
+                                    <div class="col-xs-12 mkn playerRow">
+                                        <h3>Combatants</h3>
+                                    </div>
+                                    <div class="row playerRow">
+                                        <div class="col-xs-2 mkn">
+                                            <table><tr>
+                                                <td><input type="button" id="btnSubtractLevel2" class="btn mkn btn-xs" value="L" /></td>
+                                                <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="-1" /></td>
+                                                <td><h3>-</h3></td>
+                                            </tr></table>
+                                        </div>
+                                        <div class="col-xs-5 mkn">
+                                            <h3>{appData.data.DisplayName}</h3>
+                                        </div>
+                                        <div class="col-xs-2 mkn">
+                                            <h3>+{appData.data.FightingLevel}</h3>
+                                        </div>
+                                        <div class="col-xs-2 mkn">
+                                            <table><tr>
+                                                <td><h3>+</h3></td>
+                                                <td><input type="button" class="btn btn-xs mkn gearUpdate" value="G" amount="1" /></td>
+                                                <td><input type="button" id="btnAddLevel2" class="btn mkn btn-xs" value="L" /></td>
+                                            </tr></table>
+                                        </div>
+                                    </div>
+                                    <div class="row playerRow" rv-show="appData.data.currentBattle.HasAlly">
+                                        <div class="col-xs-6 mkn">
+                                            <input type="button" id="btnRemoveAlly" class="btn btn-xs mkn" rv-value="appData.data.currentBattle.AllyName" />
+                                        </div>
+                                        <div class="col-xs-6 mkn">
+                                            <h3>+{appData.data.currentBattle.allyFightingLevel}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row" rv-hide="appData.data.currentBattle.HasAlly">
+                                        <div class="col-xs-12 mkn">
+                                            <div class="row">
+                                                <div class="col-xs-12 mkn">
+                                                    <h3>Potential Allies</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" rv-each-offer="appData.data.currentBattle.offers">
+                                                <div class="col-xs-6 mkn">
+                                                    <input type="button" class="btn btn-xs mkn offerButton" rv-value="offer | pipeSplit 1" rv-playerID="offer | pipeSplit 0" rv-Treasures="offer | pipeSplit 2" />
+                                                </div>
+                                                <div class="col-xs-6 mkn">
+                                                    Treasures: {offer | pipeSplit 2}
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row" rv-each-offer="appData.data.currentBattle.offers">
-                                            <div class="col-xs-6 mkn">
-                                                <input type="button" class="btn btn-xs mkn offerButton" rv-value="offer | pipeSplit 1" rv-playerID="offer | pipeSplit 0" rv-Treasures="offer | pipeSplit 2" />
-                                            </div>
-                                            <div class="col-xs-6 mkn">
-                                                Treasures: {offer | pipeSplit 2}
-                                            </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-4 mkn">
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="-5" />
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="-2" />
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="-1" />
+                                            <h2 style="padding:0;">-</h2>
+                                        </div>
+                                        <div class="col-xs-4 mkn">
+                                            <h2>{appData.data.currentBattle.playerOneTimeBonus}</h2><span style="font-size:20px;">Bonus</span>
+                                        </div>
+                                        <div class="col-xs-4 mkn">
+                                            <h2 style="padding:0;">+</h2>
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="1" />
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="2" />
+                                            <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="5" />
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-4 mkn">
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="-5" />
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="-2" />
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="-1" />
-                                        <h2 style="padding:0;">-</h2>
+                                    <div class="row" style="height:4px; background-color: #350400;">&nbsp;</div>
+                                    <div class="col-xs-12 mkn playerRow">
+                                        <h3>Monsters</h3>
                                     </div>
-                                    <div class="col-xs-4 mkn">
-                                        <h2>{appData.data.currentBattle.playerOneTimeBonus}</h2><span style="font-size:20px;">Bonus</span>
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <h3>Level</h3>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <h3>Bonus</h3>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <h3>Value</h3>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <h3>Loot</h3>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-4 mkn">
-                                        <h2 style="padding:0;">+</h2>
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="1" amount="1" />
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="2" amount="2" />
-                                        <input type="button" class="btn btn-xs mkn BattleBonus" value="5" amount="5" />
+                                    <div class="row playerRow" rv-each-monster="appData.data.currentBattle.opponents">
+                                        <div class="col-xs-3 mkn">
+                                            <input type="button" class="btn btn-xs mkn monsterButton" rv-monsterIDX=" %monster% " rv-value="monster.Level" />
+                                        </div>
+                                        <div class="col-xs-3 mkn">
+                                            <h3>{monster.OneTimeBonus}</h3>
+                                        </div>
+                                        <div class="col-xs-3 mkn">
+                                            <h3>{monster.LevelsToWin}</h3>
+                                        </div>
+                                        <div class="col-xs-3 mkn">
+                                            <h3>{monster.Treasures}</h3>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row" style="height:4px; background-color: #350400;">&nbsp;</div>
-                                <div class="col-xs-12 mkn playerRow">
-                                    <h3>Monsters</h3>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <h3>Level</h3>
+                                    <div class="row">
+                                        <div class="col-xs-12 mkn">
+                                            <input type="button" class="btn btn-xs mkn" id="btnAddMonster" value="Add Monster" />
+                                        </div>
                                     </div>
-                                    <div class="col-xs-3">
-                                        <h3>Bonus</h3>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h3>Value</h3>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h3>Loot</h3>
-                                    </div>
-                                </div>
-                                <div class="row playerRow" rv-each-monster="appData.data.currentBattle.opponents">
-                                    <div class="col-xs-3 mkn">
-                                        <input type="button" class="btn btn-xs mkn monsterButton" rv-monsterIDX=" %monster% " rv-value="monster.Level" />
-                                    </div>
-                                    <div class="col-xs-3 mkn">
-                                        <h3>{monster.OneTimeBonus}</h3>
-                                    </div>
-                                    <div class="col-xs-3 mkn">
-                                        <h3>{monster.LevelsToWin}</h3>
-                                    </div>
-                                    <div class="col-xs-3 mkn">
-                                        <h3>{monster.Treasures}</h3>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 mkn">
-                                        <input type="button" class="btn btn-xs mkn" id="btnAddMonster" value="Add Monster" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <input type="button" id="btnCancelBattle" class="btn mkn" value="Cancel Battle" />
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <input type="button" id="btnResolveBattle" class="btn mkn" value="GO" />
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <input type="button" id="btnCancelBattle" class="btn mkn" value="Cancel Battle" />
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <input type="button" id="btnResolveBattle" class="btn mkn" value="GO" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
