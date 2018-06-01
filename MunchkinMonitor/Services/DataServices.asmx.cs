@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,207 +20,410 @@ namespace MunchkinMonitor.Services
     // [System.Web.Script.Services.ScriptService]
     public class DataServices : System.Web.Services.WebService
     {
+        private void LogError(Exception ex)
+        {
+            Logger.LogError(ex);
+        }
 
         [WebMethod(EnableSession = true)]
         public string LinkScoreBoardToRoom(string boardName, string roomKey)
         {
-            return AppState.CurrentState.LinkScoreBoardToRoom(boardName, roomKey);
+            string result = null;
+            try
+            {
+                result = AppState.CurrentState.LinkScoreBoardToRoom(boardName, roomKey);
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return result;
         }
 
         [WebMethod(EnableSession = true)]
         public bool CheckForStateUpdate(DateTime lastUpdate)
         {
             bool result = false;
-            if (HttpContext.Current.Session["GameID"] != null)
+            try
             {
-                if ((Classes.Game.CurrentGame.lastUpdated.Minute != lastUpdate.Minute || (Classes.Game.CurrentGame.lastUpdated.Minute == lastUpdate.Minute && Classes.Game.CurrentGame.lastUpdated.Second > lastUpdate.Second)))
+                if (HttpContext.Current.Session["GameID"] != null)
+                {
+                    if ((Classes.Game.CurrentGame.lastUpdated.Minute != lastUpdate.Minute || (Classes.Game.CurrentGame.lastUpdated.Minute == lastUpdate.Minute && Classes.Game.CurrentGame.lastUpdated.Second > lastUpdate.Second)))
+                        result = true;
+                }
+                else if (HttpContext.Current.Session["RoomID"] != null)
+                {
+                    if ((RoomState.CurrentState.stateUpdated.Minute != lastUpdate.Minute || (RoomState.CurrentState.stateUpdated.Minute == lastUpdate.Minute && RoomState.CurrentState.stateUpdated.Second > lastUpdate.Second)))
+                        result = true;
+                }
+                else
                     result = true;
             }
-            else if (HttpContext.Current.Session["RoomID"] != null)
+            catch(Exception ex)
             {
-                if ((RoomState.CurrentState.stateUpdated.Minute != lastUpdate.Minute || (RoomState.CurrentState.stateUpdated.Minute == lastUpdate.Minute && RoomState.CurrentState.stateUpdated.Second > lastUpdate.Second)))
-                    result = true;
+                LogError(ex);
             }
-            else
-                result = true;
             return result;
         }
 
         [WebMethod(EnableSession = true)]
         public RoomState GetCurrentRoomState()
         {
-            return RoomState.CurrentState;
+            RoomState s = null;
+            try
+            {
+                s = RoomState.CurrentState;
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public Classes.Game GetCurrentGameState()
         {
-            return Classes.Game.CurrentGame;
+            Classes.Game g = null;
+            try
+            {
+                g = Classes.Game.CurrentGame;
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return g;
         }
 
         [WebMethod(EnableSession = true)]
         public AppState GetControllerState()
         {
-            return AppState.CurrentState;
+            AppState s = null;
+            try
+            {
+                s = AppState.CurrentState;
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState GetPlayerState()
         {
-            return new PlayerState();
+            PlayerState s = null;
+            try
+            {
+                s = new PlayerState();
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState PlayerEnterRoom(int id)
         {
-            Session["RoomID"] = id;
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                Session["RoomID"] = id;
+                s = GetPlayerState();
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState PlayerExitRoom()
         {
-            Session.Remove("RoomID");
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                Session.Remove("RoomID");
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState PlayerLeaveRoom()
         {
-            RoomMembership.LeaveRoom();
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                RoomMembership.LeaveRoom();
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public string PlayerCreateRoom(string name, string key)
         {
-            return RoomMembership.AddNewRoom(name, key);
+            string x = null;
+            try
+            {
+                x = RoomMembership.AddNewRoom(name, key);
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string PlayerJoinRoom(string key)
         {
-            return RoomMembership.JoinRoom(key);
+            string x = null;
+            try
+            {
+                x = RoomMembership.JoinRoom(key);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public void LoadScoreboard()
         {
-            RoomState state = RoomState.CurrentState;
-            state.LoadScoreboard();
+            try
+            {
+                RoomState state = RoomState.CurrentState;
+                state.LoadScoreboard();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public void LoadPlayers()
         {
-            RoomState state = RoomState.CurrentState;
-            state.LoadPlayers();
+            try
+            {
+                RoomState state = RoomState.CurrentState;
+                state.LoadPlayers();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState PlayerJoinGame(int id)
         {
-            Session["GameID"] = id;
-            if (HttpContext.Current.Session["PlayerID"] != null)
-                Classes.Game.CurrentGame.AddExistingPlayer((int)HttpContext.Current.Session["PlayerID"]);
-            RoomState.CurrentState.Update();
-            return GetPlayerState();
+
+            PlayerState s = null;
+            try
+            {
+                Session["GameID"] = id;
+                if (HttpContext.Current.Session["PlayerID"] != null)
+                    Classes.Game.CurrentGame.AddExistingPlayer((int)HttpContext.Current.Session["PlayerID"]);
+                RoomState.CurrentState.Update();
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void NewGame(string name, bool isEpic, string sbName)
         {
-            RoomState state = RoomState.CurrentState;
-            state.NewGame(name, isEpic, sbName);
-            if(HttpContext.Current.Session["PlayerID"] != null)
-                Classes.Game.CurrentGame.AddExistingPlayer((int)HttpContext.Current.Session["PlayerID"]);
-            RoomState.CurrentState.Update();
+            try
+            {
+                RoomState state = RoomState.CurrentState;
+                state.NewGame(name, isEpic, sbName);
+                if (HttpContext.Current.Session["PlayerID"] != null)
+                    Classes.Game.CurrentGame.AddExistingPlayer((int)HttpContext.Current.Session["PlayerID"]);
+                RoomState.CurrentState.Update();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public void AddExistingPlayer(int id)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                state.AddExistingPlayer(id);
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.AddExistingPlayer(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void AddNewPlayer(string username, string password, string firstName, string lastName, string nickName, Gender gender)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                state.AddNewPlayer(username, password, firstName, lastName, nickName, gender);
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.AddNewPlayer(username, password, firstName, lastName, nickName, gender);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public string LoginPlayer(string username, string password)
         {
-            int id = Player.Login(username, password);
-            if (id > 0)
+            string x = null;
+            try
             {
-                Session["PlayerID"] = id;
-                return "LoggedIn";
+                int id = Player.Login(username, password);
+                if (id > 0)
+                {
+                    Session["PlayerID"] = id;
+                    x = "LoggedIn";
+                }
+                else
+                    x = "LoginFailed";
             }
-            else
-                return "LoginFailed";
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession =true)]
         public void LoginNewPlayer(string username, string password, string firstName, string lastName, string nickName, Gender gender)
         {
-            int id = Player.AddNewPlayer(username, password, firstName, lastName, nickName, gender);
-            Session["PlayerID"] = id;
+            try
+            {
+                int id = Player.AddNewPlayer(username, password, firstName, lastName, nickName, gender);
+                Session["PlayerID"] = id;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState StartGame()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.StartGame();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.StartGame();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void StartGameWithPlayer(int PlayerID)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                state.StartGame(PlayerID);
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.StartGame(PlayerID);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public List<CharacterModifier> GetRaceList()
         {
-            return CharacterModifier.GetRaceList();
+            List<CharacterModifier> ls = null;
+            try
+            {
+                ls = CharacterModifier.GetRaceList();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return ls;
         }
 
         [WebMethod(EnableSession = true)]
         public List<CharacterModifier> GetClassList()
         {
-            return CharacterModifier.GetClassList();
+            List<CharacterModifier> ls = null;
+            try
+            {
+                ls = CharacterModifier.GetClassList();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return ls;
         }
 
         [WebMethod(EnableSession = true)]
         public void AddLevel()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.CurrentLevel++;
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.CurrentLevel++;
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
@@ -228,12 +431,19 @@ namespace MunchkinMonitor.Services
         public int AddPlayerLevel()
         {
             int newLevel = 0;
-            if (Session["PlayerID"] != null)
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.CurrentLevel++;
-                state.Update();
-                newLevel = state.CurrentLevel;
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.CurrentLevel++;
+                    state.Update();
+                    newLevel = state.CurrentLevel;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
             return newLevel;
         }
@@ -241,268 +451,426 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public void UpdateGear(int amount)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.GearBonus += amount;
-                    GameStats.LogMaxGear(state.currentPlayer.currentPlayer.PlayerID, state.currentPlayer.GearBonus);
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.GearBonus += amount;
+                        GameStats.LogMaxGear(state.currentPlayer.currentPlayer.PlayerID, state.currentPlayer.GearBonus);
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState UpdatePlayerGear(int amount)
         {
-            if (Session["PlayerID"] != null)
+            PlayerState s = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                (new PlayerState()).Player.GearBonus += amount;
-                GameStats.LogMaxGear((new PlayerState()).Player.currentPlayer.PlayerID, (new PlayerState()).Player.GearBonus);
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    (new PlayerState()).Player.GearBonus += amount;
+                    GameStats.LogMaxGear((new PlayerState()).Player.currentPlayer.PlayerID, (new PlayerState()).Player.GearBonus);
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void NextRace()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.NextRace();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.NextRace();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void ToggleHalfBreed()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.ToggleHalfBreed();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.ToggleHalfBreed();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void NextHalfBreed()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.NextHalfBreed();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.NextHalfBreed();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void ToggleSuperMunchkin()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.ToggleSuperMunchkin();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.ToggleSuperMunchkin();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void NextSMClass()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.NextSMClass();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.NextSMClass();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void NextClass()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.NextClass();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.NextClass();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void ChangeGender(int penalty)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.ChangeGender(penalty);
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.ChangeGender(penalty);
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public string ChangePlayerGender()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.ChangeGender(0);
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.ChangeGender(0);
+                    state.Update();
+                }
+                x = GetPlayerState().Gender;
             }
-            return GetPlayerState().Gender;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string NextPlayerRace()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.NextRace();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.NextRace();
+                    state.Update();
+                }
+                x = GetPlayerState().Race;
             }
-            return GetPlayerState().Race;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string TogglePlayerHalfBreed()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.ToggleHalfBreed();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.ToggleHalfBreed();
+                    state.Update();
+                }
+                x = GetPlayerState().Race;
             }
-            return GetPlayerState().Race;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string NextPlayerHalfBreed()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.NextHalfBreed();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.NextHalfBreed();
+                    state.Update();
+                }
+                x = GetPlayerState().Race;
             }
-            return GetPlayerState().Race;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string TogglePlayerSuperMunchkin()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.ToggleSuperMunchkin();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.ToggleSuperMunchkin();
+                    state.Update();
+                }
+                x = GetPlayerState().Class;
             }
-            return GetPlayerState().Class;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string NextPlayerSMClass()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.NextSMClass();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.NextSMClass();
+                    state.Update();
+                }
+                x = GetPlayerState().Class;
             }
-            return GetPlayerState().Class;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public string NextPlayerClass()
         {
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.NextClass();
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.NextClass();
+                    state.Update();
+                }
+                x = GetPlayerState().Class;
             }
-            return GetPlayerState().Class;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public void KillCurrentPlayer()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.Die();
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.Die();
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void AddHelper(bool steed, int bonus)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.AddHelper(steed, bonus);
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.AddHelper(steed, bonus);
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public CurrentGamePlayer AddPlayerHelper(bool steed, int bonus)
         {
-            if (Session["PlayerID"] != null)
+            CurrentGamePlayer p = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.AddHelper(steed, bonus);
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.AddHelper(steed, bonus);
+                    state.Update();
+                }
+                p = GetPlayerState().Player;
             }
-            return GetPlayerState().Player;
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return p;
         }
 
         [WebMethod(EnableSession = true)]
         public void UpdateHelperGear(Guid helperID, int amount)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    CharacterHelper hlp = state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
-                    if (hlp != null)
+                    if (state.currentPlayer != null)
                     {
-                        hlp.GearBonus += amount;
-                        state.Update();
+                        CharacterHelper hlp = state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                        if (hlp != null)
+                        {
+                            hlp.GearBonus += amount;
+                            state.Update();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
@@ -510,16 +878,23 @@ namespace MunchkinMonitor.Services
         public int UpdatePlayerHelperGear(Guid helperID, int amount)
         {
             int newGear = 0;
-            if (Session["PlayerID"] != null)
+            try
             {
-                PlayerState state = new PlayerState();
-                CharacterHelper hlp = state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
-                if (hlp != null)
+                if (Session["PlayerID"] != null)
                 {
-                    hlp.GearBonus += amount;
-                    state.Update();
-                    newGear = hlp.GearBonus;
+                    PlayerState state = new PlayerState();
+                    CharacterHelper hlp = state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                    if (hlp != null)
+                    {
+                        hlp.GearBonus += amount;
+                        state.Update();
+                        newGear = hlp.GearBonus;
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return newGear;
         }
@@ -527,86 +902,125 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public void ChangeHelperRace(Guid helperID)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    CharacterHelper hlp = state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
-                    if (hlp != null)
+                    if (state.currentPlayer != null)
                     {
-                        hlp.ChangeRace();
-                        state.Update();
+                        CharacterHelper hlp = state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                        if (hlp != null)
+                        {
+                            hlp.ChangeRace();
+                            state.Update();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public string ChangePlayerHelperRace(Guid helperID)
         {
-            string race = "";
-            if (Session["PlayerID"] != null)
+            string x = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                CharacterHelper hlp = state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
-                if (hlp != null)
+                string race = "";
+                if (Session["PlayerID"] != null)
                 {
-                    hlp.ChangeRace();
-                    state.Update();
-                    race = hlp.Race;
+                    PlayerState state = new PlayerState();
+                    CharacterHelper hlp = state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault();
+                    if (hlp != null)
+                    {
+                        hlp.ChangeRace();
+                        state.Update();
+                        race = hlp.Race;
+                    }
                 }
+                x = race;
             }
-            return race;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return x;
         }
 
         [WebMethod(EnableSession = true)]
         public void KillHelper(Guid helperID)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    if(state.currentPlayer.Helpers.Where(h => h.ID == helperID).Count() > 0)
+                    if (state.currentPlayer != null)
                     {
-                        state.currentPlayer.Helpers.Remove(state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault());
-                        state.Update();
+                        if (state.currentPlayer.Helpers.Where(h => h.ID == helperID).Count() > 0)
+                        {
+                            state.currentPlayer.Helpers.Remove(state.currentPlayer.Helpers.Where(h => h.ID == helperID).FirstOrDefault());
+                            state.Update();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState KillPlayerHelper(Guid helperID)
         {
-            if (Session["PlayerID"] != null)
+            PlayerState s = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                if (state.Player.Helpers.Where(h => h.ID == helperID).Count() > 0)
+                if (Session["PlayerID"] != null)
                 {
-                    state.Player.Helpers.Remove(state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault());
-                    state.Update();
+                    PlayerState state = new PlayerState();
+                    if (state.Player.Helpers.Where(h => h.ID == helperID).Count() > 0)
+                    {
+                        state.Player.Helpers.Remove(state.Player.Helpers.Where(h => h.ID == helperID).FirstOrDefault());
+                        state.Update();
+                    }
                 }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void SubtractLevel()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    if (state.currentPlayer.CurrentLevel > 1)
+                    if (state.currentPlayer != null)
                     {
-                        state.currentPlayer.CurrentLevel--;
-                        GameStats.LogLevelLost(state.currentPlayer.currentPlayer.PlayerID);
-                        state.Update();
+                        if (state.currentPlayer.CurrentLevel > 1)
+                        {
+                            state.currentPlayer.CurrentLevel--;
+                            GameStats.LogLevelLost(state.currentPlayer.currentPlayer.PlayerID);
+                            state.Update();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
@@ -614,13 +1028,20 @@ namespace MunchkinMonitor.Services
         public int SubtractPlayerLevel()
         {
             int newLevel = 0;
-            if (Session["PlayerID"] != null)
+            try
             {
-                PlayerState state = new PlayerState();
-                state.Player.CurrentLevel--;
-                GameStats.LogLevelLost((new PlayerState()).Player.currentPlayer.PlayerID);
-                state.Update();
-                newLevel = state.Player.CurrentLevel;
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    state.Player.CurrentLevel--;
+                    GameStats.LogLevelLost((new PlayerState()).Player.currentPlayer.PlayerID);
+                    state.Update();
+                    newLevel = state.Player.CurrentLevel;
+                }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return newLevel;
         }
@@ -628,98 +1049,164 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public PlayerState NextPlayer()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.NextPlayer();
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.NextPlayer();
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState IAmNext()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.playerSeats.Add((int)Session["PlayerID"]);
-                if (state.playerSeats.Count == state.players.Where(p => !p.DroppedOut).Count() - 1)
-                    state.playerSeats.Add(state.players.Where(p => !p.DroppedOut && !state.playerSeats.Contains(p.currentPlayer.PlayerID)).FirstOrDefault().currentPlayer.PlayerID);
-                state.currentPlayer = state.players.Where(p => p.currentPlayer.PlayerID == (int)Session["PlayerID"]).FirstOrDefault();
-                state.currentState = GameStates.BattlePrep;
-                state.NeedNextPlayer = false;
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.playerSeats.Add((int)Session["PlayerID"]);
+                    if (state.playerSeats.Count == state.players.Where(p => !p.DroppedOut).Count() - 1)
+                        state.playerSeats.Add(state.players.Where(p => !p.DroppedOut && !state.playerSeats.Contains(p.currentPlayer.PlayerID)).FirstOrDefault().currentPlayer.PlayerID);
+                    state.currentPlayer = state.players.Where(p => p.currentPlayer.PlayerID == (int)Session["PlayerID"]).FirstOrDefault();
+                    state.currentState = GameStates.BattlePrep;
+                    state.NeedNextPlayer = false;
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void PrevPlayer()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                state.PrevPlayer();
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.PrevPlayer();
+                    state.Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public void StartBattle(int level, int levelsToWin, int treasures)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            state.StartBattle(level, levelsToWin, treasures);
-            state.Update();
+            try
+            {
+                Classes.Game state = Classes.Game.CurrentGame;
+                state.StartBattle(level, levelsToWin, treasures);
+                state.Update();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState StartEmptyBattle()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            state.StartEmptyBattle();
-            state.Update();
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                Classes.Game state = Classes.Game.CurrentGame;
+                state.StartEmptyBattle();
+                state.Update();
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public Battle BattleBonus(int amount)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            Battle b = null;
+            try
             {
-                if(state.currentBattle != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentBattle.playerOneTimeBonus += amount;
-                    state.Update();
+                    if (state.currentBattle != null)
+                    {
+                        state.currentBattle.playerOneTimeBonus += amount;
+                        state.Update();
+                    }
                 }
+                b = GetPlayerState().currentBattle;
             }
-            return GetPlayerState().currentBattle;
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return b;
         }
 
         [WebMethod(EnableSession = true)]
         public Battle AddFirstMonster(int level, int levelsToWin, int treasures)
         {
-            int idx = -1;
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            Battle b = null;
+            try
             {
-                idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
-                state.Update();
+                int idx = -1;
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
+                    state.Update();
+                }
+                b = GetPlayerState().currentBattle;
             }
-            return GetPlayerState().currentBattle;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return b;
         }
 
         [WebMethod(EnableSession = true)]
         public KeyValuePair<int, Monster> AddMonster(int level, int levelsToWin, int treasures)
         {
             KeyValuePair<int, Monster> m = new KeyValuePair<int, Monster>();
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                int idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
-                m = new KeyValuePair<int, Monster>(idx, GetPlayerState().currentBattle.opponents[idx]);
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    int idx = state.AddMonsterToBattle(level, levelsToWin, treasures);
+                    m = new KeyValuePair<int, Monster>(idx, GetPlayerState().currentBattle.opponents[idx]);
+                    state.Update();
+                }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return m;
         }
@@ -727,28 +1214,44 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public Battle RemoveMonster(int monsterIDX)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            Battle b = null;
+            try
             {
-                state.RemoveMonster(monsterIDX);
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.RemoveMonster(monsterIDX);
+                    state.Update();
+                }
+                b = GetPlayerState().currentBattle;
             }
-            return GetPlayerState().currentBattle;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return b;
         }
 
         [WebMethod(EnableSession = true)]
         public Monster UpdateMonsterLevel(int monsterIDX, int amount)
         {
             Monster m = null;
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentBattle != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    m = state.currentBattle.opponents[monsterIDX];
-                    m.Level += amount;
-                    state.Update();
+                    if (state.currentBattle != null)
+                    {
+                        m = state.currentBattle.opponents[monsterIDX];
+                        m.Level += amount;
+                        state.Update();
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return m;
         }
@@ -757,15 +1260,22 @@ namespace MunchkinMonitor.Services
         public Monster UpdateMonsterBonus(int monsterIDX, int amount)
         {
             Monster m = null;
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentBattle != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    m = state.currentBattle.opponents[monsterIDX];
-                    m.OneTimeBonus += amount;
-                    state.Update();
+                    if (state.currentBattle != null)
+                    {
+                        m = state.currentBattle.opponents[monsterIDX];
+                        m.OneTimeBonus += amount;
+                        state.Update();
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return m;
         }
@@ -774,15 +1284,22 @@ namespace MunchkinMonitor.Services
         public Monster UpdateMonsterLTW(int monsterIDX, int amount)
         {
             Monster m = null;
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentBattle != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    m = state.currentBattle.opponents[monsterIDX];
-                    m.LevelsToWin += amount;
-                    state.Update();
+                    if (state.currentBattle != null)
+                    {
+                        m = state.currentBattle.opponents[monsterIDX];
+                        m.LevelsToWin += amount;
+                        state.Update();
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return m;
         }
@@ -791,15 +1308,22 @@ namespace MunchkinMonitor.Services
         public Monster UpdateMonsterTreasures(int monsterIDX, int amount)
         {
             Monster m = null;
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentBattle != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    m = state.currentBattle.opponents[monsterIDX];
-                    m.Treasures += amount;
-                    state.Update();
+                    if (state.currentBattle != null)
+                    {
+                        m = state.currentBattle.opponents[monsterIDX];
+                        m.Treasures += amount;
+                        state.Update();
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
             }
             return m;
         }
@@ -807,228 +1331,380 @@ namespace MunchkinMonitor.Services
         [WebMethod(EnableSession = true)]
         public PlayerState AddAlly(int allyID, int allyTreasures)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.AddAlly(allyID, allyTreasures);
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.AddAlly(allyID, allyTreasures);
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void AddPlayerAsAlly(string allyTreasures)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                state.AddAlly((int)Session["PlayerID"], Convert.ToInt32(allyTreasures));
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.AddAlly((int)Session["PlayerID"], Convert.ToInt32(allyTreasures));
+                    state.Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState OfferToAlly(string allyTreasures)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.OfferToAlly((int)Session["PlayerID"], Convert.ToInt32(allyTreasures));
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.OfferToAlly((int)Session["PlayerID"], Convert.ToInt32(allyTreasures));
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public Battle RemoveAlly()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            Battle b = null;
+            try
             {
-                state.RemoveAlly();
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.RemoveAlly();
+                    state.Update();
+                }
+                b = GetPlayerState().currentBattle;
             }
-            return GetPlayerState().currentBattle;
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return b;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState CancelBattle()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.CancelBattle();
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.CancelBattle();
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState ResolveBattle()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.ResolveBattle();
-                state.Update();
-                RoomState.CurrentState.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.ResolveBattle();
+                    state.Update();
+                    RoomState.CurrentState.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState CompleteBattle()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            PlayerState s = null;
+            try
             {
-                state.currentBattle = null;
-                state.SetState(GameStates.BattlePrep);
-                state.Update();
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
+                {
+                    state.currentBattle = null;
+                    state.SetState(GameStates.BattlePrep);
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void CancelGame()
         {
-            RoomState state = RoomState.CurrentState;
-            state.CancelGame();
+            try
+            {
+                RoomState state = RoomState.CurrentState;
+                state.CancelGame();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public void EndGame()
         {
-            RoomState state = RoomState.CurrentState;
-            state.EndGame();
+            try
+            {
+                RoomState state = RoomState.CurrentState;
+                state.EndGame();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public List<Trophy> GetTrophies()
         {
-            return GameStats.GetTrophies();
+            List<Trophy> ls = null;
+            try
+            {
+                ls = GameStats.GetTrophies();
+            }
+            catch(Exception ex)
+            {
+                LogError(ex);
+            }
+            return ls;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState ToggleEpic()
         {
-            Classes.Game.CurrentGame.isEpic = !Classes.Game.CurrentGame.isEpic;
-            Classes.Game.CurrentGame.Update();
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                Classes.Game.CurrentGame.isEpic = !Classes.Game.CurrentGame.isEpic;
+                Classes.Game.CurrentGame.Update();
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState ResetGame()
         {
-            List<int> players = Classes.Game.CurrentGame.players.Select(p => p.currentPlayer.PlayerID).ToList();
-            RoomState.CurrentState.games[HttpContext.Current.Session["GameID"].ToString()] = new Classes.Game(Classes.Game.CurrentGame.GameID, Classes.Game.CurrentGame.Name, Classes.Game.CurrentGame.isEpic);
-            foreach(int p in players)
+            PlayerState s = null;
+            try
             {
-                Classes.Game.CurrentGame.AddExistingPlayer(p);
+                List<int> players = Classes.Game.CurrentGame.players.Select(p => p.currentPlayer.PlayerID).ToList();
+                RoomState.CurrentState.games[HttpContext.Current.Session["GameID"].ToString()] = new Classes.Game(Classes.Game.CurrentGame.GameID, Classes.Game.CurrentGame.Name, Classes.Game.CurrentGame.isEpic);
+                foreach (int p in players)
+                {
+                    Classes.Game.CurrentGame.AddExistingPlayer(p);
+                }
+                Classes.Game.CurrentGame.Update();
+                s = GetPlayerState();
             }
-            Classes.Game.CurrentGame.Update();
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void SellItem(int amount)
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            if (state != null)
+            try
             {
-                if (state.currentPlayer != null)
+                Classes.Game state = Classes.Game.CurrentGame;
+                if (state != null)
                 {
-                    state.currentPlayer.SellItem(amount);
-                    state.Update();
+                    if (state.currentPlayer != null)
+                    {
+                        state.currentPlayer.SellItem(amount);
+                        state.Update();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
             }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState SellPlayerItem(int amount)
         {
-            if (Session["PlayerID"] != null)
+            PlayerState s = null;
+            try
             {
-                PlayerState state = new PlayerState();
-                (new PlayerState()).Player.SellItem(amount);
-                state.Update();
+                if (Session["PlayerID"] != null)
+                {
+                    PlayerState state = new PlayerState();
+                    (new PlayerState()).Player.SellItem(amount);
+                    state.Update();
+                }
+                s = GetPlayerState();
             }
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState Fake()
         {
-            RoomState room;
-            room = AppState.CurrentState.Rooms[AppState.CurrentState.Rooms.Keys.ToList()[0]];
-            Classes.Game gameState = room.games[room.games.Keys.ToList()[0]];
-            gameState.gameDate = DateTime.Now;
-            Random rnd = new Random(Environment.TickCount);
-            gameState.StartGame();
-            for (int idx = 0; idx < gameState.players.Count; idx++)
+            PlayerState s = null;
+            try
             {
-                gameState.playerSeats.Add(gameState.players[idx].currentPlayer.PlayerID);
-            }
-            for (int idx = 0; idx < gameState.players.Count; idx++)
-            {
-                gameState.NextPlayer();
-                gameState.currentPlayer.CurrentLevel = rnd.Next(7, 10);
-                UpdateGear(rnd.Next(15, 35));
-                if (rnd.Next(1, 3) == 3)
-                    gameState.players[idx].CurrentRaceList.Add(CharacterModifier.GetRaceList()[rnd.Next(0, CharacterModifier.GetRaceList().Count - 1)]);
-                if (rnd.Next(1, 3) == 3)
-                    gameState.players[idx].CurrentClassList.Add(CharacterModifier.GetClassList()[rnd.Next(0, CharacterModifier.GetClassList().Count - 1)]);
-                int battles = rnd.Next(20, 30);
-                for (int i = 0; i < battles; i++)
+                RoomState room;
+                room = AppState.CurrentState.Rooms[AppState.CurrentState.Rooms.Keys.ToList()[0]];
+                Classes.Game gameState = room.games[room.games.Keys.ToList()[0]];
+                gameState.gameDate = DateTime.Now;
+                Random rnd = new Random(Environment.TickCount);
+                gameState.StartGame();
+                for (int idx = 0; idx < gameState.players.Count; idx++)
                 {
-                    BattleResult br = new BattleResult(gameState.players[idx]);
-                    bool assist = (rnd.Next(1, 10) <= 7);
-                    if (assist)
-                    {
-                        br.assistedBy = gameState.players.Where(pl => pl.currentPlayer.PlayerID != br.gamePlayer.currentPlayer.PlayerID).ToList()[rnd.Next(0, gameState.players.Count - 2)];
-                        br.assistTreasures = 1;
-                    }
-                    br.opponentPoints = rnd.Next(1, 50);
-                    br.levelsWon = br.opponentPoints <= 5 ? 1 : br.opponentPoints <= 12 ? 2 : br.opponentPoints <= 25 ? 3 : br.opponentPoints <= 35 ? 4 : 5;
-                    br.NumDefeated = rnd.Next(1, 10) <= 7 ? 1 : 2;
-                    br.treasuresWon = br.opponentPoints > 20 ? 2 : 1;
-                    gameState.currentPlayer.Treasures += br.treasuresWon;
-                    br.Victory = (rnd.Next(1, 10) >= 6);
-                    Logger.LogBattle(br);
+                    gameState.playerSeats.Add(gameState.players[idx].currentPlayer.PlayerID);
                 }
+                for (int idx = 0; idx < gameState.players.Count; idx++)
+                {
+                    gameState.NextPlayer();
+                    gameState.currentPlayer.CurrentLevel = rnd.Next(7, 10);
+                    UpdateGear(rnd.Next(15, 35));
+                    if (rnd.Next(1, 3) == 3)
+                        gameState.players[idx].CurrentRaceList.Add(CharacterModifier.GetRaceList()[rnd.Next(0, CharacterModifier.GetRaceList().Count - 1)]);
+                    if (rnd.Next(1, 3) == 3)
+                        gameState.players[idx].CurrentClassList.Add(CharacterModifier.GetClassList()[rnd.Next(0, CharacterModifier.GetClassList().Count - 1)]);
+                    int battles = rnd.Next(20, 30);
+                    for (int i = 0; i < battles; i++)
+                    {
+                        BattleResult br = new BattleResult(gameState.players[idx]);
+                        bool assist = (rnd.Next(1, 10) <= 7);
+                        if (assist)
+                        {
+                            br.assistedBy = gameState.players.Where(pl => pl.currentPlayer.PlayerID != br.gamePlayer.currentPlayer.PlayerID).ToList()[rnd.Next(0, gameState.players.Count - 2)];
+                            br.assistTreasures = 1;
+                        }
+                        br.opponentPoints = rnd.Next(1, 50);
+                        br.levelsWon = br.opponentPoints <= 5 ? 1 : br.opponentPoints <= 12 ? 2 : br.opponentPoints <= 25 ? 3 : br.opponentPoints <= 35 ? 4 : 5;
+                        br.NumDefeated = rnd.Next(1, 10) <= 7 ? 1 : 2;
+                        br.treasuresWon = br.opponentPoints > 20 ? 2 : 1;
+                        gameState.currentPlayer.Treasures += br.treasuresWon;
+                        br.Victory = (rnd.Next(1, 10) >= 6);
+                        Logger.LogBattle(br);
+                    }
+                }
+                room.Update();
+                s = GetPlayerState();
             }
-            room.Update();
-            return GetPlayerState();
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public void ToggleCheatCard()
         {
-            Classes.Game state = Classes.Game.CurrentGame;
-            state.currentPlayer.showCheatCard = state.currentPlayer.showCheatCard == "true" ? "false" : "true";
-            state.Update();
+            try
+            {
+                Classes.Game state = Classes.Game.CurrentGame;
+                state.currentPlayer.showCheatCard = state.currentPlayer.showCheatCard == "true" ? "false" : "true";
+                state.Update();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState MakeMeNextPlayer()
         {
-            CurrentGamePlayer plyr = Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID.ToString() == Session["PlayerID"].ToString()).FirstOrDefault();
-            int curIdx = Classes.Game.CurrentGame.players.IndexOf(plyr);
-            int newIdx = curIdx + 1;
-            newIdx = newIdx % Classes.Game.CurrentGame.players.Count;
-            Session["PlayerID"] = Classes.Game.CurrentGame.players[newIdx].currentPlayer.PlayerID;
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                CurrentGamePlayer plyr = Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID.ToString() == Session["PlayerID"].ToString()).FirstOrDefault();
+                int curIdx = Classes.Game.CurrentGame.players.IndexOf(plyr);
+                int newIdx = curIdx + 1;
+                newIdx = newIdx % Classes.Game.CurrentGame.players.Count;
+                Session["PlayerID"] = Classes.Game.CurrentGame.players[newIdx].currentPlayer.PlayerID;
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
 
         [WebMethod(EnableSession = true)]
         public PlayerState RemovePlayerFromRotation()
         {
-            if (Classes.Game.CurrentGame.currentPlayer.currentPlayer.PlayerID == (int)Session["PlayerID"])
-                Classes.Game.CurrentGame.NextPlayer();
-            Classes.Game.CurrentGame.playerSeats.Remove((int)Session["PlayerID"]);
-            Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID == (int)Session["PlayerID"]).FirstOrDefault().DroppedOut = true;
-            Classes.Game.CurrentGame.Update();
-            return GetPlayerState();
+            PlayerState s = null;
+            try
+            {
+                if (Classes.Game.CurrentGame.currentPlayer.currentPlayer.PlayerID == (int)Session["PlayerID"])
+                    Classes.Game.CurrentGame.NextPlayer();
+                Classes.Game.CurrentGame.playerSeats.Remove((int)Session["PlayerID"]);
+                Classes.Game.CurrentGame.players.Where(p => p.currentPlayer.PlayerID == (int)Session["PlayerID"]).FirstOrDefault().DroppedOut = true;
+                Classes.Game.CurrentGame.Update();
+                s = GetPlayerState();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return s;
         }
     }
 }
